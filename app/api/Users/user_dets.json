@@ -1,0 +1,532 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/user/profile.ejs",
+      "linkedForm": "profileForm"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "fName",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your first name"
+            }
+          }
+        },
+        "name": "fName"
+      },
+      {
+        "type": "text",
+        "fieldName": "hashAuth",
+        "name": "hashAuth"
+      },
+      {
+        "type": "text",
+        "fieldName": "lName",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your last name"
+            },
+            "core:lettersonly": {
+              "message": "Please use letters only"
+            }
+          }
+        },
+        "name": "lName"
+      },
+      {
+        "type": "text",
+        "fieldName": "email",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your email"
+            },
+            "core:email": {
+              "message": "Please enter a valid email address"
+            }
+          }
+        },
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "fieldName": "userName",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter a username"
+            },
+            "core:alphanumeric": {
+              "message": "Letters and numbers only please"
+            }
+          }
+        },
+        "name": "userName"
+      },
+      {
+        "type": "text",
+        "fieldName": "add1",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your address"
+            }
+          }
+        },
+        "name": "add1"
+      },
+      {
+        "type": "text",
+        "fieldName": "add2",
+        "name": "add2"
+      },
+      {
+        "type": "text",
+        "fieldName": "town1",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your town"
+            }
+          }
+        },
+        "name": "town1"
+      },
+      {
+        "type": "text",
+        "fieldName": "county",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your county"
+            }
+          }
+        },
+        "name": "county"
+      },
+      {
+        "type": "text",
+        "fieldName": "postcode",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your postcode"
+            }
+          }
+        },
+        "name": "postcode"
+      },
+      {
+        "type": "text",
+        "fieldName": "mobile",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your mobile number"
+            },
+            "core:digits": {
+              "message": "Please enter a valid number"
+            }
+          }
+        },
+        "name": "mobile"
+      },
+      {
+        "type": "text",
+        "fieldName": "tel",
+        "options": {
+          "rules": {
+            "core:digits": {
+              "message": "Please enter a valid number"
+            }
+          }
+        },
+        "name": "tel"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_user_id",
+        "name": "inp_user_id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_users",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_users",
+                "column": "fName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "joinDate"
+              },
+              {
+                "table": "tbl_users",
+                "column": "email"
+              },
+              {
+                "table": "tbl_users",
+                "column": "userName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "password"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "add1"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "add2"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "town1"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "tel"
+              }
+            ],
+            "params": [],
+            "table": {
+              "name": "tbl_users"
+            },
+            "primary": "userId",
+            "joins": [
+              {
+                "table": "tbl_user_dets",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_user_dets",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_users",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "usrDetsId"
+              }
+            ],
+            "query": "select `tbl_users`.`userId`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`joinDate`, `tbl_users`.`email`, `tbl_users`.`userName`, `tbl_users`.`password`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`tel` from `tbl_users` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_users.userId",
+                  "field": "tbl_users.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": 1,
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "text",
+            "name": "fName"
+          },
+          {
+            "type": "text",
+            "name": "lName"
+          },
+          {
+            "type": "date",
+            "name": "joinDate"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          },
+          {
+            "type": "text",
+            "name": "userName"
+          },
+          {
+            "type": "text",
+            "name": "password"
+          },
+          {
+            "type": "text",
+            "name": "add1"
+          },
+          {
+            "type": "text",
+            "name": "add2"
+          },
+          {
+            "type": "text",
+            "name": "town1"
+          },
+          {
+            "type": "text",
+            "name": "tel"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
+      },
+      {
+        "name": "valFName",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.fName.decrypt(identity)}}",
+          "key": "gblFname"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true,
+        "disabled": true
+      },
+      {
+        "name": "valLName",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.lName.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "valEmail",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.email.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "valAdd1",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.add1.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "valAdd2",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.add2.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true,
+        "disabled": true
+      },
+      {
+        "name": "vallPcode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.postcode.decrypt(identity)}}"
+        },
+        "meta": [
+          {
+            "name": "userId",
+            "type": "number"
+          },
+          {
+            "name": "fName",
+            "type": "text"
+          },
+          {
+            "name": "lName",
+            "type": "text"
+          },
+          {
+            "name": "joinDate",
+            "type": "date"
+          },
+          {
+            "name": "email",
+            "type": "text"
+          },
+          {
+            "name": "userName",
+            "type": "text"
+          },
+          {
+            "name": "password",
+            "type": "text"
+          },
+          {
+            "name": "add1",
+            "type": "text"
+          },
+          {
+            "name": "add2",
+            "type": "text"
+          },
+          {
+            "name": "town1",
+            "type": "text"
+          },
+          {
+            "name": "tel",
+            "type": "text"
+          }
+        ],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      },
+      {
+        "name": "vallMob",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.mobile.decrypt(identity)}}"
+        },
+        "meta": [
+          {
+            "name": "userId",
+            "type": "number"
+          },
+          {
+            "name": "fName",
+            "type": "text"
+          },
+          {
+            "name": "lName",
+            "type": "text"
+          },
+          {
+            "name": "joinDate",
+            "type": "date"
+          },
+          {
+            "name": "email",
+            "type": "text"
+          },
+          {
+            "name": "userName",
+            "type": "text"
+          },
+          {
+            "name": "password",
+            "type": "text"
+          },
+          {
+            "name": "add1",
+            "type": "text"
+          },
+          {
+            "name": "add2",
+            "type": "text"
+          },
+          {
+            "name": "town1",
+            "type": "text"
+          },
+          {
+            "name": "tel",
+            "type": "text"
+          }
+        ],
+        "outputType": "text",
+        "output": true,
+        "disabled": true,
+        "collapsed": true
+      },
+      {
+        "name": "vallTel",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.tel.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true,
+        "collapsed": true
+      }
+    ]
+  }
+}

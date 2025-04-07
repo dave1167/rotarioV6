@@ -1,0 +1,121 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="profile" appConnect="local" components="{dmxBootstrap5Modal:{},dmxNotifications:{},dmxValidator:{}}" -->
+<meta name="ac:route" content="/admin/user/profile">
+<dmx-serverconnect id="scUserDets" url="/api/Users/userDets2"></dmx-serverconnect>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Profile Card -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary bg-opacity-10 py-3">
+                    <h5 class="card-title mb-0">Profile Information</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Server Connection -->
+
+
+                    <!-- Profile Form -->
+                    <form is="dmx-serverconnect-form" id="profileForm" method="post" action="/api/Users/updateUserProfile" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-populate="scUserDets.data.query" dmx-on:success="successModal.show()">
+
+                        <!-- Personal Information Section -->
+                        <div class="mb-4">
+                            <h5 class="text-muted mb-3">Personal Details</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="inp_fName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="inp_fName" name="fName" dmx-bind:value="scUserDets.data.DecFname">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inp_lName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="inp_lName" name="lName" dmx-bind:value="scUserDets.data.DecLname">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Information Section -->
+                        <div class="mb-4">
+                            <h5 class="text-muted mb-3">Contact Information</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="inp_email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="inp_email" name="email" dmx-bind:value="scUserDets.data.DecEmail">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inp_userName" class="form-label">Username</label>
+                                    <input type="text" class="form-control" id="inp_userName" name="userName" dmx-bind:value="scUserDets.data.query.userName">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Address Section -->
+                        <div class="mb-4">
+                            <h5 class="text-muted mb-3">Address Details</h5>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="inp_add1" class="form-label">Address Line 1</label>
+                                    <input type="text" class="form-control" id="inp_add1" name="add1" dmx-bind:value="scUserDets.data.DecAdd1">
+                                </div>
+                                <div class="col-12">
+                                    <label for="inp_add2" class="form-label">Address Line 2</label>
+                                    <input type="text" class="form-control" id="inp_add2" name="add2" dmx-bind:value="scUserDets.data.DecAdd2">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inp_town1" class="form-label">Town</label>
+                                    <input type="text" class="form-control" id="inp_town1" name="town1" dmx-bind:value="scUserDets.data.query.town1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inp_county" class="form-label">County</label>
+                                    <input type="text" class="form-control" id="inp_county" name="county" dmx-bind:value="scUserDets.data.query.county">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inp_postcode" class="form-label">Postcode</label>
+                                    <input type="text" class="form-control" id="inp_postcode" name="postcode" dmx-bind:value="scUserDets.data.DecPostCode">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Phone Numbers Section -->
+                        <div class="mb-4">
+                            <h5 class="text-muted mb-3">Phone Numbers</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="inp_mobile" class="form-label">Mobile Number</label>
+                                    <input class="form-control" id="inp_mobile" name="mobile" dmx-bind:value="scUserDets.data.DecMobile" data-rule-digits="true" data-msg-digits="Please enter a valid number" type="tel">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inp_tel" class="form-label">Landline (Optional)</label>
+                                    <input class="form-control" id="inp_tel" name="tel" dmx-bind:value="scUserDets.data.DecTel">
+                                    <input class="form-control" id="inp_user_id" name="inp_user_id" dmx-bind:value="scUserDets.data.query.userId" type="hidden">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+                            <button type="button" class="btn btn-light" dmx-on:click="profileForm.reset()">Reset</button>
+                            <button type="submit" class="btn btn-primary btn-sm" dmx-bind:disabled="state.executing">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                                <span class="spinner-border spinner-border-sm ms-2" role="status" dmx-show="state.executing"></span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center py-4">
+                <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+                <h5 class="modal-title">Profile Updated</h5>
+                <p class="text-muted mb-0">Your profile information has been successfully updated.</p>
+            </div>
+            <div class="modal-footer border-0 justify-content-center">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>

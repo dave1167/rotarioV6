@@ -1,0 +1,311 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "key"
+      },
+      {
+        "type": "text",
+        "name": "emailEnc"
+      },
+      {
+        "type": "number",
+        "name": "userId"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_users",
+                "column": "fName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_users",
+                "column": "email"
+              },
+              {
+                "table": "tbl_users",
+                "column": "userName"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "add1"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "add2"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "town1"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "town2"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "county"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "postcode"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "mobile"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "tel"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_users"
+            },
+            "primary": "userId",
+            "joins": [
+              {
+                "table": "tbl_user_dets",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_user_dets",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_users",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "usrDetsId"
+              }
+            ],
+            "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`userId`, `tbl_users`.`email`, `tbl_users`.`userName`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`town2`, `tbl_user_dets`.`county`, `tbl_user_dets`.`postcode`, `tbl_user_dets`.`mobile`, `tbl_user_dets`.`tel` from `tbl_users` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_users.userId",
+                  "field": "tbl_users.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "fName"
+          },
+          {
+            "type": "text",
+            "name": "lName"
+          },
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          },
+          {
+            "type": "text",
+            "name": "userName"
+          },
+          {
+            "type": "text",
+            "name": "add1"
+          },
+          {
+            "type": "text",
+            "name": "add2"
+          },
+          {
+            "type": "text",
+            "name": "town1"
+          },
+          {
+            "type": "text",
+            "name": "town2"
+          },
+          {
+            "type": "text",
+            "name": "county"
+          },
+          {
+            "type": "text",
+            "name": "postcode"
+          },
+          {
+            "type": "text",
+            "name": "mobile"
+          },
+          {
+            "type": "text",
+            "name": "tel"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "DecFname",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.fName.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "DecLname",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.lName.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "DecEmail",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.email.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "DecAdd1",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.add1.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "DecAdd2",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.add2.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "DecPostCode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.postcode.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "DecMobile",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.mobile.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "DecTel",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.tel.decrypt(identity)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "sec",
+  "module": "auth",
+  "action": "provider",
+  "options": {
+    "secret": "1KuAGluAhju5ipl",
+    "provider": "Database",
+    "connection": "db",
+    "passwordVerify": true,
+    "users": {
+      "table": "tbl_users",
+      "identity": "userId",
+      "username": "userName",
+      "password": "password"
+    },
+    "permissions": {
+      "SuperAdmin": {
+        "table": "tbl_user_tenant",
+        "identity": "userId",
+        "conditions": [
+          {
+            "column": "roleId",
+            "operator": "=",
+            "value": "1"
+          }
+        ]
+      },
+      "All Users": {
+        "table": "tbl_user_tenant",
+        "identity": "userId",
+        "conditions": [
+          {
+            "column": "roleId",
+            "operator": ">",
+            "value": "0"
+          }
+        ]
+      }
+    }
+  },
+  "meta": [
+    {
+      "name": "identity",
+      "type": "text"
+    }
+  ]
+}

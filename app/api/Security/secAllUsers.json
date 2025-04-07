@@ -1,0 +1,13 @@
+{
+  "name": "",
+  "module": "auth",
+  "action": "restrict",
+  "options": {
+    "provider": "sec",
+    "permissions": [
+      "All Users"
+    ],
+    "loginUrl": "/login",
+    "forbiddenUrl": "/unauthorised"
+  }
+}

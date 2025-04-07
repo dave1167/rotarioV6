@@ -1,0 +1,18 @@
+{
+  "dashboard.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "index.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "login.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  },
+  "unauthorised.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  }
+}

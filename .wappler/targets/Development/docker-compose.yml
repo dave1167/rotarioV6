@@ -1,0 +1,49 @@
+services:
+  db:
+    image: 'mysql:8.4'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'QcR51mg8'
+      MYSQL_DATABASE: 'rotario_v6'
+      MYSQL_USER: 'db_user'
+      MYSQL_PASSWORD: 'dGIU3gXi'
+    volumes:
+      - './db_init:/docker-entrypoint-initdb.d'
+    ports:
+      - '9906:3306'
+    logging:
+      options:
+        max-file: '5'
+        max-size: '10m'
+    restart: 'always'
+  web:
+    ports:
+      - '8100:3000'
+    depends_on:
+      - 'db'
+    logging:
+      options:
+        max-file: '5'
+        max-size: '10m'
+    volumes:
+      - '../../../app:/opt/node_app/app'
+      - '../../../lib:/opt/node_app/lib'
+      - '../../../views:/opt/node_app/views'
+      - '../../../public:/opt/node_app/public'
+      - '../../../extensions:/opt/node_app/extensions'
+      - '../../../db:/opt/node_app/db'
+      - '../../../certs:/opt/node_app/certs'
+      - '../../../public/upload:/opt/node_app/public/upload:rw'
+    build:
+      context: '../../../'
+      dockerfile: '.wappler/targets/Development/web/Dockerfile'
+    restart: 'always'
+  phpmyadmin:
+    image: 'phpmyadmin'
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: 'db'
+    depends_on:
+      - 'db'
+volumes:
+  db-data: ~

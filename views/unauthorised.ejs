@@ -1,0 +1,36 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="unauthorised" appConnect="local" -->
+<meta name="ac:route" content="/unauthorised">
+
+<div class="container min-vh-100 d-flex align-items-center justify-content-center py-5">
+    <div class="text-center">
+        <!-- Error Icon -->
+        <div class="display-1 text-danger mb-4">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+
+        <!-- Error Code -->
+        <h1 class="display-4 fw-bold text-body mb-4">401 Unauthorized</h1>
+
+        <!-- Error Message -->
+        <div class="col-lg-6 mx-auto">
+            <p class="lead mb-4">
+                Sorry, you don't have permission to access this page. This could be because:
+            </p>
+            <ul class="list-unstyled text-muted">
+                <li><i class="fas fa-times-circle me-2"></i>Your account lacks the necessary privileges</li>
+                <li><i class="fas fa-times-circle me-2"></i>You need to sign in with a different account</li>
+                <li><i class="fas fa-times-circle me-2"></i>The requested resource requires additional authorization</li>
+            </ul>
+
+            <!-- Action Buttons -->
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-5">
+                <button type="button" class="btn btn-primary px-4" onclick="history.back()">
+                    <i class="fas fa-arrow-left me-2"></i>Go Back
+                </button>
+                <a href="/" class="btn btn-outline-secondary px-4">
+                    <i class="fas fa-home me-2"></i>Home
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

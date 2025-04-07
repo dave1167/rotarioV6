@@ -1,0 +1,32 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "page": "index",
+      "routeType": "page",
+      "layout": "main"
+    },
+    {
+      "path": "/login",
+      "page": "login",
+      "layout": "main"
+    },
+    {
+      "path": "/admin/dashboard/dashboard",
+      "page": "admin/dashboard/dashboard",
+      "layout": "admin",
+      "exec": "/api/Security/secAuthSupAd"
+    },
+    {
+      "path": "/unauthorised",
+      "page": "unauthorised",
+      "layout": "main"
+    },
+    {
+      "path": "/admin/user/profile",
+      "page": "admin/user/profile",
+      "layout": "admin",
+      "exec": ""
+    }
+  ]
+}

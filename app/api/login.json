@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "login1"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "email",
+        "options": {
+          "rules": {
+            "core:email": {
+              "message": "Please enter a valid email address"
+            }
+          }
+        },
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "fieldName": "password",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Password is required"
+            },
+            "core:minlength": {
+              "param": "6",
+              "message": "Password must be at least 6 characters"
+            }
+          }
+        },
+        "name": "password"
+      },
+      {
+        "type": "text",
+        "fieldName": "remember",
+        "name": "remember"
+      },
+      {
+        "type": "text",
+        "fieldName": "username",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Username is required"
+            },
+            "core:minlength": {
+              "param": "3",
+              "message": "Username must be at least 3 characters"
+            },
+            "core:alphanumeric": {
+              "message": "Username can only contain letters, numbers and underscores"
+            }
+          }
+        },
+        "name": "username"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "identity",
+      "module": "auth",
+      "action": "login",
+      "options": {
+        "provider": "sec"
+      },
+      "output": true,
+      "meta": []
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "profile.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "profile2.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  }
+}
