@@ -65,6 +65,20 @@
       background-color: var(--bs-primary);
     }
 
+    /* Submenu styles */
+    #sidebar .collapse .nav-link {
+      padding-left: 2.5rem;
+      font-size: 0.9rem;
+    }
+
+    #sidebar .nav-link[aria-expanded="true"] .fa-angle-down {
+      transform: rotate(180deg);
+    }
+
+    #sidebar .fa-angle-down {
+      transition: transform 0.2s ease-in-out;
+    }
+
     /* Container width control */
     .container-fluid {
       padding-left: 1rem;
@@ -177,9 +191,22 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white px-3 py-2" href="/admin/users/user_list">
-            <i class="fas fa-users me-2"></i> Users
+          <a class="nav-link text-white px-3 py-2 d-flex justify-content-between align-items-center" href="#userSubmenu" data-bs-toggle="collapse" aria-expanded="false">
+            <span><i class="fas fa-users me-2"></i> Users</span>
+            <i class="fas fa-angle-down"></i>
           </a>
+          <ul class="nav collapse flex-column" id="userSubmenu" style="padding-left: 1rem;">
+            <li class="nav-item">
+              <a class="nav-link text-white px-3 py-2" href="/admin/users/user_list">
+                <i class="fas fa-list me-2"></i> User List
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white px-3 py-2" href="/admin/user/register_new_vol">
+                <i class="fas fa-user-plus me-2"></i> Add New User
+              </a>
+            </li>
+          </ul>
         </li>
         <li class="nav-item">
           <a class="nav-link text-white px-3 py-2" href="/admin/settings">

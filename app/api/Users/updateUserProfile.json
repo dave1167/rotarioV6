@@ -225,6 +225,14 @@
         "meta": []
       },
       {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 100
+        }
+      },
+      {
         "name": "update",
         "module": "dbupdater",
         "action": "update",
@@ -241,15 +249,9 @@
               },
               {
                 "table": "tbl_users",
-                "column": "password",
-                "type": "text",
-                "value": "{{$_POST.password}}"
-              },
-              {
-                "table": "tbl_users",
                 "column": "fName",
                 "type": "text",
-                "value": "{{$_POST.fName}}"
+                "value": "{{$_POST.fName.encrypt(identity)}}"
               },
               {
                 "table": "tbl_users",
@@ -285,13 +287,7 @@
                 "table": "tbl_users",
                 "column": "key",
                 "type": "text",
-                "value": "{{TIMESTAMP.md5('Pg45Ty')}}"
-              },
-              {
-                "table": "tbl_users",
-                "column": "emailEnc",
-                "type": "text",
-                "value": "{{$_POST.emailEnc}}"
+                "value": "{{TIMESTAMP.md5('Pg45Ty').trunc(10, true, ' ').trim()}}"
               }
             ],
             "table": "tbl_users",
@@ -314,7 +310,7 @@
               "valid": true
             },
             "returning": "userId",
-            "query": "update `tbl_users` set `email` = ?, `password` = ?, `fName` = ?, `lName` = ?, `joinDate` = ?, `dateModified` = ?, `modifiedBy` = ?, `userName` = ?, `key` = ?, `emailEnc` = ? where `userId` = ?",
+            "query": "update `tbl_users` set `email` = ?, `fName` = ?, `lName` = ?, `joinDate` = ?, `dateModified` = ?, `modifiedBy` = ?, `userName` = ?, `key` = ? where `userId` = ?",
             "params": [
               {
                 "name": ":P1",
@@ -325,61 +321,49 @@
               {
                 "name": ":P2",
                 "type": "expression",
-                "value": "{{$_POST.password}}",
+                "value": "{{$_POST.fName.encrypt(identity)}}",
                 "test": ""
               },
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.fName}}",
+                "value": "{{$_POST.lName.encrypt(identity)}}",
                 "test": ""
               },
               {
                 "name": ":P4",
                 "type": "expression",
-                "value": "{{$_POST.lName.encrypt(identity)}}",
+                "value": "{{$_POST.joinDate}}",
                 "test": ""
               },
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{$_POST.joinDate}}",
+                "value": "{{$_POST.dateModified}}",
                 "test": ""
               },
               {
                 "name": ":P6",
                 "type": "expression",
-                "value": "{{$_POST.dateModified}}",
+                "value": "{{$_POST.modifiedBy}}",
                 "test": ""
               },
               {
                 "name": ":P7",
                 "type": "expression",
-                "value": "{{$_POST.modifiedBy}}",
+                "value": "{{$_POST.userName}}",
                 "test": ""
               },
               {
                 "name": ":P8",
                 "type": "expression",
-                "value": "{{$_POST.userName}}",
-                "test": ""
-              },
-              {
-                "name": ":P9",
-                "type": "expression",
-                "value": "{{TIMESTAMP.md5('Pg45Ty')}}",
-                "test": ""
-              },
-              {
-                "name": ":P10",
-                "type": "expression",
-                "value": "{{$_POST.emailEnc}}",
+                "value": "{{TIMESTAMP.md5('Pg45Ty').trunc(10, true, ' ').trim()}}",
                 "test": ""
               },
               {
                 "operator": "equal",
                 "type": "expression",
-                "name": ":P11",
+                "name": ":P9",
                 "value": "{{identity}}",
                 "test": ""
               }
@@ -451,12 +435,6 @@
                 "column": "tel",
                 "type": "text",
                 "value": "{{$_POST.tel.encrypt(identity)}}"
-              },
-              {
-                "table": "tbl_user_dets",
-                "column": "userId",
-                "type": "number",
-                "value": "{{$_POST.userId}}"
               }
             ],
             "table": "tbl_user_dets",
@@ -479,7 +457,7 @@
               "valid": true
             },
             "returning": "usrDetsId",
-            "query": "update `tbl_user_dets` set `add1` = ?, `add2` = ?, `town1` = ?, `town2` = ?, `county` = ?, `postcode` = ?, `mobile` = ?, `tel` = ?, `userId` = ? where `usrDetsId` = ?",
+            "query": "update `tbl_user_dets` set `add1` = ?, `add2` = ?, `town1` = ?, `town2` = ?, `county` = ?, `postcode` = ?, `mobile` = ?, `tel` = ? where `usrDetsId` = ?",
             "params": [
               {
                 "name": ":P1",
@@ -530,15 +508,9 @@
                 "test": ""
               },
               {
-                "name": ":P9",
-                "type": "expression",
-                "value": "{{$_POST.userId}}",
-                "test": ""
-              },
-              {
                 "operator": "equal",
                 "type": "expression",
-                "name": ":P10",
+                "name": ":P9",
                 "value": "{{identity}}",
                 "test": ""
               }
@@ -551,8 +523,7 @@
             "type": "number"
           }
         ],
-        "output": true,
-        "disabled": true
+        "output": true
       }
     ]
   }

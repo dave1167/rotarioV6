@@ -11,12 +11,7 @@
   "schema": {
     "tables": {
       "tbl_roles": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "columns": {
           "roleId": {
             "db": {
@@ -36,12 +31,7 @@
         }
       },
       "tbl_rotas": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "columns": {
           "rotaId": {
             "db": {
@@ -97,12 +87,7 @@
         }
       },
       "tbl_tenants": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "columns": {
           "tenantId": {
             "db": {
@@ -170,12 +155,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
+        "db": {}
       },
       "tbl_user_dets": {
         "columns": {
@@ -263,12 +243,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "parent": "tbl_users"
       },
       "tbl_users": {
@@ -345,7 +320,7 @@
           "key": {
             "db": {
               "type": "string",
-              "maxLength": 8,
+              "maxLength": 255,
               "primary": false,
               "nullable": true
             }

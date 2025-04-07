@@ -1,0 +1,60 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="register_new_vol" appConnect="local" components="{dmxValidator:{}}" -->
+<meta name="ac:route" content="/admin/user/register_new_vol">
+
+<div class="container-fluid p-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Register New Volunteer</h5>
+                </div>
+                <div class="card-body">
+                    <form id="registration_form" method="post" is="dmx-serverconnect-form" action="/api/Users/createNewVol">
+                        <!-- First Name -->
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="first_name" name="fName" placeholder="First Name" required data-rule-lettersonly="true" data-msg-required="Please enter your first name" data-msg-lettersonly="Only letters are allowed">
+                            <label for="first_name">First Name</label>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="last_name" name="lName" placeholder="Last Name" required data-rule-lettersonly="true" data-msg-required="Please enter your last name" data-msg-lettersonly="Only letters are allowed">
+                            <label for="last_name">Last Name</label>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Email" required data-rule-email="true" data-msg-required="Please enter your email" data-msg-email="Please enter a valid email address">
+                            <label for="email">Email</label>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Username" required data-rule-alphanumeric="true" minlength="4" data-msg-required="Please enter a username" data-msg-alphanumeric="Letters, numbers, and underscores only" data-msg-minlength="Username must be at least 4 characters">
+                            <label for="username">Username</label>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Password" required minlength="8" data-msg-required="Please enter a password" data-msg-minlength="Password must be at least 8 characters long">
+                            <label for="password">Password</label>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required data-rule-equalto="#password" data-msg-required="Please confirm your password" data-msg-equalto="Passwords must match">
+                            <label for="confirm_password">Confirm Password</label>
+                        </div>
+
+                        <!-- Form Buttons -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-user-plus me-2"></i>Register User
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

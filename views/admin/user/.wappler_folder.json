@@ -6,5 +6,9 @@
   "profile2.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "register_new_vol.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

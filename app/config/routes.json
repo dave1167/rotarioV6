@@ -26,7 +26,12 @@
       "path": "/admin/user/profile",
       "page": "admin/user/profile",
       "layout": "admin",
-      "exec": ""
+      "exec": "/api/Security/secAllUsers"
+    },
+    {
+      "path": "/admin/user/register_new_vol",
+      "page": "admin/user/register_new_vol",
+      "layout": "admin"
     }
   ]
 }
