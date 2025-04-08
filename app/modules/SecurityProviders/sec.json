@@ -19,7 +19,7 @@
         "identity": "userId",
         "conditions": [
           {
-            "column": "roleId",
+            "column": "role",
             "operator": "=",
             "value": "1"
           }
@@ -30,9 +30,20 @@
         "identity": "userId",
         "conditions": [
           {
-            "column": "roleId",
+            "column": "role",
             "operator": ">",
             "value": "0"
+          }
+        ]
+      },
+      "Adminstrator": {
+        "table": "tbl_user_tenant",
+        "identity": "userId",
+        "conditions": [
+          {
+            "column": "role",
+            "operator": "=",
+            "value": "2"
           }
         ]
       }

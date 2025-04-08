@@ -62,15 +62,23 @@
     ]
   },
   "exec": {
-    "steps": {
-      "name": "identity",
-      "module": "auth",
-      "action": "login",
-      "options": {
-        "provider": "sec"
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "login",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
       },
-      "output": true,
-      "meta": []
-    }
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {}
+      }
+    ]
   }
 }

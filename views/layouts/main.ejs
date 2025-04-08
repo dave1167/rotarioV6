@@ -1,50 +1,57 @@
 <!doctype html>
 <html>
-<head>
-<base href="/">
-<script src="/dmxAppConnect/dmxAppConnect.js"></script>
-<meta charset="UTF-8">
-<title>Rotario</title>
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link rel="stylesheet" href="/bootstrap/5/css/bootstrap.min.css" />
-<link rel="stylesheet" href="/css/style.css" />
-<script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
-<script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
-<link rel="stylesheet" href="/dmxAppConnect/dmxValidator/dmxValidator.css" />
-<script src="/dmxAppConnect/dmxValidator/dmxValidator.js" defer></script>
-<script src="/dmxAppConnect/dmxLazyLoad/dmxLazyLoad.js" defer></script>
-<script src="/dmxAppConnect/dmxLazyLoad/lazysizes.min.js" defer></script>
-<script src="/dmxAppConnect/dmxBootstrap5Alert/dmxBootstrap5Alert.js" defer></script>
-<link rel="stylesheet" href="/dmxAppConnect/dmxNotifications/dmxNotifications.css" />
-<script src="/dmxAppConnect/dmxNotifications/dmxNotifications.js" defer></script>
-<script src="/dmxAppConnect/dmxBrowser/dmxBrowser.js" defer></script>
+<head>
+  <base href="/">
+  <script src="/dmxAppConnect/dmxAppConnect.js"></script>
+  <meta charset="UTF-8">
+  <title>Rotario</title>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/bootstrap/5/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="/dmxAppConnect/dmxRouting/dmxRouting.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxValidator/dmxValidator.css" />
+  <script src="/dmxAppConnect/dmxValidator/dmxValidator.js" defer></script>
+  <script src="/dmxAppConnect/dmxLazyLoad/dmxLazyLoad.js" defer></script>
+  <script src="/dmxAppConnect/dmxLazyLoad/lazysizes.min.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootstrap5Alert/dmxBootstrap5Alert.js" defer></script>
+  <link rel="stylesheet" href="/dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+  <script src="/dmxAppConnect/dmxNotifications/dmxNotifications.js" defer></script>
+  <script src="/dmxAppConnect/dmxBrowser/dmxBrowser.js" defer></script>
+  <script src="/dmxAppConnect/dmxStateManagement/dmxStateManagement.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootbox5/bootstrap-modbox.min.js" defer></script>
+  <script src="/dmxAppConnect/dmxBootbox5/dmxBootbox5.js" defer></script>
 </head>
+
 <body is="dmx-app" id="main">
-<dmx-notifications id="notifies1"></dmx-notifications>
-<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <img src="/assets/images/logo.png" alt="Rotario Logo" height="40">
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPublic" aria-controls="navbarPublic" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarPublic">
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/about">About</a>
-        <a class="nav-link" href="/contact">Contact</a>
-        <a class="nav-link" href="/register">Register</a>
-        <a class="btn btn-primary ms-2" href="/login">Login</a>
+  <dmx-notifications id="notifies1"></dmx-notifications>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="/assets/images/logo.png" alt="Rotario Logo" height="40">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarPublic" aria-controls="navbarPublic" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarPublic">
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link" href="/about">About</a>
+          <a class="nav-link" href="/contact">Contact</a>
+          <a class="nav-link" href="/register">Register</a>
+          <a class="btn btn-primary ms-2" href="/login">Login</a>
+        </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 
-<main is="dmx-view" id="content">
-  <%- await include(content, locals); %>
-</main>
-<script src="/bootstrap/5/js/bootstrap.bundle.min.js"></script>
+  <main is="dmx-view" id="content">
+    <%- await include(content, locals); %>
+  </main>
+  <script src="/bootstrap/5/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

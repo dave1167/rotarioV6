@@ -1,8 +1,23 @@
-{
-  "name": "",
-  "module": "auth",
-  "action": "logout",
-  "options": {
-    "provider": "sec"
+[
+  {
+    "name": "userId",
+    "module": "core",
+    "action": "removesession",
+    "options": {}
+  },
+  {
+    "name": "tenantId_copy",
+    "module": "core",
+    "action": "removesession",
+    "options": {},
+    "collapsed": true
+  },
+  {
+    "name": "",
+    "module": "auth",
+    "action": "logout",
+    "options": {
+      "provider": "sec"
+    }
   }
-}
+]

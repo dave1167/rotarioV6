@@ -1,4 +1,41 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="login" appConnect="local" components="{dmxBootstrap5Alert:{},dmxValidator:{},dmxNotifications:{},dmxBrowser:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="login" appConnect="local" components="{dmxBootstrap5Alert:{},dmxValidator:{},dmxNotifications:{},dmxBrowser:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxBootbox5:{}}" -->
+<dmx-serverconnect id="scGetTentByUsr" url="/api/Tenants/getTentByUser" dmx-param:userid="login1.data.identity"></dmx-serverconnect>
+<dmx-serverconnect id="scGetTenant" url="/api/Tenants/getTenant"></dmx-serverconnect><dmx-serverconnect id="scTenantCount" url="/api/Tenants/tenantCount"></dmx-serverconnect><dmx-session-manager id="session1"></dmx-session-manager>
+<div class="modal" id="modMultiTenant" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Select Organisation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="tenant_select" is="dmx-serverconnect-form" method="post" action="/api/Tenants/selectTenant" dmx-on:success="session1.set('tenantId', tenant_select.data.tenantId); modMultiTenant.hide(); browser1.goto('/admin/dashboard/dashboard')">
+                <div class="modal-body">
+                    <div class="form-floating mb-3">
+                        <select id="tenant" name="tenantId" class="form-select form-select-lg" dmx-bind:options="scGetTentByUsr.data.query" optiontext="tenantDesc" optionvalue="tenId+' '">
+                            <div is="dmx-repeat" id="tenant_list" dmx-bind:repeat="scGetTenant.data.tenants">
+                            </div>
+                            <option value="">Select an organisation</option>
+                        </select>
+                        <label for="tenant" class="text-secondary col-form-label-sm">Organisation</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" dmx-on:click="session1.set('tenantId',tenant.value);browser1.goto('/admin/dashboard/dashboard')">
+                        <span dmx-show="!tenant_select.state.executing">Continue</span>
+                        <span dmx-show="tenant_select.state.executing" class="d-inline-flex align-items-center">
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Processing...
+                        </span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 <div is="dmx-browser" id="browser1"></div>
 <dmx-notifications id="notifies1"></dmx-notifications>
 <meta name="ac:route" content="/login">
@@ -14,7 +51,7 @@
                 </div>
 
                 <!-- Login Form -->
-                <form id="login1" is="dmx-serverconnect-form" method="post" action="/api/login" dmx-on:success="browser1.goto('/admin/dashboard/dashboard')">
+                <form id="login1" is="dmx-serverconnect-form" method="post" action="/api/login" dmx-on:success="run([{run:{outputType:'text',action:`scTenantCount.load({})`}},{'bootbox.alert':{message:`\'ten count is \'+scTenantCount.data.query`}},{wait:{delay:200}},{condition:{outputType:'boolean',if:`scTenantCount.data.query[0].TenantCount&gt;1`,then:{steps:[{alert:{message:'oh yes'}},{run:{outputType:'text',action:`session1.set(\'tenantId\',modMultiTenant.tenant_select.tenant.value)`}},{run:{outputType:'text',action:`session1.set(\'userId\',login1.data.identity)`}},{wait:{delay:300}},{run:{name:'showModal',outputType:'text',action:`modMultiTenant.show()`}}]},else:{steps:[{run:{outputType:'text',action:`session1.set(\'tenantId\',scGetTenant.data.query.tenantId)`}},{alert:{message:`\'count=\'+scTenantCount.data.query[0].TenantCount+\'   varcount=\'+scTenantCount.data.varcount`}},{run:{outputType:'text',action:`session1.set(\'userId\',scGetTenant.data.identity)`}},{run:{outputType:'text',disabled:true,action:`scGetTentByUsr.load({})`}},{run:{outputType:'text',action:`browser1.goto(\'/admin/dashboard/dashboard\')`}}]}}}])" dmx-on:error="notifies1.danger('ooo nooo')">
                     <!-- Username Field -->
                     <div class="form-floating mb-3">
                         <input type="text" id="inp_username" name="username" class="form-control" placeholder="Username" required data-rule-alphanumeric="true" minlength="3" data-msg-required="Username is required" data-msg-alphanumeric="Username can only contain letters, numbers and underscores" data-msg-minlength="Username must be at least 3 characters">
