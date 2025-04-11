@@ -1,0 +1,37 @@
+[
+  {
+    "name": "tntId",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{$_SESSION.Ses_Ten_Id}}"
+    },
+    "meta": [],
+    "outputType": "text",
+    "output": true
+  },
+  {
+    "name": "roleId",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{$_SESSION.Ses_Role_Id}}"
+    },
+    "meta": [],
+    "outputType": "number",
+    "collapsed": true,
+    "output": true
+  },
+  {
+    "name": "userId",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{$_SESSION.Ses_User_Id}}"
+    },
+    "meta": [],
+    "outputType": "number",
+    "collapsed": true,
+    "output": true
+  }
+]

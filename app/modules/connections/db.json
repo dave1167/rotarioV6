@@ -10,7 +10,6 @@
       "user": "db_user",
       "password": "dGIU3gXi",
       "database": "rotario_v6"
-    },
-    "tz": "local"
+    }
   }
 }

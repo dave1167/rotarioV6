@@ -53,6 +53,10 @@
               {
                 "table": "tbl_tenants",
                 "column": "tenId"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "role"
               }
             ],
             "params": [
@@ -60,7 +64,7 @@
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{$_GET.userid}}",
+                "value": "{{$_SESSION.Ses_User_Id}}",
                 "test": "1"
               }
             ],
@@ -91,7 +95,8 @@
                 "primary": "tenId"
               }
             ],
-            "query": "select `tbl_tenants`.`tenantDesc`, `tbl_user_tenant`.`userId`, `tbl_tenants`.`tenId` from `tbl_user_tenant` inner join `tbl_tenants` on `tbl_tenants`.`tenId` = `tbl_user_tenant`.`tenantId` where `tbl_user_tenant`.`userId` = ?",
+            "query": "select `tbl_tenants`.`tenantDesc`, `tbl_user_tenant`.`userId`, `tbl_tenants`.`tenId`, `tbl_user_tenant`.`role` from `tbl_user_tenant` inner join `tbl_tenants` on `tbl_tenants`.`tenId` = `tbl_user_tenant`.`tenantId` where `tbl_user_tenant`.`userId` = ?",
+            "orders": [],
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -100,7 +105,7 @@
                   "field": "tbl_user_tenant.userId",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{$_GET.userid}}",
+                  "value": "{{$_SESSION.Ses_User_Id}}",
                   "data": {
                     "table": "tbl_user_tenant",
                     "column": "userId",
@@ -117,8 +122,7 @@
               ],
               "conditional": null,
               "valid": true
-            },
-            "orders": []
+            }
           }
         },
         "output": true,
@@ -134,6 +138,10 @@
           {
             "type": "text",
             "name": "tenId"
+          },
+          {
+            "type": "number",
+            "name": "role"
           }
         ],
         "outputType": "array"

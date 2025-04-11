@@ -10,5 +10,21 @@
   "register_new_vol.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "CreateUser.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "addNewUser.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "addNewUser2.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "test.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

@@ -15,7 +15,7 @@
               "message": "Please enter your first name"
             },
             "core:lettersonly": {
-              "message": "Please use letters only"
+              "message": "Please enter only letters"
             }
           }
         },
@@ -31,7 +31,7 @@
               "message": "Please enter your last name"
             },
             "core:lettersonly": {
-              "message": "Please use letters only"
+              "message": "Please enter only letters"
             }
           }
         },
@@ -60,14 +60,42 @@
           "rules": {
             "core:required": {
               "param": "",
-              "message": "Please enter a username"
+              "message": "Please enter your username"
             },
-            "core:alphanumeric": {
-              "message": "Letters and numbers only please"
+            "core:nowhitespace": {
+              "message": "Username cannot contain spaces"
             }
           }
         },
         "name": "userName"
+      },
+      {
+        "type": "text",
+        "fieldName": "mobile",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your mobile number"
+            },
+            "core:digits": {
+              "message": "Please enter only numbers"
+            }
+          }
+        },
+        "name": "mobile"
+      },
+      {
+        "type": "text",
+        "fieldName": "tel",
+        "options": {
+          "rules": {
+            "core:digits": {
+              "message": "Please enter only numbers"
+            }
+          }
+        },
+        "name": "tel"
       },
       {
         "type": "text",
@@ -89,16 +117,19 @@
       },
       {
         "type": "text",
-        "fieldName": "town1",
+        "fieldName": "town",
         "options": {
           "rules": {
             "core:required": {
               "param": "",
               "message": "Please enter your town"
+            },
+            "core:lettersonly": {
+              "message": "Please enter only letters"
             }
           }
         },
-        "name": "town1"
+        "name": "town"
       },
       {
         "type": "text",
@@ -108,6 +139,9 @@
             "core:required": {
               "param": "",
               "message": "Please enter your county"
+            },
+            "core:lettersonly": {
+              "message": "Please enter only letters"
             }
           }
         },
@@ -121,6 +155,10 @@
             "core:required": {
               "param": "",
               "message": "Please enter your postcode"
+            },
+            "core:pattern": {
+              "param": "^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$",
+              "message": "Please enter a valid UK postcode"
             }
           }
         },
@@ -128,81 +166,28 @@
       },
       {
         "type": "text",
-        "fieldName": "mobile",
-        "options": {
-          "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Please enter your mobile number"
-            },
-            "core:digits": {
-              "message": "Please enter a valid number"
-            }
-          }
-        },
-        "name": "mobile"
-      },
-      {
-        "type": "text",
-        "fieldName": "tel",
-        "options": {
-          "rules": {
-            "core:digits": {
-              "message": "Please enter a valid number"
-            }
-          }
-        },
-        "name": "tel"
-      },
-      {
-        "type": "number",
         "fieldName": "inp_user_id",
-        "options": {
-          "rules": {
-            "core:number": {}
-          }
-        },
         "name": "inp_user_id"
       },
       {
         "type": "text",
-        "name": "password"
-      },
-      {
-        "type": "date",
-        "name": "joinDate"
-      },
-      {
-        "type": "date",
-        "name": "dateModified"
-      },
-      {
-        "type": "number",
-        "name": "modifiedBy"
-      },
-      {
-        "type": "number",
-        "name": "userId"
-      },
-      {
-        "type": "text",
-        "name": "hashAuth"
-      },
-      {
-        "type": "text",
-        "name": "fName''"
+        "fieldName": "town1",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter your town"
+            },
+            "core:lettersonly": {
+              "message": "Please enter only letters"
+            }
+          }
+        },
+        "name": "town1"
       },
       {
         "type": "text",
         "name": "town2"
-      },
-      {
-        "type": "number",
-        "name": "usrDetsId"
-      },
-      {
-        "type": "text",
-        "name": "emailEnc"
       }
     ]
   },
@@ -225,6 +210,95 @@
         "meta": []
       },
       {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_ek",
+                "column": "key"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_users"
+            },
+            "primary": "userId",
+            "joins": [
+              {
+                "table": "tbl_ek",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_ek",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_users",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "ekId"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_users.userId",
+                  "field": "tbl_users.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tbl_ek`.`key` from `tbl_users` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "key"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
+      },
+      {
         "name": "wait",
         "module": "core",
         "action": "wait",
@@ -245,19 +319,19 @@
                 "table": "tbl_users",
                 "column": "email",
                 "type": "text",
-                "value": "{{$_POST.email.encrypt(identity)}}"
+                "value": "{{$_POST.email.encrypt(query.key)}}"
               },
               {
                 "table": "tbl_users",
                 "column": "fName",
                 "type": "text",
-                "value": "{{$_POST.fName.encrypt(identity)}}"
+                "value": "{{$_POST.fName.encrypt(query.key)}}"
               },
               {
                 "table": "tbl_users",
                 "column": "lName",
                 "type": "text",
-                "value": "{{$_POST.lName.encrypt(identity)}}"
+                "value": "{{$_POST.lName.encrypt(query.key)}}"
               },
               {
                 "table": "tbl_users",
@@ -276,18 +350,6 @@
                 "column": "modifiedBy",
                 "type": "number",
                 "value": "{{$_POST.modifiedBy}}"
-              },
-              {
-                "table": "tbl_users",
-                "column": "userName",
-                "type": "text",
-                "value": "{{$_POST.userName}}"
-              },
-              {
-                "table": "tbl_users",
-                "column": "key",
-                "type": "text",
-                "value": "{{TIMESTAMP.md5('Pg45Ty').trunc(10, true, ' ').trim()}}"
               }
             ],
             "table": "tbl_users",
@@ -310,24 +372,24 @@
               "valid": true
             },
             "returning": "userId",
-            "query": "update `tbl_users` set `email` = ?, `fName` = ?, `lName` = ?, `joinDate` = ?, `dateModified` = ?, `modifiedBy` = ?, `userName` = ?, `key` = ? where `userId` = ?",
+            "query": "update `tbl_users` set `email` = ?, `fName` = ?, `lName` = ?, `joinDate` = ?, `dateModified` = ?, `modifiedBy` = ? where `userId` = ?",
             "params": [
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{$_POST.email.encrypt(identity)}}",
+                "value": "{{$_POST.email.encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P2",
                 "type": "expression",
-                "value": "{{$_POST.fName.encrypt(identity)}}",
+                "value": "{{$_POST.fName.encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.lName.encrypt(identity)}}",
+                "value": "{{$_POST.lName.encrypt(query.key)}}",
                 "test": ""
               },
               {
@@ -349,21 +411,9 @@
                 "test": ""
               },
               {
-                "name": ":P7",
-                "type": "expression",
-                "value": "{{$_POST.userName}}",
-                "test": ""
-              },
-              {
-                "name": ":P8",
-                "type": "expression",
-                "value": "{{TIMESTAMP.md5('Pg45Ty').trunc(10, true, ' ').trim()}}",
-                "test": ""
-              },
-              {
                 "operator": "equal",
                 "type": "expression",
-                "name": ":P9",
+                "name": ":P7",
                 "value": "{{identity}}",
                 "test": ""
               }
@@ -392,19 +442,19 @@
                 "table": "tbl_user_dets",
                 "column": "add1",
                 "type": "text",
-                "value": "{{$_POST.add1.encrypt(identity)}}"
+                "value": "{{$_POST.add1.encrypt(query.key)}}"
               },
               {
                 "table": "tbl_user_dets",
                 "column": "add2",
                 "type": "text",
-                "value": "{{$_POST.add2.encrypt(identity)}}"
+                "value": "{{$_POST.add2.encrypt(query.key)}}"
               },
               {
                 "table": "tbl_user_dets",
                 "column": "town1",
                 "type": "text",
-                "value": "{{$_POST.town1}}"
+                "value": "{{$_POST.town}}"
               },
               {
                 "table": "tbl_user_dets",
@@ -422,19 +472,19 @@
                 "table": "tbl_user_dets",
                 "column": "postcode",
                 "type": "text",
-                "value": "{{$_POST.postcode.encrypt(identity)}}"
+                "value": "{{$_POST.postcode.encrypt(query.key)}}"
               },
               {
                 "table": "tbl_user_dets",
                 "column": "mobile",
                 "type": "text",
-                "value": "{{$_POST.mobile.encrypt(identity)}}"
+                "value": "{{$_POST.mobile.encrypt(query.key)}}"
               },
               {
                 "table": "tbl_user_dets",
                 "column": "tel",
                 "type": "text",
-                "value": "{{$_POST.tel.encrypt(identity)}}"
+                "value": "{{$_POST.tel.encrypt(query.key)}}"
               }
             ],
             "table": "tbl_user_dets",
@@ -442,13 +492,13 @@
               "condition": "AND",
               "rules": [
                 {
-                  "id": "usrDetsId",
-                  "field": "usrDetsId",
+                  "id": "userId",
+                  "field": "userId",
                   "type": "double",
                   "operator": "equal",
                   "value": "{{identity}}",
                   "data": {
-                    "column": "usrDetsId"
+                    "column": "userId"
                   },
                   "operation": "="
                 }
@@ -457,24 +507,24 @@
               "valid": true
             },
             "returning": "usrDetsId",
-            "query": "update `tbl_user_dets` set `add1` = ?, `add2` = ?, `town1` = ?, `town2` = ?, `county` = ?, `postcode` = ?, `mobile` = ?, `tel` = ? where `usrDetsId` = ?",
+            "query": "update `tbl_user_dets` set `add1` = ?, `add2` = ?, `town1` = ?, `town2` = ?, `county` = ?, `postcode` = ?, `mobile` = ?, `tel` = ? where `userId` = ?",
             "params": [
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{$_POST.add1.encrypt(identity)}}",
+                "value": "{{$_POST.add1.encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P2",
                 "type": "expression",
-                "value": "{{$_POST.add2.encrypt(identity)}}",
+                "value": "{{$_POST.add2.encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.town1}}",
+                "value": "{{$_POST.town}}",
                 "test": ""
               },
               {
@@ -492,19 +542,19 @@
               {
                 "name": ":P6",
                 "type": "expression",
-                "value": "{{$_POST.postcode.encrypt(identity)}}",
+                "value": "{{$_POST.postcode.encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P7",
                 "type": "expression",
-                "value": "{{$_POST.mobile.encrypt(identity)}}",
+                "value": "{{$_POST.mobile.encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P8",
                 "type": "expression",
-                "value": "{{$_POST.tel.encrypt(identity)}}",
+                "value": "{{$_POST.tel.encrypt(query.key)}}",
                 "test": ""
               },
               {
@@ -523,7 +573,8 @@
             "type": "number"
           }
         ],
-        "output": true
+        "output": true,
+        "collapsed": true
       }
     ]
   }

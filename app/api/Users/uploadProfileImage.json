@@ -1,0 +1,212 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/user/profile.ejs",
+      "linkedForm": "profileImageForm"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "user_id",
+        "name": "user_id"
+      },
+      {
+        "type": "file",
+        "fieldName": "profile_image",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please select an image file"
+            },
+            "upload:accept": {
+              "param": "image/*"
+            }
+          }
+        },
+        "name": "profile_image",
+        "sub": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "text",
+            "name": "type"
+          },
+          {
+            "type": "number",
+            "name": "size"
+          },
+          {
+            "type": "text",
+            "name": "error"
+          }
+        ],
+        "outputType": "file"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "password"
+      },
+      {
+        "type": "text",
+        "name": "fName"
+      },
+      {
+        "type": "text",
+        "name": "lName"
+      },
+      {
+        "type": "date",
+        "name": "joinDate"
+      },
+      {
+        "type": "date",
+        "name": "dateModified"
+      },
+      {
+        "type": "number",
+        "name": "modifiedBy"
+      },
+      {
+        "type": "text",
+        "name": "userName"
+      },
+      {
+        "type": "text",
+        "name": "imageName"
+      },
+      {
+        "type": "number",
+        "name": "userId"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "options": {
+          "comment": "Uploads profile pic"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "upload",
+        "module": "upload",
+        "action": "upload",
+        "options": {
+          "path": "/public/upload/images/profiles",
+          "fields": "{{$_POST.profile_image}}",
+          "replaceSpace": true,
+          "overwrite": true,
+          "template": "vol_Id{{identity}}"
+        },
+        "meta": [
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "path",
+            "type": "text"
+          },
+          {
+            "name": "url",
+            "type": "text"
+          },
+          {
+            "name": "type",
+            "type": "text"
+          },
+          {
+            "name": "size",
+            "type": "text"
+          },
+          {
+            "name": "error",
+            "type": "number"
+          }
+        ],
+        "outputType": "file",
+        "collapsed": true
+      },
+      {
+        "name": "update",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "tbl_users",
+                "column": "imageName",
+                "type": "text",
+                "value": "{{upload.name}}"
+              }
+            ],
+            "table": "tbl_users",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "userId",
+                  "field": "userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "column": "userId"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "userId",
+            "query": "update `tbl_users` set `imageName` = ? where `userId` = ?",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{upload.name}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "collapsed": true
+      }
+    ]
+  }
+}

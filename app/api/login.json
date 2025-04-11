@@ -74,6 +74,14 @@
         "meta": []
       },
       {
+        "name": "Ses_User_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{identity}}"
+        }
+      },
+      {
         "name": "wait",
         "module": "core",
         "action": "wait",

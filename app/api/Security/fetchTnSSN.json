@@ -1,0 +1,109 @@
+[
+  {
+    "name": "",
+    "options": {
+      "comment": "run this at the start of every session"
+    }
+  },
+  {
+    "name": "query",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "SELECT",
+        "columns": [
+          {
+            "table": "tbl_user_tenant",
+            "column": "tenantId"
+          },
+          {
+            "table": "tbl_user_tenant",
+            "column": "userId"
+          },
+          {
+            "table": "tbl_user_tenant",
+            "column": "role"
+          }
+        ],
+        "params": [
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P1",
+            "value": "{{$_SESSION.Ses_User_Id}}",
+            "test": "1"
+          }
+        ],
+        "table": {
+          "name": "tbl_user_tenant"
+        },
+        "primary": "usrTenId",
+        "joins": [],
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "tbl_user_tenant.userId",
+              "field": "tbl_user_tenant.userId",
+              "type": "double",
+              "operator": "equal",
+              "value": "{{$_SESSION.Ses_User_Id}}",
+              "data": {
+                "table": "tbl_user_tenant",
+                "column": "userId",
+                "type": "number",
+                "columnObj": {
+                  "type": "integer",
+                  "primary": false,
+                  "nullable": true,
+                  "name": "userId"
+                }
+              },
+              "operation": "="
+            }
+          ],
+          "conditional": null,
+          "valid": true
+        },
+        "query": "select `tenantId`, `userId`, `role` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ?"
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "text",
+        "name": "tenantId"
+      },
+      {
+        "type": "number",
+        "name": "userId"
+      },
+      {
+        "type": "number",
+        "name": "role"
+      }
+    ],
+    "outputType": "object"
+  },
+  {
+    "name": "",
+    "module": "core",
+    "action": "condition",
+    "options": {
+      "if": "{{query.tenantId!=$_SESSION.Ses_Ten_Id}}",
+      "then": {
+        "steps": {
+          "name": "",
+          "module": "core",
+          "action": "error",
+          "options": {
+            "message": "error"
+          }
+        }
+      }
+    },
+    "outputType": "boolean"
+  }
+]

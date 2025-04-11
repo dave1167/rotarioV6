@@ -1,121 +1,177 @@
 <!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="profile" appConnect="local" components="{dmxBootstrap5Modal:{},dmxNotifications:{},dmxValidator:{}}" -->
+<dmx-serverconnect id="serverconnect1" url="/api/Security/fetchTnSSN"></dmx-serverconnect>
 <meta name="ac:route" content="/admin/user/profile">
 <dmx-serverconnect id="scUserDets" url="/api/Users/userDets2"></dmx-serverconnect>
+
+<!-- Profile Image Modal -->
+<div class="modal fade" id="modProfileImage" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Profile Picture</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form is="dmx-serverconnect-form" id="profileImageForm" method="post" action="/api/Users/uploadProfileImage" dmx-on:success="modProfileImage.hide();scUserDets.load()">
+                    <!-- Current Profile Image Preview -->
+                    <div class="d-flex flex-column align-items-center mb-4">
+                        <img class="rounded-circle border shadow-sm mb-3" dmx-bind:src="scUserDets.data.query.imageName" style="width: 150px; height: 150px; object-fit: cover;" alt="Current Profile Picture">
+                        <small class="text-muted">Current Profile Picture</small>
+                    </div>
+
+                    <!-- File Input Group -->
+                    <div class="mb-3">
+                        <label for="profile_image" class="form-label">Choose New Image</label>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*" required data-msg-required="Please select an image file">
+                        </div>
+                        <div class="form-text">Recommended size: 300x300 pixels</div>
+                    </div>
+
+                    <!-- Hidden User ID -->
+                    <input type="hidden" name="user_id" dmx-bind:value="scUserDets.data.query.userId">
+
+                    <!-- Form Actions -->
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" dmx-bind:disabled="state.executing">
+                            <span dmx-hide="state.executing">Update Picture</span>
+                            <span dmx-show="state.executing" class="d-flex align-items-center gap-2">
+                                <span class="spinner-border spinner-border-sm" role="status"></span>
+                                Updating...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="successModal" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
+                    <p class="mb-0">Your profile has been updated successfully!</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container py-4">
     <div class="row justify-content-center">
-        <div class="col-lg-8">
+        <div class="col-lg-9">
             <!-- Profile Card -->
             <div class="card shadow-sm">
-                <div class="card-header bg-primary bg-opacity-10 py-3">
+                <div class="card-header bg-primary bg-opacity-10 d-flex justify-content-between align-items-center py-3">
                     <h5 class="card-title mb-0">Profile Information</h5>
+                    <button type="button" class="btn btn-primary btn-sm" dmx-on:click="modProfileImage.show()">
+                        <i class="fas fa-camera me-2"></i>Update Profile Picture
+                    </button>
                 </div>
                 <div class="card-body">
-                    <!-- Server Connection -->
+                    <form is="dmx-serverconnect-form" id="profileForm" method="post" action="/api/Users/updateUserProfile" dmx-on:success="successModal.show()">
+                        <!-- Profile Header Section -->
+                        <div class="d-flex flex-column flex-md-row align-items-center gap-4 mb-4">
+                            <!-- Profile Image -->
+                            <div class="position-relative">
+                                <img class="rounded-circle border shadow-sm" dmx-bind:src="'\\upload\\images\\profiles\\'+scUserDets.data.query.imageName+'.jpg'" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Picture">
+                            </div>
 
-
-                    <!-- Profile Form -->
-                    <form is="dmx-serverconnect-form" id="profileForm" method="post" action="/api/Users/updateUserProfile" dmx-generator="bootstrap5" dmx-form-type="horizontal" dmx-populate="scUserDets.data.query" dmx-on:success="successModal.show()">
-
-                        <!-- Personal Information Section -->
-                        <div class="mb-4">
-                            <h5 class="text-muted mb-3">Personal Details</h5>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="inp_fName" class="form-label">First Name</label>
-                                    <input type="text" class="form-control" id="inp_fName" name="fName" dmx-bind:value="scUserDets.data.DecFname">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="inp_lName" class="form-label">Last Name</label>
-                                    <input type="text" class="form-control" id="inp_lName" name="lName" dmx-bind:value="scUserDets.data.DecLname">
+                            <!-- Name Fields -->
+                            <div class="flex-grow-1 w-100" style="max-width: 500px;">
+                                <h6 class="text-primary mb-3">Personal Details</h6>
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="inp_fName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="inp_fName" name="fName" dmx-bind:value="scUserDets.data.DecFname" required data-rule-lettersonly="true" data-msg-required="Please enter your first name" data-msg-lettersonly="Please enter only letters">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="inp_lName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="inp_lName" name="lName" dmx-bind:value="scUserDets.data.DecLname" required data-rule-lettersonly="true" data-msg-required="Please enter your last name" data-msg-lettersonly="Please enter only letters">
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Contact Information Section -->
                         <div class="mb-4">
-                            <h5 class="text-muted mb-3">Contact Information</h5>
+                            <h6 class="text-primary mb-3 pb-2 border-bottom">Contact Information</h6>
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label for="inp_email" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" id="inp_email" name="email" dmx-bind:value="scUserDets.data.DecEmail">
+                                    <input type="email" class="form-control" id="inp_email" name="email" dmx-bind:value="scUserDets.data.DecEmail" required data-rule-email="true" data-msg-required="Please enter your email" data-msg-email="Please enter a valid email address">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inp_userName" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="inp_userName" name="userName" dmx-bind:value="scUserDets.data.query.userName">
+                                    <input type="text" class="form-control" id="inp_userName" name="userName" dmx-bind:value="scUserDets.data.query.userName" required data-rule-nowhitespace="true" data-msg-required="Please enter your username" data-msg-nowhitespace="Username cannot contain spaces">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inp_mobile" class="form-label">Mobile Number</label>
+                                    <input type="tel" class="form-control" id="inp_mobile" name="mobile" dmx-bind:value="scUserDets.data.DecMobile" required data-rule-digits="true" data-msg-required="Please enter your mobile number" data-msg-digits="Please enter only numbers">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inp_tel" class="form-label">Landline <span class="text-muted">(Optional)</span></label>
+                                    <input type="tel" class="form-control" id="inp_tel" name="tel" dmx-bind:value="scUserDets.data.DecTel" data-rule-digits="true" data-msg-digits="Please enter only numbers">
                                 </div>
                             </div>
                         </div>
 
                         <!-- Address Section -->
                         <div class="mb-4">
-                            <h5 class="text-muted mb-3">Address Details</h5>
+                            <h6 class="text-primary mb-3 pb-2 border-bottom">Address Details</h6>
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label for="inp_add1" class="form-label">Address Line 1</label>
-                                    <input type="text" class="form-control" id="inp_add1" name="add1" dmx-bind:value="scUserDets.data.DecAdd1">
+                                    <input type="text" class="form-control" id="inp_add1" name="add1" dmx-bind:value="scUserDets.data.DecAdd1" required data-msg-required="Please enter your address">
                                 </div>
                                 <div class="col-12">
-                                    <label for="inp_add2" class="form-label">Address Line 2</label>
+                                    <label for="inp_add2" class="form-label">Address Line 2 <span class="text-muted">(Optional)</span></label>
                                     <input type="text" class="form-control" id="inp_add2" name="add2" dmx-bind:value="scUserDets.data.DecAdd2">
                                 </div>
-                                <div class="col-md-6">
-                                    <label for="inp_town1" class="form-label">Town</label>
-                                    <input type="text" class="form-control" id="inp_town1" name="town1" dmx-bind:value="scUserDets.data.query.town1">
+                                <div class="col-md-4">
+                                    <label for="inp_town" class="form-label">Town Line 1</label>
+                                    <input type="text" class="form-control" id="inp_town" name="town" dmx-bind:value="scUserDets.data.query.town1" required data-rule-lettersonly="true" data-msg-required="Please enter your town" data-msg-lettersonly="Please enter only letters">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
+                                    <label for="inp_town1" class="form-label">Town Line 2 (Optional)</label>
+                                    <input type="text" class="form-control" id="inp_town1" name="town1" dmx-bind:value="scUserDets.data.query.town1" required="" data-rule-lettersonly="true" data-msg-required="Please enter your town" data-msg-lettersonly="Please enter only letters">
+                                </div>
+                                <div class="col-md-4">
                                     <label for="inp_county" class="form-label">County</label>
-                                    <input type="text" class="form-control" id="inp_county" name="county" dmx-bind:value="scUserDets.data.query.county">
+                                    <input type="text" class="form-control" id="inp_county" name="county" dmx-bind:value="scUserDets.data.query.county" required data-rule-lettersonly="true" data-msg-required="Please enter your county" data-msg-lettersonly="Please enter only letters">
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <label for="inp_postcode" class="form-label">Postcode</label>
-                                    <input type="text" class="form-control" id="inp_postcode" name="postcode" dmx-bind:value="scUserDets.data.DecPostCode">
+                                    <input type="text" class="form-control text-uppercase" id="inp_postcode" name="postcode" dmx-bind:value="scUserDets.data.DecPostCode" required data-rule-pattern="^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$" data-msg-required="Please enter your postcode" data-msg-pattern="Please enter a valid UK postcode">
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Phone Numbers Section -->
-                        <div class="mb-4">
-                            <h5 class="text-muted mb-3">Phone Numbers</h5>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="inp_mobile" class="form-label">Mobile Number</label>
-                                    <input class="form-control" id="inp_mobile" name="mobile" dmx-bind:value="scUserDets.data.DecMobile" data-rule-digits="true" data-msg-digits="Please enter a valid number" type="tel">
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="inp_tel" class="form-label">Landline (Optional)</label>
-                                    <input class="form-control" id="inp_tel" name="tel" dmx-bind:value="scUserDets.data.DecTel">
-                                    <input class="form-control" id="inp_user_id" name="inp_user_id" dmx-bind:value="scUserDets.data.query.userId" type="hidden">
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Hidden Fields -->
+                        <input type="hidden" id="inp_user_id" name="inp_user_id" dmx-bind:value="scUserDets.data.query.userId">
 
                         <!-- Form Actions -->
-                        <div class="d-flex justify-content-end gap-2 mt-4">
-                            <button type="button" class="btn btn-light" dmx-on:click="profileForm.reset()">Reset</button>
-                            <button type="submit" class="btn btn-primary btn-sm" dmx-bind:disabled="state.executing">
-                                <i class="fas fa-save me-2"></i>Save Changes
-                                <span class="spinner-border spinner-border-sm ms-2" role="status" dmx-show="state.executing"></span>
+                        <div class="d-flex justify-content-end gap-2 border-top pt-4">
+                            <button type="button" class="btn btn-light" dmx-on:click="profileForm.reset()">
+                                <i class="fas fa-undo me-2"></i>Reset
+                            </button>
+                            <button type="submit" class="btn btn-primary" dmx-bind:disabled="state.executing">
+                                <span dmx-hide="state.executing">
+                                    <i class="fas fa-save me-2"></i>Save Changes
+                                </span>
+                                <span dmx-show="state.executing" class="d-flex align-items-center gap-2">
+                                    <span class="spinner-border spinner-border-sm" role="status"></span>
+                                    Saving...
+                                </span>
                             </button>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Success Modal -->
-<div class="modal fade" id="successModal" is="dmx-bs5-modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body text-center py-4">
-                <i class="fas fa-check-circle text-success fa-3x mb-3"></i>
-                <h5 class="modal-title">Profile Updated</h5>
-                <p class="text-muted mb-0">Your profile information has been successfully updated.</p>
-            </div>
-            <div class="modal-footer border-0 justify-content-center">
-                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">OK</button>
-            </div>
-        </div>
-    </div>
-</div>

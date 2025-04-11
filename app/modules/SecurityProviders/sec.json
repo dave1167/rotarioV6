@@ -42,7 +42,7 @@
         "conditions": [
           {
             "column": "role",
-            "operator": "=",
+            "operator": "<=",
             "value": "2"
           }
         ]

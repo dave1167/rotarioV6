@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "$_SESSION": [
+      {
+        "type": "number",
+        "name": "Ses_User_Id"
+      },
+      {
+        "type": "text",
+        "name": "Ses_Ten_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_Role_Id"
+      }
+    ]
+  },
+  "exec": {}
+}

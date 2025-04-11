@@ -1,0 +1,291 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "form1Select"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "tntid"
+      }
+    ],
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inp_tnt",
+        "name": "inp_tnt"
+      },
+      {
+        "type": "text",
+        "fieldName": "tenantId",
+        "name": "tenantId"
+      },
+      {
+        "type": "number",
+        "fieldName": "inp_role",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inp_role"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "varTnt",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.txtTennant}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "disabled": true
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_tenants",
+                "column": "tenId"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.tntid}}",
+                "test": "39984aa6-1392-11f0-a2b9-2613560549f8"
+              }
+            ],
+            "table": {
+              "name": "tbl_tenants"
+            },
+            "primary": "tenId",
+            "joins": [],
+            "query": "select `tenId` from `tbl_tenants` where `tbl_tenants`.`tenId` = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_tenants.tenId",
+                  "field": "tbl_tenants.tenId",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_GET.tntid}}",
+                  "data": {
+                    "table": "tbl_tenants",
+                    "column": "tenId",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "uuid",
+                      "default": "'uuid()'",
+                      "maxLength": 36,
+                      "primary": true,
+                      "nullable": false,
+                      "name": "tenId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "tenId"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true,
+        "disabled": true
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 400
+        }
+      },
+      {
+        "name": "Ses_Role_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{$_POST.inp_role}}"
+        },
+        "disabled": true
+      },
+      {
+        "name": "Ses_Ten_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{$_POST.inp_tnt}}"
+        },
+        "collapsed": true
+      },
+      {
+        "name": "wait_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 400
+        },
+        "collapsed": true
+      },
+      {
+        "name": "qryFetchUser",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_user_tenant",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "tenantId"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "role"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "usrTenId"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_User_Id}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_user_tenant"
+            },
+            "primary": "usrTenId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_user_tenant.userId",
+                  "field": "tbl_user_tenant.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_User_Id}}",
+                  "data": {
+                    "table": "tbl_user_tenant",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_user_tenant.usrTenId",
+                  "field": "tbl_user_tenant.usrTenId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_user_tenant",
+                    "column": "usrTenId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "usrTenId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `userId`, `tenantId`, `role`, `usrTenId` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ? and `tbl_user_tenant`.`usrTenId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "text",
+            "name": "tenantId"
+          },
+          {
+            "type": "number",
+            "name": "role"
+          },
+          {
+            "type": "number",
+            "name": "usrTenId"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "Ses_Role_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{qryFetchUser.role}}"
+        }
+      },
+      {
+        "name": "TEST",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_SESSION.Ses_Ten_Id}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "disabled": true
+      }
+    ]
+  }
+}

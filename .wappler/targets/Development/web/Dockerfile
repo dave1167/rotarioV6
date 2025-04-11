@@ -1,5 +1,11 @@
 FROM node:lts-alpine
 
+RUN apk --no-cache add fontconfig
+COPY ./fonts /usr/shared/fonts
+COPY ./fonts /usr/share/fonts/truetype
+# refresh system font cache
+RUN fc-cache -f -v
+
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
 

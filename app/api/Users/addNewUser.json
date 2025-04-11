@@ -1,8 +1,8 @@
 {
   "meta": {
     "options": {
-      "linkedFile": "/views/admin/user/register_new_vol.ejs",
-      "linkedForm": "registration_form"
+      "linkedFile": "/views/admin/user/addNewUser.ejs",
+      "linkedForm": "addUserForm"
     },
     "$_POST": [
       {
@@ -12,7 +12,7 @@
           "rules": {
             "core:required": {
               "param": "",
-              "message": "Please enter your first name"
+              "message": "Please enter first name"
             },
             "core:lettersonly": {
               "message": "Only letters are allowed"
@@ -28,7 +28,7 @@
           "rules": {
             "core:required": {
               "param": "",
-              "message": "Please enter your last name"
+              "message": "Please enter last name"
             },
             "core:lettersonly": {
               "message": "Only letters are allowed"
@@ -44,7 +44,7 @@
           "rules": {
             "core:required": {
               "param": "",
-              "message": "Please enter your email"
+              "message": "Please enter an email address"
             },
             "core:email": {
               "message": "Please enter a valid email address"
@@ -55,6 +55,23 @@
       },
       {
         "type": "text",
+        "fieldName": "password",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter a password"
+            },
+            "core:minlength": {
+              "param": "6",
+              "message": "Password must be at least 8 characters"
+            }
+          }
+        },
+        "name": "password"
+      },
+      {
+        "type": "text",
         "fieldName": "username",
         "options": {
           "rules": {
@@ -62,12 +79,11 @@
               "param": "",
               "message": "Please enter a username"
             },
-            "core:minlength": {
-              "param": "4",
-              "message": "Username must be at least 4 characters"
-            },
             "core:alphanumeric": {
-              "message": "Letters, numbers, and underscores only"
+              "message": "Username can only contain letters and numbers"
+            },
+            "core:nowhitespace": {
+              "message": "Username cannot contain spaces"
             }
           }
         },
@@ -75,70 +91,43 @@
       },
       {
         "type": "text",
-        "name": "password"
-      },
-      {
-        "type": "text",
-        "name": "add1"
-      },
-      {
-        "type": "text",
-        "name": "add2"
-      },
-      {
-        "type": "text",
-        "name": "town1"
-      },
-      {
-        "type": "text",
-        "name": "town2"
-      },
-      {
-        "type": "text",
-        "name": "county"
-      },
-      {
-        "type": "text",
-        "name": "postcode"
-      },
-      {
-        "type": "text",
-        "name": "mobile"
-      },
-      {
-        "type": "text",
-        "name": "tel"
+        "name": "key"
       },
       {
         "type": "number",
         "name": "userId"
       },
       {
-        "type": "date",
-        "name": "joinDate"
-      },
-      {
-        "type": "date",
-        "name": "dateModified"
-      },
-      {
         "type": "number",
-        "name": "modifiedBy"
+        "name": "modifedBy"
+      },
+      {
+        "type": "datetime",
+        "name": "modifiedDate"
       },
       {
         "type": "text",
-        "name": "userName"
+        "fieldName": "role",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please select a role"
+            }
+          }
+        },
+        "name": "role"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "text",
+        "name": "Ses_Ten_Id"
       }
     ]
   },
   "exec": {
     "steps": [
-      {
-        "name": "",
-        "options": {
-          "comment": "Add a new user"
-        }
-      },
       {
         "name": "identity",
         "module": "auth",
@@ -154,7 +143,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{TIMESTAMP.md5('TsRweTY3£').trunc(10, true, ' ').trim()}}"
+          "value": "{{TIMESTAMP.sha1('Q2£ggkXXZs23'.split(10))}}"
         },
         "meta": [],
         "outputType": "text"
@@ -170,27 +159,33 @@
             "values": [
               {
                 "table": "tbl_users",
-                "column": "email",
-                "type": "text",
-                "value": "{{$_POST.email.encrypt(key)}}"
-              },
-              {
-                "table": "tbl_users",
-                "column": "password",
-                "type": "text",
-                "value": "{{$_POST.password.sha512('aDDD3W4%GjKK')}}"
-              },
-              {
-                "table": "tbl_users",
                 "column": "fName",
                 "type": "text",
-                "value": "{{$_POST.fName.encrypt(key)}}"
+                "value": "{{$_POST.fName.capitalize().encrypt(key)}}"
               },
               {
                 "table": "tbl_users",
                 "column": "lName",
                 "type": "text",
-                "value": "{{$_POST.lName.encrypt(key)}}"
+                "value": "{{$_POST.lName.capitalize().encrypt(key)}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "userName",
+                "type": "text",
+                "value": "{{$_POST.username}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "email",
+                "type": "text",
+                "value": "{{$_POST.email.lowercase().encrypt(key)}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "password",
+                "type": "text",
+                "value": "{{$_POST.password}}"
               },
               {
                 "table": "tbl_users",
@@ -209,52 +204,40 @@
                 "column": "modifiedBy",
                 "type": "number",
                 "value": "{{identity}}"
-              },
-              {
-                "table": "tbl_users",
-                "column": "userName",
-                "type": "text",
-                "value": "{{$_POST.username}}"
-              },
-              {
-                "table": "tbl_users",
-                "column": "key",
-                "type": "text",
-                "value": "{{key}}"
               }
             ],
             "table": "tbl_users",
             "returning": "userId",
-            "query": "insert into `tbl_users` (`dateModified`, `email`, `fName`, `joinDate`, `key`, `lName`, `modifiedBy`, `password`, `userName`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "query": "insert into `tbl_users` (`dateModified`, `email`, `fName`, `joinDate`, `lName`, `modifiedBy`, `password`, `userName`) values (?, ?, ?, ?, ?, ?, ?, ?)",
             "params": [
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{$_POST.email.encrypt(key)}}",
+                "value": "{{$_POST.fName.capitalize().encrypt(key)}}",
                 "test": ""
               },
               {
                 "name": ":P2",
                 "type": "expression",
-                "value": "{{$_POST.password.sha512('aDDD3W4%GjKK')}}",
+                "value": "{{$_POST.lName.capitalize().encrypt(key)}}",
                 "test": ""
               },
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.fName.encrypt(key)}}",
+                "value": "{{$_POST.username}}",
                 "test": ""
               },
               {
                 "name": ":P4",
                 "type": "expression",
-                "value": "{{$_POST.lName.encrypt(key)}}",
+                "value": "{{$_POST.email.lowercase().encrypt(key)}}",
                 "test": ""
               },
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{NOW}}",
+                "value": "{{$_POST.password}}",
                 "test": ""
               },
               {
@@ -266,19 +249,13 @@
               {
                 "name": ":P7",
                 "type": "expression",
-                "value": "{{identity}}",
+                "value": "{{NOW}}",
                 "test": ""
               },
               {
                 "name": ":P8",
                 "type": "expression",
-                "value": "{{$_POST.username}}",
-                "test": ""
-              },
-              {
-                "name": ":P9",
-                "type": "expression",
-                "value": "{{key}}",
+                "value": "{{identity}}",
                 "test": ""
               }
             ]
@@ -297,7 +274,7 @@
         "collapsed": true
       },
       {
-        "name": "insertAdd",
+        "name": "insertKey",
         "module": "dbupdater",
         "action": "insert",
         "options": {
@@ -306,114 +283,30 @@
             "type": "insert",
             "values": [
               {
-                "table": "tbl_user_dets",
-                "column": "add1",
+                "table": "tbl_ek",
+                "column": "key",
                 "type": "text",
-                "value": "{{$_POST.add1}}"
+                "value": "{{key}}"
               },
               {
-                "table": "tbl_user_dets",
-                "column": "add2",
-                "type": "text",
-                "value": "{{$_POST.add2}}"
-              },
-              {
-                "table": "tbl_user_dets",
-                "column": "town1",
-                "type": "text",
-                "value": "{{$_POST.town1}}"
-              },
-              {
-                "table": "tbl_user_dets",
-                "column": "town2",
-                "type": "text",
-                "value": "{{$_POST.town2}}"
-              },
-              {
-                "table": "tbl_user_dets",
-                "column": "county",
-                "type": "text",
-                "value": "{{$_POST.county}}"
-              },
-              {
-                "table": "tbl_user_dets",
-                "column": "postcode",
-                "type": "text",
-                "value": "{{$_POST.postcode}}"
-              },
-              {
-                "table": "tbl_user_dets",
-                "column": "mobile",
-                "type": "text",
-                "value": "{{$_POST.mobile}}"
-              },
-              {
-                "table": "tbl_user_dets",
-                "column": "tel",
-                "type": "text",
-                "value": "{{$_POST.tel}}"
-              },
-              {
-                "table": "tbl_user_dets",
+                "table": "tbl_ek",
                 "column": "userId",
                 "type": "number",
                 "value": "{{insert.identity}}"
               }
             ],
-            "table": "tbl_user_dets",
-            "returning": "usrDetsId",
-            "query": "insert into `tbl_user_dets` (`add1`, `add2`, `county`, `mobile`, `postcode`, `tel`, `town1`, `town2`, `userId`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "table": "tbl_ek",
+            "returning": "ekId",
+            "query": "insert into `tbl_ek` (`key`, `userId`) values (?, ?)",
             "params": [
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{$_POST.add1}}",
+                "value": "{{key}}",
                 "test": ""
               },
               {
                 "name": ":P2",
-                "type": "expression",
-                "value": "{{$_POST.add2}}",
-                "test": ""
-              },
-              {
-                "name": ":P3",
-                "type": "expression",
-                "value": "{{$_POST.town1}}",
-                "test": ""
-              },
-              {
-                "name": ":P4",
-                "type": "expression",
-                "value": "{{$_POST.town2}}",
-                "test": ""
-              },
-              {
-                "name": ":P5",
-                "type": "expression",
-                "value": "{{$_POST.county}}",
-                "test": ""
-              },
-              {
-                "name": ":P6",
-                "type": "expression",
-                "value": "{{$_POST.postcode}}",
-                "test": ""
-              },
-              {
-                "name": ":P7",
-                "type": "expression",
-                "value": "{{$_POST.mobile}}",
-                "test": ""
-              },
-              {
-                "name": ":P8",
-                "type": "expression",
-                "value": "{{$_POST.tel}}",
-                "test": ""
-              },
-              {
-                "name": ":P9",
                 "type": "expression",
                 "value": "{{insert.identity}}",
                 "test": ""
@@ -430,14 +323,37 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "collapsed": true
       },
       {
-        "name": "insertTenantUser",
+        "name": "insertDetails",
         "module": "dbupdater",
         "action": "insert",
         "options": {
-          "connection": "db"
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "tbl_user_dets",
+                "column": "userId",
+                "type": "number",
+                "value": "{{insert.identity}}"
+              }
+            ],
+            "table": "tbl_user_dets",
+            "returning": "usrDetsId",
+            "query": "insert into `tbl_user_dets` (`userId`) values (?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{insert.identity}}",
+                "test": ""
+              }
+            ]
+          }
         },
         "meta": [
           {
@@ -449,7 +365,95 @@
             "type": "number"
           }
         ],
-        "disabled": true
+        "collapsed": true
+      },
+      {
+        "name": "insertUserTenant",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "tbl_user_tenant",
+                "column": "userId",
+                "type": "number",
+                "value": "{{insert.identity}}"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "tenantId",
+                "type": "text",
+                "value": "{{$_SESSION.Ses_Ten_Id}}"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "role",
+                "type": "number",
+                "value": "{{$_POST.role}}"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "modifedBy",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "modifiedDate",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              }
+            ],
+            "table": "tbl_user_tenant",
+            "returning": "usrTenId",
+            "query": "insert into `tbl_user_tenant` (`modifedBy`, `modifiedDate`, `role`, `tenantId`, `userId`) values (?, ?, ?, ?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{insert.identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.role}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
       }
     ]
   }

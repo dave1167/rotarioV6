@@ -12,12 +12,6 @@
       "layout": "main"
     },
     {
-      "path": "/admin/dashboard/dashboard",
-      "page": "admin/dashboard/dashboard",
-      "layout": "admin",
-      "exec": "/api/Security/secAuthSupAd"
-    },
-    {
       "path": "/unauthorised",
       "page": "unauthorised",
       "layout": "main"
@@ -29,8 +23,24 @@
       "exec": "/api/Security/secAllUsers"
     },
     {
-      "path": "/admin/user/register_new_vol",
-      "page": "admin/user/register_new_vol",
+      "path": "/admin/dashboard/dashboard",
+      "page": "admin/dashboard/dashboard",
+      "layout": "admin",
+      "exec": "/api/Security/secAuthSupAd"
+    },
+    {
+      "path": "/admin/user/addNewUser",
+      "page": "admin/user/addNewUser",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/user/addNewUser2",
+      "page": "admin/user/addNewUser2",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/user/test",
+      "page": "admin/user/test",
       "layout": "admin"
     }
   ]

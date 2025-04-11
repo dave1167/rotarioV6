@@ -37,6 +37,10 @@
             "type": "SELECT",
             "columns": [
               {
+                "table": "tbl_ek",
+                "column": "key"
+              },
+              {
                 "table": "tbl_users",
                 "column": "fName"
               },
@@ -55,6 +59,10 @@
               {
                 "table": "tbl_users",
                 "column": "userName"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "key"
               },
               {
                 "table": "tbl_user_dets",
@@ -87,6 +95,10 @@
               {
                 "table": "tbl_user_dets",
                 "column": "tel"
+              },
+              {
+                "table": "tbl_users",
+                "column": "imageName"
               }
             ],
             "params": [
@@ -95,7 +107,7 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{identity}}",
-                "test": ""
+                "test": "1"
               }
             ],
             "table": {
@@ -103,6 +115,27 @@
             },
             "primary": "userId",
             "joins": [
+              {
+                "table": "tbl_ek",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_ek",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_users",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "ekId"
+              },
               {
                 "table": "tbl_user_dets",
                 "column": "*",
@@ -125,7 +158,7 @@
                 "primary": "usrDetsId"
               }
             ],
-            "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`userId`, `tbl_users`.`email`, `tbl_users`.`userName`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`town2`, `tbl_user_dets`.`county`, `tbl_user_dets`.`postcode`, `tbl_user_dets`.`mobile`, `tbl_user_dets`.`tel` from `tbl_users` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?",
+            "query": "select `tbl_ek`.`key`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`userId`, `tbl_users`.`email`, `tbl_users`.`userName`, `tbl_ek`.`key`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`town2`, `tbl_user_dets`.`county`, `tbl_user_dets`.`postcode`, `tbl_user_dets`.`mobile`, `tbl_user_dets`.`tel`, `tbl_users`.`imageName` from `tbl_users` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -146,7 +179,8 @@
                       "name": "userId"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "tbl_users"
                 }
               ],
               "conditional": null,
@@ -156,6 +190,10 @@
         },
         "output": true,
         "meta": [
+          {
+            "type": "text",
+            "name": "key"
+          },
           {
             "type": "text",
             "name": "fName"
@@ -207,16 +245,21 @@
           {
             "type": "text",
             "name": "tel"
+          },
+          {
+            "type": "text",
+            "name": "imageName"
           }
         ],
-        "outputType": "object"
+        "outputType": "object",
+        "collapsed": true
       },
       {
         "name": "DecFname",
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{query.fName.decrypt(identity)}}"
+          "value": "{{query.fName.decrypt(query.key)}}"
         },
         "meta": [],
         "outputType": "text",
@@ -228,7 +271,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{query.lName.decrypt(identity)}}"
+          "value": "{{query.lName.decrypt(query.key)}}"
         },
         "meta": [],
         "outputType": "text",
@@ -239,7 +282,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{query.email.decrypt(identity)}}"
+          "value": "{{query.email.decrypt(query.key)}}"
         },
         "meta": [],
         "outputType": "text",
@@ -251,7 +294,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{query.add1.decrypt(identity)}}"
+          "value": "{{query.add1.decrypt(query.key)}}"
         },
         "meta": [],
         "outputType": "text",
@@ -263,7 +306,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{query.add2.decrypt(identity)}}"
+          "value": "{{query.add2.decrypt(query.key)}}"
         },
         "meta": [],
         "outputType": "text",
@@ -275,7 +318,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{query.postcode.decrypt(identity)}}"
+          "value": "{{query.postcode.decrypt(query.key)}}"
         },
         "meta": [],
         "outputType": "text",
@@ -287,7 +330,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{query.mobile.decrypt(identity)}}"
+          "value": "{{query.mobile.decrypt(query.key)}}"
         },
         "meta": [],
         "outputType": "text",
@@ -299,7 +342,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{query.tel.decrypt(identity)}}"
+          "value": "{{query.tel.decrypt(query.key)}}"
         },
         "meta": [],
         "outputType": "text",

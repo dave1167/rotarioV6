@@ -1,0 +1,260 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "options": {
+          "comment": "Gets all the roles as  per session"
+        }
+      },
+      {
+        "name": "identity1",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 100
+        }
+      },
+      {
+        "name": "query1",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_user_tenant",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "tenantId"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "role",
+                "aggregate": "MIN",
+                "alias": "currRole"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": "39984aa6-1392-11f0-a2b9-2613560549f8"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{identity}}",
+                "test": "1"
+              }
+            ],
+            "table": {
+              "name": "tbl_user_tenant"
+            },
+            "primary": "usrTenId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_user_tenant.tenantId",
+                  "field": "tbl_user_tenant.tenantId",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_user_tenant",
+                    "column": "tenantId",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "uuid",
+                      "primary": false,
+                      "nullable": true,
+                      "maxLength": 36,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_user_tenant.userId",
+                  "field": "tbl_user_tenant.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "tbl_user_tenant",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "groupBy": [
+              {
+                "table": "tbl_user_tenant",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "tenantId"
+              }
+            ],
+            "query": "select `userId`, `tenantId`, min(`role`) as `currRole` from `tbl_user_tenant` where `tbl_user_tenant`.`tenantId` = ? and `tbl_user_tenant`.`userId` = ? group by `userId`, `tenantId`"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "text",
+            "name": "tenantId"
+          },
+          {
+            "type": "number",
+            "name": "currRole"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true,
+        "disabled": true
+      },
+      {
+        "name": "Ses_Role_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{query1.currRole}}"
+        },
+        "disabled": true
+      },
+      {
+        "name": "currRole",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query1.currRole}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "disabled": true
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_roles",
+                "column": "name"
+              },
+              {
+                "table": "tbl_roles",
+                "column": "role"
+              }
+            ],
+            "params": [
+              {
+                "operator": "greater_or_equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{Ses_Role_Id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_roles"
+            },
+            "primary": "roleId",
+            "joins": [],
+            "query": "select `name`, `role` from `tbl_roles` where `tbl_roles`.`role` >= ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_roles.role",
+                  "field": "tbl_roles.role",
+                  "type": "double",
+                  "operator": "greater_or_equal",
+                  "value": "{{Ses_Role_Id}}",
+                  "data": {
+                    "table": "tbl_roles",
+                    "column": "role",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "role"
+                    }
+                  },
+                  "operation": ">="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "name"
+          },
+          {
+            "type": "number",
+            "name": "role"
+          }
+        ],
+        "outputType": "array",
+        "collapsed": true
+      }
+    ]
+  }
+}
