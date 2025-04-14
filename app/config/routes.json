@@ -39,8 +39,8 @@
       "layout": "admin"
     },
     {
-      "path": "/admin/user/test",
-      "page": "admin/user/test",
+      "path": "/admin/user/user_list",
+      "page": "admin/user/user_list",
       "layout": "admin"
     }
   ]

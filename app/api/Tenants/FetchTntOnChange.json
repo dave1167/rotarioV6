@@ -1,0 +1,182 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "userid"
+      },
+      {
+        "type": "text",
+        "name": "tntid"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "Ses_Role_Id",
+        "module": "core",
+        "action": "removesession",
+        "options": {}
+      },
+      {
+        "name": "tntId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_SESSION.Ses_Ten_Id}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "userId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_SESSION.Ses_User_Id}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 500
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_user_tenant",
+                "column": "role"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "usrTenId"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{userId}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{tntId}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_user_tenant"
+            },
+            "primary": "usrTenId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_user_tenant.userId",
+                  "field": "tbl_user_tenant.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{userId}}",
+                  "data": {
+                    "table": "tbl_user_tenant",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_user_tenant"
+                },
+                {
+                  "id": "tbl_user_tenant.usrTenId",
+                  "field": "tbl_user_tenant.usrTenId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{tntId}}",
+                  "data": {
+                    "table": "tbl_user_tenant",
+                    "column": "usrTenId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "usrTenId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_user_tenant"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `role`, `usrTenId` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ? and `tbl_user_tenant`.`usrTenId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "role"
+          },
+          {
+            "type": "number",
+            "name": "usrTenId"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "wait1",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 500
+        }
+      },
+      {
+        "name": "Ses_Role_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{query[0].role}}"
+        }
+      }
+    ]
+  }
+}

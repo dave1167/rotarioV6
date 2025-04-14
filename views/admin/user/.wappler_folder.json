@@ -26,5 +26,9 @@
   "test.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "user_list.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

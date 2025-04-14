@@ -110,7 +110,10 @@
   <script src="/dmxAppConnect/dmxBootbox5/dmxBootbox5.js" defer></script>
 </head>
 
-<body is="dmx-app" id="admin" class="bg-light" dmx-on:load="scGetUser.load({});scConRota.load({tenantid: session1.data.tenantId, rotaid: session1.data.rotaId});scConTenant.load({tenantid: session1.data.tenantId})">
+<body is="dmx-app" id="admin" class="bg-light" dmx-on:ready="scHeaderInfo.load({});scOrgName.load({})">
+  <dmx-serverconnect id="scSession" url="/api/Sessions/getSessions"></dmx-serverconnect>
+  <dmx-serverconnect id="scHeaderInfo" url="/api/Sessions/headerInfo"></dmx-serverconnect>
+  <dmx-serverconnect id="scOrgName" url="/api/Sessions/headerOrgInfo"></dmx-serverconnect>
 
   <dmx-local-manager id="local1"></dmx-local-manager>
   <dmx-session-manager id="session1"></dmx-session-manager>
@@ -133,23 +136,14 @@
           </a>
         </div>
         <div class="ms-auto text-white text-end">
-          <p class="small mb-0">Welcome {{scGetUser.data.query.firstName}}&nbsp;</p>
+          <p class="small mb-0">Welcome {{scHeaderInfo.data.UserName}}&nbsp;&nbsp;</p>
         </div>
       </div>
 
       <!-- Bottom Row: Organization, Rota Info & Account -->
       <div class="w-100 d-flex justify-content-between align-items-center border-top border-light pt-2">
+        <p class="text-light"><i class="fas fa-building"></i>&nbsp;Organisation:&nbsp; {{scHeaderInfo.data.qryOrgName.tenantDesc}}&nbsp;</p>
         <!-- Organization and Rota Info -->
-        <div class="d-flex align-items-center text-white small gap-3">
-          <div class="d-flex align-items-center">
-            <i class="fas fa-building me-2"></i>
-            <span>Organisation: {{scConTenant.data.query.orgName}}</span>
-          </div>
-          <div class="d-flex align-items-center ms-3">
-            <i class="fas fa-calendar-alt me-2"></i>
-            <span>Rota: {{scConRota.data.query[0].rotaName}}</span>
-          </div>
-        </div>
 
         <!-- Account Dropdown -->
         <div class="dropdown">
@@ -194,7 +188,7 @@
           </a>
           <ul class="nav collapse flex-column" id="userSubmenu" style="padding-left: 1rem;">
             <li class="nav-item">
-              <a class="nav-link text-white px-3 py-2" href="/admin/users/user_list">
+              <a class="nav-link text-white px-3 py-2" href="/admin/user/user_list">
                 <i class="fas fa-list me-2"></i> User List
               </a>
             </li>
@@ -219,9 +213,7 @@
   <div class="container-fluid p-3 p-lg-4" id="content">
     <div class="row">
       <div class="col-12">
-        <main is="dmx-view" id="content">
-          <%- await include(content, locals); %>
-        </main>
+        <main is="dmx-view" id="content">&nbsp;<%- await include(content, locals) %></main>
       </div>
     </div>
   </div>

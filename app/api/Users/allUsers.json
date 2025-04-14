@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "options": {
+          "comment": "fetches all users"
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "distinct": false,
+            "columns": [
+              {
+                "table": "tbl_ek",
+                "column": "key",
+                "field": "tbl_ek.key"
+              },
+              {
+                "table": "tbl_users",
+                "column": "fName",
+                "field": "tbl_users.fName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName",
+                "field": "tbl_users.lName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "email",
+                "field": "tbl_users.email"
+              },
+              {
+                "table": "tbl_users",
+                "column": "joinDate",
+                "field": "tbl_users.joinDate"
+              },
+              {
+                "table": "tbl_users",
+                "column": "imageName",
+                "field": "tbl_users.imageName"
+              },
+              {
+                "table": "tbl_roles",
+                "column": "name"
+              }
+            ],
+            "table": {
+              "name": "tbl_user_tenant"
+            },
+            "joins": [
+              {
+                "table": "tbl_users",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_users",
+                      "column": "userId",
+                      "field": "tbl_users.userId",
+                      "operation": "=",
+                      "operator": "equal",
+                      "value": {
+                        "table": "tbl_user_tenant",
+                        "column": "userId",
+                        "field": "tbl_user_tenant.userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "userId"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_ek",
+                      "column": "userId",
+                      "field": "tbl_ek.userId",
+                      "operation": "=",
+                      "operator": "equal",
+                      "value": {
+                        "table": "tbl_user_tenant",
+                        "column": "userId",
+                        "field": "tbl_user_tenant.userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "ekId"
+              },
+              {
+                "table": "tbl_roles",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_roles",
+                      "column": "role",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_user_tenant",
+                        "column": "role"
+                      }
+                    }
+                  ]
+                },
+                "primary": "roleId"
+              }
+            ],
+            "orders": [],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": ""
+              }
+            ],
+            "primary": "usrTenId",
+            "query": "select `tbl_ek`.`key`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`email`, `tbl_users`.`joinDate`, `tbl_users`.`imageName`, `tbl_roles`.`name` from `tbl_user_tenant` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_roles` on `tbl_roles`.`role` = `tbl_user_tenant`.`role` where `tbl_user_tenant`.`tenantId` = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_user_tenant.tenantId",
+                  "field": "tbl_user_tenant.tenantId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_user_tenant",
+                    "column": "tenantId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "maxLength": 36,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "key"
+          },
+          {
+            "type": "text",
+            "name": "fName"
+          },
+          {
+            "type": "text",
+            "name": "lName"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          },
+          {
+            "type": "date",
+            "name": "joinDate"
+          },
+          {
+            "type": "text",
+            "name": "imageName"
+          },
+          {
+            "type": "text",
+            "name": "name"
+          }
+        ],
+        "outputType": "array",
+        "type": "dbconnector_select",
+        "collapsed": true
+      },
+      {
+        "name": "repeat",
+        "module": "core",
+        "action": "repeat",
+        "options": {
+          "repeat": "{{query}}",
+          "outputFields": [],
+          "exec": {
+            "steps": [
+              {
+                "name": "varFName",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{fName.decrypt(key).sort('query[$index].fName')}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "varLName",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{lName.decrypt(key)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "collapsed": true
+              },
+              {
+                "name": "varEmail",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{email.decrypt(key)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "collapsed": true
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "$index",
+            "type": "number"
+          },
+          {
+            "name": "$number",
+            "type": "number"
+          },
+          {
+            "name": "$name",
+            "type": "text"
+          },
+          {
+            "name": "$value",
+            "type": "object"
+          },
+          {
+            "name": "key",
+            "type": "text"
+          },
+          {
+            "name": "fName",
+            "type": "text"
+          },
+          {
+            "name": "lName",
+            "type": "text"
+          },
+          {
+            "name": "email",
+            "type": "text"
+          },
+          {
+            "name": "joinDate",
+            "type": "date"
+          },
+          {
+            "name": "imageName",
+            "type": "text"
+          },
+          {
+            "name": "name",
+            "type": "text"
+          },
+          {
+            "name": "varFName",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "varLName",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "varEmail",
+            "type": "text",
+            "sub": []
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

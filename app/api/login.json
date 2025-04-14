@@ -71,7 +71,14 @@
           "provider": "sec"
         },
         "output": true,
-        "meta": []
+        "meta": [],
+        "collapsed": true
+      },
+      {
+        "name": "Ses_User_Id",
+        "module": "core",
+        "action": "removesession",
+        "options": {}
       },
       {
         "name": "Ses_User_Id",

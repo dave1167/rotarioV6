@@ -63,5 +63,66 @@ dmx.config({
         "type": "boolean"
       }
     }
+  },
+  "user_list": {
+    "query": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
+    "data_view1": {
+      "meta": [
+        {
+          "name": "$index",
+          "type": "number"
+        },
+        {
+          "name": "$key",
+          "type": "text"
+        },
+        {
+          "name": "$value",
+          "type": "object"
+        },
+        {
+          "type": "text",
+          "name": "key"
+        },
+        {
+          "type": "text",
+          "name": "fName"
+        },
+        {
+          "type": "text",
+          "name": "lName"
+        },
+        {
+          "type": "text",
+          "name": "email"
+        },
+        {
+          "type": "date",
+          "name": "joinDate"
+        },
+        {
+          "type": "text",
+          "name": "imageName"
+        },
+        {
+          "type": "text",
+          "name": "name"
+        }
+      ],
+      "outputType": "array"
+    },
+    "arr1": {
+      "meta": null,
+      "outputType": "text"
+    }
   }
 });

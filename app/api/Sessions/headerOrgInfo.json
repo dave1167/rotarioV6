@@ -1,41 +1,14 @@
 [
   {
-    "name": "tntId",
+    "name": "wait",
     "module": "core",
-    "action": "setvalue",
+    "action": "wait",
     "options": {
-      "value": "{{$_SESSION.Ses_Ten_Id}}"
-    },
-    "meta": [],
-    "outputType": "text",
-    "output": true
+      "delay": 400
+    }
   },
   {
-    "name": "roleId",
-    "module": "core",
-    "action": "setvalue",
-    "options": {
-      "value": "{{$_SESSION.Ses_Role_Id}}"
-    },
-    "meta": [],
-    "outputType": "number",
-    "collapsed": true,
-    "output": true
-  },
-  {
-    "name": "userId",
-    "module": "core",
-    "action": "setvalue",
-    "options": {
-      "value": "{{$_SESSION.Ses_User_Id}}"
-    },
-    "meta": [],
-    "outputType": "number",
-    "collapsed": true,
-    "output": true
-  },
-  {
-    "name": "qryHeadTen",
+    "name": "query",
     "module": "dbconnector",
     "action": "single",
     "options": {
@@ -53,8 +26,8 @@
             "operator": "equal",
             "type": "expression",
             "name": ":P1",
-            "value": "{{tntId}}",
-            "test": ""
+            "value": "{{$_SESSION.Ses_Ten_Id}}",
+            "test": "39984aa6-1392-11f0-a2b9-2613560549f8"
           }
         ],
         "table": {
@@ -70,7 +43,7 @@
               "field": "tbl_tenants.tenId",
               "type": "string",
               "operator": "equal",
-              "value": "{{tntId}}",
+              "value": "{{$_SESSION.Ses_Ten_Id}}",
               "data": {
                 "table": "tbl_tenants",
                 "column": "tenId",

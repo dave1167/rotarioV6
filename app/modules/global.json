@@ -1,12 +1,18 @@
 {
   "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "filter"
+      }
+    ],
     "$_SESSION": [
       {
         "type": "number",
         "name": "Ses_User_Id"
       },
       {
-        "type": "text",
+        "type": "number",
         "name": "Ses_Ten_Id"
       },
       {

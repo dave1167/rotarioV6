@@ -1,13 +1,14 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appConnect="local" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appConnect="local" --><!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local" -->
 <dmx-serverconnect id="scFetchSessions" url="/api/Sessions/getSessions"></dmx-serverconnect>
+<dmx-serverconnect id="serverconnect1" url="/api/Sessions/headerInfo"></dmx-serverconnect>
 <meta name="ac:route" content="/admin/dashboard/dashboard">
 <div class="container">
     <div class="row">
         <div class="col">
             <h1>Dashboard</h1>
-            <p>Ten Id {{scFetchSessions.data.tntId}}</p>
+            <p>Ten Id {{scFetchSessions.data.tntId}}&nbsp; : {{scFetchSessions.data.qryHeadTen.tenantDesc}}</p>
             <p>Role Id {{scFetchSessions.data.roleId}}</p>
-            <p>user Id {{scFetchSessions.data.userId}}</p>
+            <p>User Id {{scFetchSessions.data.userId}}</p>
         </div>
     </div>
 </div>

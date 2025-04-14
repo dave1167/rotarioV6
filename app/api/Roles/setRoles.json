@@ -1,0 +1,113 @@
+[
+  {
+    "name": "querySetRole",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "SELECT",
+        "columns": [
+          {
+            "table": "tbl_user_tenant",
+            "column": "usrTenId"
+          },
+          {
+            "table": "tbl_user_tenant",
+            "column": "role"
+          }
+        ],
+        "params": [
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P1",
+            "value": "{{$_SESSION.Ses_User_Id}}",
+            "test": ""
+          },
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P2",
+            "value": "{{$_SESSION.Ses_Ten_Id}}",
+            "test": ""
+          }
+        ],
+        "table": {
+          "name": "tbl_user_tenant"
+        },
+        "primary": "usrTenId",
+        "joins": [],
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "tbl_user_tenant.userId",
+              "field": "tbl_user_tenant.userId",
+              "type": "double",
+              "operator": "equal",
+              "value": "{{$_SESSION.Ses_User_Id}}",
+              "data": {
+                "table": "tbl_user_tenant",
+                "column": "userId",
+                "type": "number",
+                "columnObj": {
+                  "type": "integer",
+                  "primary": false,
+                  "nullable": true,
+                  "name": "userId"
+                }
+              },
+              "operation": "=",
+              "table": "tbl_user_tenant"
+            },
+            {
+              "id": "tbl_user_tenant.tenantId",
+              "field": "tbl_user_tenant.tenantId",
+              "type": "string",
+              "operator": "equal",
+              "value": "{{$_SESSION.Ses_Ten_Id}}",
+              "data": {
+                "table": "tbl_user_tenant",
+                "column": "tenantId",
+                "type": "text",
+                "columnObj": {
+                  "type": "uuid",
+                  "primary": false,
+                  "nullable": true,
+                  "maxLength": 36,
+                  "name": "tenantId"
+                }
+              },
+              "operation": "=",
+              "table": "tbl_user_tenant"
+            }
+          ],
+          "conditional": null,
+          "valid": true
+        },
+        "query": "select `usrTenId`, `role` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ? and `tbl_user_tenant`.`tenantId` = ?"
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "number",
+        "name": "usrTenId"
+      },
+      {
+        "type": "number",
+        "name": "role"
+      }
+    ],
+    "outputType": "object"
+  },
+  {
+    "name": "Ses_Role_Id",
+    "module": "core",
+    "action": "setsession",
+    "options": {
+      "value": "{{querySetRole.role}}"
+    }
+  }
+]

@@ -1,0 +1,232 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "options": {
+          "comment": "This will fetch all the info needed for the header  ie org name, rota, user name etc"
+        }
+      },
+      {
+        "name": "",
+        "options": {
+          "comment": "Get user id name"
+        }
+      },
+      {
+        "name": "qryUserName",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_users",
+                "column": "fName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "key"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_User_Id}}",
+                "test": "1"
+              }
+            ],
+            "table": {
+              "name": "tbl_users"
+            },
+            "primary": "userId",
+            "joins": [
+              {
+                "table": "tbl_ek",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_ek",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_users",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "ekId"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_users.userId",
+                  "field": "tbl_users.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_User_Id}}",
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_users"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_ek`.`key` from `tbl_users` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "fName"
+          },
+          {
+            "type": "text",
+            "name": "lName"
+          },
+          {
+            "type": "text",
+            "name": "key"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "UserName",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{qryUserName[0].fName.decrypt(qryUserName[0].key)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {}
+      },
+      {
+        "name": "qryOrgName",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_tenants",
+                "column": "tenantDesc"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id.toNumber()}}",
+                "test": "39984aa6-1392-11f0-a2b9-2613560549f8"
+              }
+            ],
+            "table": {
+              "name": "tbl_tenants"
+            },
+            "primary": "tenId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_tenants.tenId",
+                  "field": "tbl_tenants.tenId",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id.toNumber()}}",
+                  "data": {
+                    "table": "tbl_tenants",
+                    "column": "tenId",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "uuid",
+                      "default": "'uuid()'",
+                      "maxLength": 36,
+                      "primary": true,
+                      "nullable": false,
+                      "name": "tenId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tenantDesc` from `tbl_tenants` where `tbl_tenants`.`tenId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "tenantDesc"
+          }
+        ],
+        "outputType": "object",
+        "type": "dbconnector_single"
+      },
+      {
+        "name": "orgName",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{qryOrgName.tenantDesc}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      }
+    ]
+  }
+}
