@@ -258,7 +258,7 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{fName.decrypt(key)}}"
+                  "value": "{{fName.decrypt(key).lowercase()}}"
                 },
                 "meta": [],
                 "outputType": "text",

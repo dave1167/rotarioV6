@@ -78,51 +78,77 @@ dmx.config({
     "data_view1": {
       "meta": [
         {
-          "name": "$index",
-          "type": "number"
-        },
-        {
-          "name": "$key",
-          "type": "text"
-        },
-        {
-          "name": "$value",
-          "type": "object"
-        },
-        {
+          "name": "varFName",
           "type": "text",
-          "name": "key"
+          "sub": []
         },
         {
+          "name": "varLName",
           "type": "text",
-          "name": "fName"
+          "sub": []
         },
         {
+          "name": "varEmail",
           "type": "text",
-          "name": "lName"
+          "sub": []
         },
         {
+          "name": "varJoinDate",
           "type": "text",
-          "name": "email"
+          "sub": []
         },
         {
-          "type": "date",
-          "name": "joinDate"
-        },
-        {
+          "name": "varRole",
           "type": "text",
-          "name": "imageName"
+          "sub": []
         },
         {
+          "name": "varImage",
           "type": "text",
-          "name": "name"
+          "sub": []
         }
       ],
       "outputType": "array"
     },
     "arr1": {
-      "meta": null,
-      "outputType": "text"
+      "meta": [
+        {
+          "name": "varFName",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varLName",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varEmail",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varJoinDate",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varRole",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varImage",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "daveArr",
+          "type": "text",
+          "sub": []
+        }
+      ],
+      "outputType": "array"
     }
   }
 });
