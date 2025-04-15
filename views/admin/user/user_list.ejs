@@ -1,60 +1,290 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="user_list" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxStateManagement:{},dmxFormatter:{},dmxDataTraversal:{}}" -->
-<dmx-query-manager id="query1"></dmx-query-manager>
-<meta name="ac:route" content="/admin/user/user_list">
-
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col">
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="user_list" appConnect="local" components="{dmxIndexedDB:{},dmxDataTraversal:{},dmxFormatter:{},dmxDatastore:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5Modal:{}}" -->
+<div class="modal" id="modEditUser" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">
+                    <i class="fas fa-user-edit me-2"></i>Edit User
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmEditUser" method="post">
+                    <!-- User Info Section -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="section-icon me-2">
+                                <i class="fas fa-info-circle text-primary"></i>
+                            </div>
+                            <h6 class="mb-0">User Information</h6>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row">
-                                        <div class="col">
-                                            <button id="btn1" class="btn" dmx-on:click="">Button</button>
-                                            <input id="search1" name="search1" type="text" class="form-control">
-                                        </div>
-                                    </div>
-
-                                    <dmx-serverconnect id="scAllUsers" url="/api/Users/allUsers" dmx-param:sort="query1.data.sort" dmx-param:dir="query1.data.dir" dmx-param:filter=""></dmx-serverconnect>
-                                    <dmx-serverconnect id="scAllArray" url="/api/Users/allUsers" dmx-param:sort="query1.data.sort" dmx-param:dir="query1.data.dir"></dmx-serverconnect><dmx-data-view id="data_view1" dmx-bind:data="scAllUsers.data.repeat" dmx-bind:sorton="sort.on" dmx-bind:sortdir="sort.dir"></dmx-data-view>
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th class="sorting" dmx-on:click="query1.set('sort','varFName');query1.set('dir',query1.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="query1.data.sort=='varFName' && query1.data.dir == 'asc'" dmx-class:sorting_desc="query1.data.sort=='varFName' && query1.data.dir == 'desc'">Var fname</th>
-                                                    <th class="sorting" dmx-on:click="query1.set('sort','varLName');query1.set('dir',query1.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="query1.data.sort=='varLName' && query1.data.dir == 'asc'" dmx-class:sorting_desc="query1.data.sort=='varLName' && query1.data.dir == 'desc'">Var lname</th>
-                                                    <th class="sorting" dmx-on:click="query1.set('sort','varEmail');query1.set('dir',query1.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="query1.data.sort=='varEmail' && query1.data.dir == 'asc'" dmx-class:sorting_desc="query1.data.sort=='varEmail' && query1.data.dir == 'desc'">Var email</th>
-                                                    <th class="sorting" dmx-on:click="query1.set('sort','varJoinDate');query1.set('dir',query1.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="query1.data.sort=='varJoinDate' && query1.data.dir == 'asc'" dmx-class:sorting_desc="query1.data.sort=='varJoinDate' && query1.data.dir == 'desc'">Var join date</th>
-                                                    <th class="sorting" dmx-on:click="query1.set('sort','varRole');query1.set('dir',query1.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="query1.data.sort=='varRole' && query1.data.dir == 'asc'" dmx-class:sorting_desc="query1.data.sort=='varRole' && query1.data.dir == 'desc'">Var role</th>
-                                                    <th class="sorting" dmx-on:click="query1.set('sort','varImage');query1.set('dir',query1.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="query1.data.sort=='varImage' && query1.data.dir == 'asc'" dmx-class:sorting_desc="query1.data.sort=='varImage' && query1.data.dir == 'desc'">Var image</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="data" id="tableRepeat2" dmx-state="query1" dmx-sort="sort" dmx-order="dir">
-                                                <tr>
-                                                    <td dmx-text="varFName"></td>
-                                                    <td dmx-text="varLName"></td>
-                                                    <td dmx-text="varEmail"></td>
-                                                    <td dmx-text="varJoinDate"></td>
-                                                    <td dmx-text="varRole"></td>
-                                                    <td dmx-text="varImage"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="inpFName" class="form-label fw-semibold">First Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control border-primary" id="inpFName" name="inpFName" placeholder="Enter first name" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inpLName" class="form-label fw-semibold">Last Name</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control border-primary" id="inpLName" name="inpLName" placeholder="Enter last name" required>
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <!-- Address Section -->
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="section-icon me-2">
+                                <i class="fas fa-map-marked-alt text-primary"></i>
+                            </div>
+                            <h6 class="mb-0">Address Details</h6>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="inpAdd1" class="form-label fw-semibold">Address Line 1</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white"><i class="fas fa-home"></i></span>
+                                    <input type="text" class="form-control border-primary" id="inpAdd1" name="inpAdd1" placeholder="Enter street address" required>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="inpAdd2" class="form-label fw-semibold">Address Line 2 <span class="text-muted fw-normal">(Optional)</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white"><i class="fas fa-building"></i></span>
+                                    <input type="text" class="form-control border-primary" id="inpAdd2" name="inpAdd2" placeholder="Apartment, suite, unit, etc.">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inpTown" class="form-label fw-semibold">Town/City</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white"><i class="fas fa-city"></i></span>
+                                    <input type="text" class="form-control border-primary" id="inpTown" name="inpTown" placeholder="Enter town/city" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inpTown2" class="form-label fw-semibold">District <span class="text-muted fw-normal">(Optional)</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-primary text-white"><i class="fas fa-map-marker-alt"></i></span>
+                                    <input type="text" class="form-control border-primary" id="inpTown2" name="inpTown2" placeholder="Enter district">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>Cancel
+                </button>
+                <button type="submit" class="btn btn-primary" form="frmEditUser">
+                    <i class="fas fa-save me-1"></i>Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-content {
+        border: none;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .section-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+    }
+
+    .form-label {
+        color: var(--bs-gray-700);
+    }
+
+    .input-group-text {
+        border: 1px solid var(--bs-primary);
+    }
+
+    .form-control:focus {
+        border-color: var(--bs-primary);
+        box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+    }
+
+    .modal-header {
+        border-bottom: 0;
+        border-top-left-radius: calc(0.5rem - 1px);
+        border-top-right-radius: calc(0.5rem - 1px);
+    }
+
+    .modal-footer {
+        border-top: 1px solid var(--bs-gray-200);
+        border-bottom-left-radius: calc(0.5rem - 1px);
+        border-bottom-right-radius: calc(0.5rem - 1px);
+    }
+</style>
+<meta name="ac:route" content="/admin/user/user_list">
+
+<!-- Define IndexedDB Store -->
+<dmx-indexed-db id="usersDB" version="1" store="users" key="id" options="{
+    'users': {
+        'keyPath': 'id',
+        'autoIncrement': true,
+        'indexes': [
+            { 'name': 'FirstName', 'keyPath': 'FirstName' },
+            { 'name': 'LastName', 'keyPath': 'LastName' },
+            { 'name': 'Email', 'keyPath': 'Email', 'unique': true },
+            { 'name': 'Role', 'keyPath': 'Role' }
+        ]
+    }
+}"></dmx-indexed-db>
+
+<!-- Data View for sorting and filtering -->
+<dmx-data-view id="dvUsers" dmx-bind:data="scAllUsers.data.repeat" sorton="varFName"></dmx-data-view>
+
+<!-- Server Connection -->
+<dmx-serverconnect id="scAllUsers" url="/api/Users/allUsers" autoload="true"></dmx-serverconnect>
+
+<!-- Debug Value to track data flow -->
+<dmx-value id="debugMode" dmx-bind:value="false"></dmx-value>
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <!-- Card Header with Controls -->
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="card-title mb-0">Users List</h5>
+                    <div class="d-flex gap-2">
+                        <!-- Search Input -->
+                        <input type="search" class="form-control" id="searchInput" placeholder="Search users..." style="width: 250px;" dmx-on:input="dvUsers.filter = searchInput.value ? 
+                           `varFName.toLowerCase().contains('${searchInput.value.toLowerCase()}') || 
+                            varLName.toLowerCase().contains('${searchInput.value.toLowerCase()}') || 
+                            Email.toLowerCase().contains('${searchInput.value.toLowerCase()}')`
+                           : ''">
+
+                        <!-- Buttons -->
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <!-- Loading State -->
+                    <div class="text-center py-4" dmx-show="scAllUsers.loading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="text-muted mt-2">Loading users data...</p>
+                    </div>
+
+                    <!-- Error State -->
+                    <div class="alert alert-danger" dmx-show="scAllUsers.error">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        Error loading users: <span dmx-text="scAllUsers.error.message"></span>
+                    </div>
+
+                    <!-- Data Table -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-sm align-middle">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="sorting" dmx-on:click="dvUsers.sort('varFName', dvUsers.sort.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="dvUsers.sort.on == 'varFName' && dvUsers.sort.dir == 'asc'" dmx-class:sorting_desc="dvUsers.sort.on == 'varFName' && dvUsers.sort.dir == 'desc'">First Name</th>
+                                    <th class="sorting" dmx-on:click="dvUsers.sort('varLName', dvUsers.sort.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="dvUsers.sort.on == 'varLName' && dvUsers.sort.dir == 'asc'" dmx-class:sorting_desc="dvUsers.sort.on == 'varLName' && dvUsers.sort.dir == 'desc'">Last Name</th>
+                                    <th class="sorting" dmx-on:click="dvUsers.sort('Email', dvUsers.sort.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="dvUsers.sort.on == 'Email' && dvUsers.sort.dir == 'asc'" dmx-class:sorting_desc="dvUsers.sort.on == 'Email' && dvUsers.sort.dir == 'desc'">Email</th>
+                                    <th class="sorting" dmx-on:click="dvUsers.sort('JoinDate', dvUsers.sort.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="dvUsers.sort.on == 'JoinDate' && dvUsers.sort.dir == 'asc'" dmx-class:sorting_desc="dvUsers.sort.on == 'JoinDate' && dvUsers.sort.dir == 'desc'">Join Date</th>
+                                    <th class="sorting" dmx-on:click="dvUsers.sort('Role', dvUsers.sort.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="dvUsers.sort.on == 'Role' && dvUsers.sort.dir == 'asc'" dmx-class:sorting_desc="dvUsers.sort.on == 'Role' && dvUsers.sort.dir == 'desc'">Role</th>
+
+                                </tr>
+                            </thead>
+                            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="dvUsers.data" id="tableRepeat2">
+                                <tr>
+                                    <td dmx-text="dvUsers.data[$index].varId" class="visually-hidden"></td>
+                                    <td class="align-middle"><button id="btn1" class="btn btn-warning btn-sm" dmx-on:click="modEditUser.show()">
+                                            <i class="fas fa-edit fa-lg"></i>
+                                        </button>&nbsp;</td>
+                                    <td class="align-middle">
+                                        <img dmx-bind:src="'\\upload\\images\\profiles\\'+dvUsers.data[$index].varImage+'.jpg'" class="rounded-circle" width="40" height="40" onerror="this.src='https://via.placeholder.com/40?text=User'" dmx-bind:alt="varFName + ' ' + varLName">
+                                    </td>
+                                    <td dmx-text="dvUsers.data[$index].varFName" class="align-middle"></td>
+                                    <td dmx-text="varLName" class="align-middle"></td>
+                                    <td dmx-text="varEmail" class="align-middle"></td>
+                                    <td dmx-text="dvUsers.data[$index].varJoinDate.formatDate('dd-MM-yyyy')" class="align-middle"></td>
+                                    <td dmx-text="varRole" class="align-middle"></td>
+
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                    <td>&nbsp;</td>
+                                </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .sorting {
+        cursor: pointer;
+        position: relative;
+        padding-right: 1.5rem;
+    }
+
+    .sorting::after {
+        content: "↕";
+        position: absolute;
+        right: 0.5rem;
+        opacity: 0.3;
+    }
+
+    .sorting_asc::after {
+        content: "↑";
+        opacity: 1;
+    }
+
+    .sorting_desc::after {
+        content: "↓";
+        opacity: 1;
+    }
+
+    /* Adjust table sizing */
+    .table {
+        font-size: 0.875rem;
+        /* Smaller font size */
+    }
+
+    .table> :not(caption)>*>* {
+        padding: 0.5rem;
+        /* Reduce cell padding */
+    }
+
+    /* Header styling */
+    .table thead th {
+        background-color: var(--bs-gray-100);
+        font-weight: 600;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    /* Adjust image size */
+    .table img.rounded-circle {
+        width: 32px;
+        height: 32px;
+        object-fit: cover;
+    }
+</style>

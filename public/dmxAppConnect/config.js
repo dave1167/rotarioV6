@@ -149,6 +149,166 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "dsUsers": [
+      {
+        "name": "FirstName",
+        "type": "text"
+      },
+      {
+        "name": "LastName",
+        "type": "text"
+      },
+      {
+        "name": "varFName",
+        "type": "text"
+      },
+      {
+        "name": "varLName",
+        "type": "text"
+      },
+      {
+        "name": "Email",
+        "type": "text"
+      },
+      {
+        "name": "JoinDate",
+        "type": "text"
+      },
+      {
+        "name": "Role",
+        "type": "text"
+      },
+      {
+        "name": "Image",
+        "type": "text"
+      },
+      {
+        "name": "id",
+        "type": "text"
+      }
+    ],
+    "localdb_users": [
+      {
+        "name": "FirstName",
+        "type": "text"
+      },
+      {
+        "name": "LastName",
+        "type": "text"
+      },
+      {
+        "name": "Email",
+        "type": "text"
+      },
+      {
+        "name": "JoinDate",
+        "type": "text"
+      },
+      {
+        "name": "Role",
+        "type": "text"
+      },
+      {
+        "name": "Image",
+        "type": "text"
+      }
+    ],
+    "usersDB": [
+      {
+        "name": "id",
+        "type": "number",
+        "primary": true,
+        "autoIncrement": true
+      },
+      {
+        "name": "FirstName",
+        "type": "text",
+        "index": true
+      },
+      {
+        "name": "LastName",
+        "type": "text",
+        "index": true
+      },
+      {
+        "name": "Email",
+        "type": "text",
+        "index": true,
+        "unique": true
+      },
+      {
+        "name": "JoinDate",
+        "type": "text"
+      },
+      {
+        "name": "Role",
+        "type": "text",
+        "index": true
+      },
+      {
+        "name": "Image",
+        "type": "text"
+      }
+    ],
+    "datastore1": [
+      {
+        "type": "text",
+        "name": "varFName"
+      }
+    ],
+    "dbUser": [
+      {
+        "type": "text",
+        "name": "varFName"
+      },
+      {
+        "type": "text",
+        "name": "varLName"
+      },
+      {
+        "type": "text",
+        "name": "varEmail"
+      },
+      {
+        "type": "text",
+        "name": "varJoinDate"
+      }
+    ],
+    "dvUsers": {
+      "meta": [
+        {
+          "name": "varFName",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varLName",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varEmail",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varJoinDate",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varRole",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varImage",
+          "type": "text",
+          "sub": []
+        }
+      ],
+      "outputType": "array"
     }
   }
 });

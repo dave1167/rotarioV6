@@ -70,6 +70,10 @@
               {
                 "table": "tbl_rota_type",
                 "column": "rotaDesc"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "userId"
               }
             ],
             "table": {
@@ -176,7 +180,7 @@
               }
             ],
             "primary": "usrTenId",
-            "query": "select `tbl_ek`.`key`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`email`, `tbl_users`.`joinDate`, `tbl_users`.`imageName`, `tbl_roles`.`name`, `tbl_rota_type`.`rotaDesc` from `tbl_user_tenant` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_roles` on `tbl_roles`.`role` = `tbl_user_tenant`.`role` inner join `tbl_rota_type` on `tbl_rota_type`.`rotaId` = `tbl_user_tenant`.`rota` where `tbl_user_tenant`.`tenantId` = ?",
+            "query": "select `tbl_ek`.`key`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`email`, `tbl_users`.`joinDate`, `tbl_users`.`imageName`, `tbl_roles`.`name`, `tbl_rota_type`.`rotaDesc`, `tbl_user_tenant`.`userId` from `tbl_user_tenant` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_roles` on `tbl_roles`.`role` = `tbl_user_tenant`.`role` inner join `tbl_rota_type` on `tbl_rota_type`.`rotaId` = `tbl_user_tenant`.`rota` where `tbl_user_tenant`.`tenantId` = ?",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -239,6 +243,10 @@
           {
             "type": "text",
             "name": "rotaDesc"
+          },
+          {
+            "type": "number",
+            "name": "userId"
           }
         ],
         "outputType": "array",
@@ -253,6 +261,17 @@
           "outputFields": [],
           "exec": {
             "steps": [
+              {
+                "name": "varId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{userId}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
               {
                 "name": "varFName",
                 "module": "core",
@@ -371,6 +390,15 @@
           {
             "name": "rotaDesc",
             "type": "text"
+          },
+          {
+            "name": "userId",
+            "type": "number"
+          },
+          {
+            "name": "varId",
+            "type": "text",
+            "sub": []
           },
           {
             "name": "varFName",
