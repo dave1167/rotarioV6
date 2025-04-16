@@ -1,0 +1,247 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/user/user_list.ejs",
+      "linkedForm": "frmEditUser"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inpFName",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "inpFName"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpLName",
+        "name": "inpLName"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpPhone",
+        "options": {
+          "rules": {
+            "core:pattern": {
+              "param": "[0-9]{3}-[0-9]{4}"
+            }
+          }
+        },
+        "name": "inpPhone"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpMobile",
+        "options": {
+          "rules": {
+            "core:pattern": {
+              "param": "[0-9]{4}-[0-9]{4}"
+            }
+          }
+        },
+        "name": "inpMobile"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpAdd1",
+        "name": "inpAdd1"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpAdd2",
+        "name": "inpAdd2"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpTown",
+        "name": "inpTown"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpTown2",
+        "name": "inpTown2"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpPostcode",
+        "name": "inpPostcode"
+      },
+      {
+        "type": "text",
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "name": "password"
+      },
+      {
+        "type": "text",
+        "name": "fName"
+      },
+      {
+        "type": "text",
+        "name": "lName"
+      },
+      {
+        "type": "date",
+        "name": "dateModified"
+      },
+      {
+        "type": "number",
+        "name": "modifiedBy"
+      },
+      {
+        "type": "text",
+        "name": "userName"
+      },
+      {
+        "type": "number",
+        "name": "userId"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "options": {
+          "comment": "update user details by admin"
+        }
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "update",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "tbl_users",
+                "column": "email",
+                "type": "text",
+                "value": "{{$_POST.email}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "password",
+                "type": "text",
+                "value": "{{$_POST.password}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "fName",
+                "type": "text",
+                "value": "{{$_POST.fName}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName",
+                "type": "text",
+                "value": "{{$_POST.lName}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "dateModified",
+                "type": "date",
+                "value": "{{TIMESTAMP}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "modifiedBy",
+                "type": "number",
+                "value": "{{identity}}"
+              }
+            ],
+            "table": "tbl_users",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.userId}}",
+                  "data": {
+                    "column": "userId"
+                  },
+                  "operation": "="
+                }
+              ]
+            },
+            "returning": "userId",
+            "query": "update `tbl_users` set `email` = ?, `password` = ?, `fName` = ?, `lName` = ?, `dateModified` = ?, `modifiedBy` = ? where `userId` = ?",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.email}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.password}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.fName}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.lName}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{TIMESTAMP}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P7",
+                "value": "{{$_POST.userId}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "collapsed": true
+      }
+    ]
+  }
+}

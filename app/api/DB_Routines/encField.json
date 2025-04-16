@@ -1,0 +1,64 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/DB_Routines/encrypt.ejs",
+      "linkedForm": "formEncDec"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "input1",
+        "multiple": true,
+        "name": "input1"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_Dec",
+        "name": "inp_Dec"
+      },
+      {
+        "type": "text",
+        "fieldName": "key",
+        "name": "key"
+      },
+      {
+        "type": "text",
+        "fieldName": "encryp",
+        "name": "encryp"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "encString",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.inp_Dec.encrypt($_POST.key)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {}
+      },
+      {
+        "name": "enc",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{encString}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      }
+    ]
+  }
+}

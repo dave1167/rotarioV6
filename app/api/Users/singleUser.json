@@ -1,3 +1,643 @@
 {
-  "exec": {}
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/user/user_list.ejs",
+      "linkedForm": "frmEditUser"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inpFName",
+        "options": {
+          "rules": {}
+        },
+        "name": "inpFName"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpLName",
+        "options": {
+          "rules": {}
+        },
+        "name": "inpLName"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpPhone",
+        "options": {
+          "rules": {
+            "core:pattern": {
+              "param": "[0-9]{3}-[0-9]{4}"
+            }
+          }
+        },
+        "name": "inpPhone"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpMobile",
+        "options": {
+          "rules": {
+            "core:pattern": {
+              "param": "[0-9]{4}-[0-9]{4}"
+            }
+          }
+        },
+        "name": "inpMobile"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpAdd1",
+        "options": {
+          "rules": {}
+        },
+        "name": "inpAdd1"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpAdd2",
+        "name": "inpAdd2"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpTown",
+        "options": {
+          "rules": {}
+        },
+        "name": "inpTown"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpTown2",
+        "name": "inpTown2"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpPostcode",
+        "name": "inpPostcode"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_user_tenant",
+                "column": "tenantId"
+              },
+              {
+                "table": "tbl_user_tenant",
+                "column": "userId",
+                "alias": "userIDut"
+              },
+              {
+                "table": "tbl_users",
+                "column": "fName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "email"
+              },
+              {
+                "table": "tbl_users",
+                "column": "dateModified"
+              },
+              {
+                "table": "tbl_users",
+                "column": "modifiedBy"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "add1"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "add2"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "town1"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "town2"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "county"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "postcode"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "mobile"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "tel"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "key"
+              },
+              {
+                "table": "tbl_users",
+                "column": "userId",
+                "alias": "uid"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "userId",
+                "alias": "uidk"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": "2"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_GET.user_id}}",
+                "test": "49"
+              }
+            ],
+            "table": {
+              "name": "tbl_user_tenant"
+            },
+            "primary": "usrTenId",
+            "joins": [
+              {
+                "table": "tbl_users",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_users",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_user_tenant",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "userId"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_user_dets",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_user_tenant",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "usrDetsId"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_ek",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_user_tenant",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "ekId"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_user_tenant.tenantId",
+                  "field": "tbl_user_tenant.tenantId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_user_tenant",
+                    "column": "tenantId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "maxLength": 36,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_user_tenant.userId",
+                  "field": "tbl_user_tenant.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.user_id}}",
+                  "data": {
+                    "table": "tbl_user_tenant",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tbl_user_tenant`.`tenantId`, `tbl_user_tenant`.`userId` as `userIDut`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`email`, `tbl_users`.`dateModified`, `tbl_users`.`modifiedBy`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`town2`, `tbl_user_dets`.`county`, `tbl_user_dets`.`postcode`, `tbl_user_dets`.`mobile`, `tbl_user_dets`.`tel`, `tbl_ek`.`key`, `tbl_users`.`userId` as `uid`, `tbl_ek`.`userId` as `uidk` from `tbl_user_tenant` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_tenant`.`userId` where `tbl_user_tenant`.`tenantId` = ? and `tbl_user_tenant`.`userId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "tenantId"
+          },
+          {
+            "type": "number",
+            "name": "userIDut"
+          },
+          {
+            "type": "text",
+            "name": "fName"
+          },
+          {
+            "type": "text",
+            "name": "lName"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          },
+          {
+            "type": "date",
+            "name": "dateModified"
+          },
+          {
+            "type": "number",
+            "name": "modifiedBy"
+          },
+          {
+            "type": "text",
+            "name": "add1"
+          },
+          {
+            "type": "text",
+            "name": "add2"
+          },
+          {
+            "type": "text",
+            "name": "town1"
+          },
+          {
+            "type": "text",
+            "name": "town2"
+          },
+          {
+            "type": "text",
+            "name": "county"
+          },
+          {
+            "type": "text",
+            "name": "postcode"
+          },
+          {
+            "type": "text",
+            "name": "mobile"
+          },
+          {
+            "type": "text",
+            "name": "tel"
+          },
+          {
+            "type": "text",
+            "name": "key"
+          },
+          {
+            "type": "number",
+            "name": "uid"
+          },
+          {
+            "type": "number",
+            "name": "uidk"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
+      },
+      {
+        "name": "",
+        "options": {
+          "comment": "The below conditions are needed to decrypt each field, was getting an error when empty field was being decrypted"
+        }
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.mobile.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleMobile",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.mobile.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.tel.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SinglePhone",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.tel.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.email.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleEmail",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.email.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.fName.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleFName",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.fName.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.lName.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleLName",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.lName.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.add1.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleAdd1",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.add1.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.add2.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleAdd2",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.add2.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.town1.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleTown1",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.town1.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean",
+        "collapsed": true,
+        "disabled": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.town2.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleTown2",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.town2.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
+            }
+          }
+        },
+        "outputType": "boolean",
+        "disabled": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.county.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleCounty",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.county.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean",
+        "disabled": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.postcode.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SinglePcode",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.postcode.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
 }

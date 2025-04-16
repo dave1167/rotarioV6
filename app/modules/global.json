@@ -4,6 +4,10 @@
       {
         "type": "text",
         "name": "filter"
+      },
+      {
+        "type": "text",
+        "name": "user_id"
       }
     ],
     "$_SESSION": [

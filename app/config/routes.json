@@ -42,6 +42,11 @@
       "path": "/admin/user/user_list",
       "page": "admin/user/user_list",
       "layout": "admin"
+    },
+    {
+      "path": "/admin/DB_Routines/encrypt",
+      "page": "admin/DB_Routines/encrypt",
+      "layout": "admin"
     }
   ]
 }
