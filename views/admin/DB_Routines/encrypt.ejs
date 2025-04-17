@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="encrypt" appConnect="local" components="{dmxBootstrap5Modal:{}}" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="encrypt" appConnect="local" components="{dmxBootstrap5Modal:{},dmxStateManagement:{}}" -->
 <div class="modal" id="modEncryptInfo" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -21,7 +21,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <form id="formEncDec" method="post" is="dmx-serverconnect-form" action="/api/DB_Routines/encField" dmx-on:success="modEncryptInfo.show()" dmx-on:error="notifies1.warning('Something Screwed JUp')">
+            <form id="formEncDec" method="post" is="dmx-serverconnect-form" action="/api/DB_Routines/encField" dmx-on:success="encryp.setValue(encryp.value)" dmx-on:error="notifies1.warning('Something Screwed JUp')">
                 <div class="row">
                     <div class="col">
                         <div class="row">
@@ -42,18 +42,21 @@
                         </div>
                         <div class="form-group mb-3 row">
                             <label for="encryp" class="col-sm-2 col-form-label">Encrypted Text</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="encryp" name="encryp" aria-describedby="input1_help2" placeholder="Enter some text" dmx-bind:value="serverconnect1.data.enc">
-                            </div>
+
                         </div>
                         <div class="row">
                             <div class="col">
                                 <button id="btn1" class="btn btn-danger" type="submit">Encrypt</button>
+                                <button id="btn2" class="btn btn-danger" type="submit" dmx-on:click="encryp.setValue(serverconnect1.data.encString)">Encrypt</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </form>
+        </div>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="encryp" name="encryp" aria-describedby="input1_help2" placeholder="Enter some text" dmx-bind:value="serverconnect1.data.encString">
+            <p>Encrypt {{encryp.value}}</p>
         </div>
     </div>
 </div>

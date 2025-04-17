@@ -45,19 +45,8 @@
         "name": "wait",
         "module": "core",
         "action": "wait",
-        "options": {}
-      },
-      {
-        "name": "enc",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{encString}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "collapsed": true
+        "options": {},
+        "output": false
       }
     ]
   }

@@ -310,5 +310,13 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "encrypt": {
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "encrypt"
+      }
+    ]
   }
 });

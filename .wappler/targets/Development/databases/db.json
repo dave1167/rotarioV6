@@ -10,33 +10,6 @@
   },
   "schema": {
     "tables": {
-      "testuuid": {
-        "columns": {
-          "id": {
-            "db": {
-              "type": "uuid",
-              "default": "'uuid()'",
-              "maxLength": 36,
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "desc": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          }
-        },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
-      },
       "tbl_ek": {
         "columns": {
           "ekId": {
@@ -62,101 +35,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
-      },
-      "tbl_users": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
-        "columns": {
-          "userId": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "email": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "password": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "fName": {
-            "db": {
-              "type": "string",
-              "maxLength": 100,
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "lName": {
-            "db": {
-              "type": "string",
-              "maxLength": 100,
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "joinDate": {
-            "db": {
-              "type": "date",
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "dateModified": {
-            "db": {
-              "type": "date",
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "modifiedBy": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "userName": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "imageName": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          }
-        },
-        "sub": {
-          "tbl_user_dets": "userId"
-        }
+        "db": {}
       },
       "tbl_user_dets": {
         "columns": {
@@ -244,21 +123,11 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "parent": "tbl_users"
       },
       "tbl_roles": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "columns": {
           "roleId": {
             "db": {
@@ -324,12 +193,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
+        "db": {}
       },
       "tbl_tenants": {
         "columns": {
@@ -349,12 +213,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
+        "db": {}
       },
       "tbl_user_tenant": {
         "columns": {
@@ -409,12 +268,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
+        "db": {}
       },
       "tbl_rota_type": {
         "columns": {
@@ -442,6 +296,90 @@
           }
         },
         "db": {}
+      },
+      "tbl_users": {
+        "db": {},
+        "columns": {
+          "userId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "email": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "password": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "fName": {
+            "db": {
+              "type": "string",
+              "maxLength": 100,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "lName": {
+            "db": {
+              "type": "string",
+              "maxLength": 100,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "joinDate": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "dateModified": {
+            "db": {
+              "type": "timestamp",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "modifiedBy": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "userName": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "imageName": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "sub": {
+          "tbl_user_dets": "userId"
+        }
       }
     },
     "views": {},

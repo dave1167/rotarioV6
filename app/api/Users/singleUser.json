@@ -25,11 +25,7 @@
         "type": "text",
         "fieldName": "inpPhone",
         "options": {
-          "rules": {
-            "core:pattern": {
-              "param": "[0-9]{3}-[0-9]{4}"
-            }
-          }
+          "rules": {}
         },
         "name": "inpPhone"
       },
@@ -37,11 +33,7 @@
         "type": "text",
         "fieldName": "inpMobile",
         "options": {
-          "rules": {
-            "core:pattern": {
-              "param": "[0-9]{4}-[0-9]{4}"
-            }
-          }
+          "rules": {}
         },
         "name": "inpMobile"
       },
@@ -163,6 +155,10 @@
                 "table": "tbl_ek",
                 "column": "userId",
                 "alias": "uidk"
+              },
+              {
+                "table": "tbl_users",
+                "column": "imageName"
               }
             ],
             "params": [
@@ -296,7 +292,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "select `tbl_user_tenant`.`tenantId`, `tbl_user_tenant`.`userId` as `userIDut`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`email`, `tbl_users`.`dateModified`, `tbl_users`.`modifiedBy`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`town2`, `tbl_user_dets`.`county`, `tbl_user_dets`.`postcode`, `tbl_user_dets`.`mobile`, `tbl_user_dets`.`tel`, `tbl_ek`.`key`, `tbl_users`.`userId` as `uid`, `tbl_ek`.`userId` as `uidk` from `tbl_user_tenant` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_tenant`.`userId` where `tbl_user_tenant`.`tenantId` = ? and `tbl_user_tenant`.`userId` = ?"
+            "query": "select `tbl_user_tenant`.`tenantId`, `tbl_user_tenant`.`userId` as `userIDut`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`email`, `tbl_users`.`dateModified`, `tbl_users`.`modifiedBy`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`town2`, `tbl_user_dets`.`county`, `tbl_user_dets`.`postcode`, `tbl_user_dets`.`mobile`, `tbl_user_dets`.`tel`, `tbl_ek`.`key`, `tbl_users`.`userId` as `uid`, `tbl_ek`.`userId` as `uidk`, `tbl_users`.`imageName` from `tbl_user_tenant` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_tenant`.`userId` where `tbl_user_tenant`.`tenantId` = ? and `tbl_user_tenant`.`userId` = ?"
           }
         },
         "output": true,
@@ -322,7 +318,7 @@
             "name": "email"
           },
           {
-            "type": "date",
+            "type": "datetime",
             "name": "dateModified"
           },
           {
@@ -372,6 +368,10 @@
           {
             "type": "number",
             "name": "uidk"
+          },
+          {
+            "type": "text",
+            "name": "imageName"
           }
         ],
         "outputType": "object",
@@ -382,74 +382,6 @@
         "options": {
           "comment": "The below conditions are needed to decrypt each field, was getting an error when empty field was being decrypted"
         }
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{query.mobile.length()>0}}",
-          "then": {
-            "steps": {
-              "name": "SingleMobile",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "{{query.mobile.decrypt(query.key)}}"
-              },
-              "meta": [],
-              "outputType": "text",
-              "output": true
-            }
-          }
-        },
-        "outputType": "boolean"
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{query.tel.length()>0}}",
-          "then": {
-            "steps": {
-              "name": "SinglePhone",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "{{query.tel.decrypt(query.key)}}"
-              },
-              "meta": [],
-              "outputType": "text",
-              "output": true,
-              "collapsed": true
-            }
-          }
-        },
-        "outputType": "boolean"
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{query.email.length()>0}}",
-          "then": {
-            "steps": {
-              "name": "SingleEmail",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "{{query.email.decrypt(query.key)}}"
-              },
-              "meta": [],
-              "outputType": "text",
-              "output": true,
-              "collapsed": true
-            }
-          }
-        },
-        "outputType": "boolean"
       },
       {
         "name": "",
@@ -472,7 +404,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "collapsed": true
       },
       {
         "name": "",
@@ -495,7 +428,79 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "collapsed": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.email.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleEmail",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.email.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean",
+        "collapsed": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.mobile.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleMobile",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.mobile.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true
+            }
+          }
+        },
+        "outputType": "boolean",
+        "collapsed": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.tel.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SinglePhone",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.tel.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean",
+        "collapsed": true
       },
       {
         "name": "",
@@ -518,7 +523,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "collapsed": true
       },
       {
         "name": "",
@@ -541,79 +547,8 @@
             }
           }
         },
-        "outputType": "boolean"
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{query.town1.length()>0}}",
-          "then": {
-            "steps": {
-              "name": "SingleTown1",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "{{query.town1.decrypt(query.key)}}"
-              },
-              "meta": [],
-              "outputType": "text",
-              "output": true,
-              "collapsed": true
-            }
-          }
-        },
         "outputType": "boolean",
-        "collapsed": true,
-        "disabled": true
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{query.town2.length()>0}}",
-          "then": {
-            "steps": {
-              "name": "SingleTown2",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "{{query.town2.decrypt(query.key)}}"
-              },
-              "meta": [],
-              "outputType": "text",
-              "output": true
-            }
-          }
-        },
-        "outputType": "boolean",
-        "disabled": true
-      },
-      {
-        "name": "",
-        "module": "core",
-        "action": "condition",
-        "options": {
-          "if": "{{query.county.length()>0}}",
-          "then": {
-            "steps": {
-              "name": "SingleCounty",
-              "module": "core",
-              "action": "setvalue",
-              "options": {
-                "value": "{{query.county.decrypt(query.key)}}"
-              },
-              "meta": [],
-              "outputType": "text",
-              "output": true,
-              "collapsed": true
-            }
-          }
-        },
-        "outputType": "boolean",
-        "disabled": true
+        "collapsed": true
       },
       {
         "name": "",
@@ -636,7 +571,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "collapsed": true
       }
     ]
   }

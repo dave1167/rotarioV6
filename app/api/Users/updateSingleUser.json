@@ -24,27 +24,28 @@
       },
       {
         "type": "text",
-        "fieldName": "inpPhone",
+        "fieldName": "inpEmail",
         "options": {
           "rules": {
-            "core:pattern": {
-              "param": "[0-9]{3}-[0-9]{4}"
-            }
+            "core:email": {}
           }
         },
+        "name": "inpEmail"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpPhone",
         "name": "inpPhone"
       },
       {
         "type": "text",
         "fieldName": "inpMobile",
-        "options": {
-          "rules": {
-            "core:pattern": {
-              "param": "[0-9]{4}-[0-9]{4}"
-            }
-          }
-        },
         "name": "inpMobile"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpUserId",
+        "name": "inpUserId"
       },
       {
         "type": "text",
@@ -73,35 +74,20 @@
       },
       {
         "type": "text",
-        "name": "email"
-      },
-      {
-        "type": "text",
-        "name": "password"
-      },
-      {
-        "type": "text",
         "name": "fName"
       },
       {
         "type": "text",
-        "name": "lName"
-      },
-      {
-        "type": "date",
-        "name": "dateModified"
-      },
-      {
-        "type": "number",
-        "name": "modifiedBy"
-      },
-      {
-        "type": "text",
-        "name": "userName"
+        "fieldName": "inpCounty",
+        "name": "inpCounty"
       },
       {
         "type": "number",
         "name": "userId"
+      },
+      {
+        "type": "text",
+        "name": "postcode"
       }
     ]
   },
@@ -124,6 +110,100 @@
         "meta": []
       },
       {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_ek",
+                "column": "key"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "ekId"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.inpUserId}}",
+                "test": "1"
+              }
+            ],
+            "table": {
+              "name": "tbl_ek"
+            },
+            "primary": "ekId",
+            "joins": [],
+            "query": "select `key`, `userId`, `ekId` from `tbl_ek` where `tbl_ek`.`userId` = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_ek.userId",
+                  "field": "tbl_ek.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.inpUserId}}",
+                  "data": {
+                    "table": "tbl_ek",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "key"
+          },
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "number",
+            "name": "ekId"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
+      },
+      {
+        "name": "Key",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.key}}"
+        },
+        "meta": [],
+        "output": true,
+        "outputType": "text"
+      },
+      {
         "name": "update",
         "module": "dbupdater",
         "action": "update",
@@ -134,33 +214,27 @@
             "values": [
               {
                 "table": "tbl_users",
-                "column": "email",
-                "type": "text",
-                "value": "{{$_POST.email}}"
-              },
-              {
-                "table": "tbl_users",
-                "column": "password",
-                "type": "text",
-                "value": "{{$_POST.password}}"
-              },
-              {
-                "table": "tbl_users",
                 "column": "fName",
                 "type": "text",
-                "value": "{{$_POST.fName}}"
+                "value": "{{$_POST.inpFName.capitalize().encrypt(query.key)}}"
               },
               {
                 "table": "tbl_users",
                 "column": "lName",
                 "type": "text",
-                "value": "{{$_POST.lName}}"
+                "value": "{{$_POST.inpLName.capitalize().encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "email",
+                "type": "text",
+                "value": "{{$_POST.inpEmail.lowercase().trim().encrypt(query.key)}}"
               },
               {
                 "table": "tbl_users",
                 "column": "dateModified",
                 "type": "date",
-                "value": "{{TIMESTAMP}}"
+                "value": "{{NOW}}"
               },
               {
                 "table": "tbl_users",
@@ -175,51 +249,48 @@
               "rules": [
                 {
                   "id": "userId",
+                  "field": "userId",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{$_POST.userId}}",
+                  "value": "{{$_POST.inpUserId}}",
                   "data": {
                     "column": "userId"
                   },
                   "operation": "="
                 }
-              ]
+              ],
+              "conditional": null,
+              "valid": true
             },
             "returning": "userId",
-            "query": "update `tbl_users` set `email` = ?, `password` = ?, `fName` = ?, `lName` = ?, `dateModified` = ?, `modifiedBy` = ? where `userId` = ?",
+            "query": "update `tbl_users` set `fName` = ?, `lName` = ?, `email` = ?, `dateModified` = ?, `modifiedBy` = ? where `userId` = ?",
             "params": [
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{$_POST.email}}",
+                "value": "{{$_POST.inpFName.capitalize().encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P2",
                 "type": "expression",
-                "value": "{{$_POST.password}}",
+                "value": "{{$_POST.inpLName.capitalize().encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.fName}}",
+                "value": "{{$_POST.inpEmail.lowercase().trim().encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P4",
                 "type": "expression",
-                "value": "{{$_POST.lName}}",
+                "value": "{{NOW}}",
                 "test": ""
               },
               {
                 "name": ":P5",
-                "type": "expression",
-                "value": "{{TIMESTAMP}}",
-                "test": ""
-              },
-              {
-                "name": ":P6",
                 "type": "expression",
                 "value": "{{identity}}",
                 "test": ""
@@ -227,8 +298,154 @@
               {
                 "operator": "equal",
                 "type": "expression",
+                "name": ":P6",
+                "value": "{{$_POST.inpUserId}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "collapsed": true
+      },
+      {
+        "name": "updateAdd",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "tbl_user_dets",
+                "column": "town1",
+                "type": "text",
+                "value": "{{$_POST.inpTown.titlecase()}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "town2",
+                "type": "text",
+                "value": "{{$_POST.inpTown2.titlecase()}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "county",
+                "type": "text",
+                "value": "{{$_POST.inpCounty.titlecase()}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "add1",
+                "type": "text",
+                "value": "{{$_POST.inpAdd1.titlecase().encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "add2",
+                "type": "text",
+                "value": "{{$_POST.inpAdd2.titlecase().encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "postcode",
+                "type": "text",
+                "value": "{{$_POST.inpPostcode.uppercase().encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "tel",
+                "type": "text",
+                "value": "{{$_POST.inpPhone.encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "mobile",
+                "type": "text",
+                "value": "{{$_POST.inpMobile.encrypt(query.key)}}"
+              }
+            ],
+            "table": "tbl_user_dets",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "userId",
+                  "field": "userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.inpUserId}}",
+                  "data": {
+                    "column": "userId"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "usrDetsId",
+            "query": "update `tbl_user_dets` set `town1` = ?, `town2` = ?, `county` = ?, `add1` = ?, `add2` = ?, `postcode` = ?, `tel` = ?, `mobile` = ? where `userId` = ?",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.inpTown.titlecase()}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.inpTown2.titlecase()}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.inpCounty.titlecase()}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.inpAdd1.titlecase().encrypt(query.key)}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.inpAdd2.titlecase().encrypt(query.key)}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.inpPostcode.uppercase().encrypt(query.key)}}",
+                "test": ""
+              },
+              {
                 "name": ":P7",
-                "value": "{{$_POST.userId}}",
+                "type": "expression",
+                "value": "{{$_POST.inpPhone.encrypt(query.key)}}",
+                "test": ""
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{$_POST.inpMobile.encrypt(query.key)}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P9",
+                "value": "{{$_POST.inpUserId}}",
                 "test": ""
               }
             ]

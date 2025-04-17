@@ -176,7 +176,7 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{$_SESSION.Ses_Ten_Id}}",
-                "test": ""
+                "test": "2"
               }
             ],
             "primary": "usrTenId",
@@ -250,7 +250,8 @@
           }
         ],
         "outputType": "array",
-        "type": "dbconnector_select"
+        "type": "dbconnector_select",
+        "collapsed": true
       },
       {
         "name": "repeat",
