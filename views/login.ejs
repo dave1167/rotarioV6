@@ -1,122 +1,168 @@
-<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="login" appConnect="local" components="{dmxBootstrap5Alert:{},dmxValidator:{},dmxNotifications:{},dmxBrowser:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxBootbox5:{}}" -->
-<dmx-serverconnect id="scSetRoles" url="/api/Roles/setRoles"></dmx-serverconnect>
-<dmx-serverconnect id="scFetchTntOnChange" url="/api/Tenants/FetchTntOnChange" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scFetchUserAdmin" url="/api/Users/fetchUserAdmin" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scGetTentByUsr" url="/api/Tenants/getTentByUser" dmx-param:userid="login1.data.identity"></dmx-serverconnect>
-<dmx-serverconnect id="scSessionSet" url="/api/Sessions/sessionSet" noload="true" dmx-param:tntid="modMultiTenant.tenant_select.tenant.value"></dmx-serverconnect>
-<dmx-serverconnect id="scGetTenant" url="/api/Tenants/getTenant" noload="true"></dmx-serverconnect><dmx-serverconnect id="scTenantCount" url="/api/Tenants/tenantCount"></dmx-serverconnect><dmx-session-manager id="session1"></dmx-session-manager>
-<div class="modal" id="modMultiTenant" is="dmx-bs5-modal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <form id="form1Select" method="post" is="dmx-serverconnect-form" action="/api/Sessions/sessionSet" dmx-on:success="run([{run:{outputType:'text',action:`scSetRoles.load({})`}},{wait:{delay:200}},{run:{outputType:'text',action:`browser1.goto(\'/admin/dashboard/dashboard\')`}},{run:{outputType:'text',action:`notifies1.info(\'Session Set\')`}}])">
-                    <h5 class="modal-title">Select Organisation</h5><label for="tenant" class="text-secondary col-form-label-sm">Organisation</label><select id="tenant" name="tenantId" class="form-select form-select-lg" dmx-bind:options="scGetTentByUsr.data.query" optiontext="tenantDesc" optionvalue="tenId+' '">
-                        <div is="dmx-repeat" id="tenant_list" dmx-bind:repeat="scGetTenant.data.tenants">
-                        </div>
-                        <option value="">Select an organisation</option>
-                    </select><input id="inp_tnt" name="inp_tnt" type="hidden" class="form-control" dmx-bind:value="tenant.selectedValue">
-                    <button class="btn btn-primary" type="submit">
-                        <span dmx-show="!tenant_select.state.executing">Continue</span>
-                        <span dmx-show="tenant_select.state.executing" class="d-inline-flex align-items-center">
-                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                            Processing...
-                        </span>
-                    </button>
-                </form>
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="login" appConnect="local" components="{dmxBootstrap5Alert:{},dmxValidator:{},dmxNotifications:{},dmxBrowser:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxBootbox5:{},dmxServerConnect:{}}" -->
 
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+<div class="modal fade" id="modMultiRota" is="dmx-bs5-modal" tabindex="-1">
 
-        </div>
-    </div>
-</div>
+    <div class="modal fade" id="modMultiSelectRota" is="dmx-bs5-modal" tabindex="-1"      dmx-on:show-bs-modal="scGetAllRotas.load()">
 
 
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bolder text-primary">Select Rota</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>You are a member of several rotas please select which one you wish to use for this session</p>
+                    <form id="formSelectRota" method="post" is="dmx-serverconnect-form" action="/api/Sessions/sessionSetRota" dmx-on:success="run([{run:{outputType:'text',action:`scSetRoles.load({})`}},{run:{outputType:'text',action:`scGetSessions.load({})`}},{wait:{delay:490}},{run:{outputType:'text',action:`browser1.goto(\'/admin/dashboard/dashboard\')`}}])" dmx-on:error="browser1.goto('/admin/dashboard/dashboard');notifies1.danger('oh bugger its failed')">
+                        <select id="selRota" class="form-select" name="selRota" dmx-bind:options="scGetAllRotas.data.query" optiontext="rotaDesc" optionvalue="rota">
+                            <option value="">Select Rota</option>
+                        </select>
 
-<div is="dmx-browser" id="browser1"></div>
-<dmx-notifications id="notifies1"></dmx-notifications>
-<meta name="ac:route" content="/login">
-<div class="container-fluid">
-    <div class="row min-vh-100">
-        <!-- Left Panel - Form -->
-        <div class="col-12 col-lg-5 col-xl-4 d-flex">
-            <div class="w-100 p-4 p-md-5 align-self-center">
-                <!-- Logo or Brand -->
-                <div class="text-center mb-5">
-                    <img src="assets/images/logo.svg" alt="Company Logo" class="mb-4" height="40">
-                    <h1 class="h5 fw-normal text-secondary">Sign in to your account</h1>
+                        <input id="inpRotaId" name="inpRotaId" dmx-bind:value="selRota.selectedValue" type="hidden">
+
+                        <button type="submit" class="btn btn-primary mt-2 ms-2 me-2">
+                            Select Rota</button><button type="button" class="btn btn-secondary mt-2" data-bs-dismiss="modal">Close</button>
+                    </form>
+
                 </div>
 
-                <!-- Login Form -->
-                <form id="login1" is="dmx-serverconnect-form" method="post" action="/api/login" dmx-on:success="run([{run:{outputType:'text',action:`scTenantCount.load({})`}},{wait:{delay:500}},{'bootbox.alert':{disabled:true,message:`scTenantCount.data.query[0].TenantCount+\' is the number of tens\'`}},{'bootbox.alert':{disabled:true,message:`\'ten count is \'+scTenantCount.data.query`}},{wait:{delay:200}},{condition:{outputType:'boolean',if:`scTenantCount.data.query[0].TenantCount&gt;1`,then:{steps:[{alert:{disabled:true,message:'oh yes'}},{run:{outputType:'text',disabled:true,action:`serverconnect1.load({get: modMultiTenant.tenant_select.tenant.value})`}},{run:{outputType:'text',disabled:true,action:`session1.set(\'tenantId\',modMultiTenant.tenant_select.tenant.value)`}},{run:{outputType:'text',disabled:true,action:`session1.set(\'userId\',login1.data.identity)`}},{wait:{delay:300}},{run:{name:'showModal',outputType:'text',action:`modMultiTenant.show()`}}]},else:{steps:[{run:{outputType:'text',action:`session1.set(\'tenantId\',scGetTenant.data.query.tenantId)`}},{alert:{disabled:true,message:`\'count=\'+scTenantCount.data.query[0].TenantCount+\'   varcount=\'+scTenantCount.data.varcount`}},{run:{outputType:'text',action:`session1.set(\'userId\',scGetTenant.data.identity)`}},{run:{outputType:'text',disabled:true,action:`scGetTentByUsr.load({})`}},{run:{outputType:'text',action:`browser1.goto(\'/admin/dashboard/dashboard\')`}}]}}}])" dmx-on:error="notifies1.danger('ooo nooo')">
-                    <!-- Username Field -->
-                    <div class="form-floating mb-3">
-                        <input type="text" id="inp_username" name="username" class="form-control" placeholder="Username" required data-rule-alphanumeric="true" minlength="3" data-msg-required="Username is required" data-msg-alphanumeric="Username can only contain letters, numbers and underscores" data-msg-minlength="Username must be at least 3 characters">
-                        <label for="inp_username" class="text-secondary">Username</label>
-                    </div>
+                <div class="modal-footer">
 
-                    <!-- Password Field -->
-                    <div class="form-floating mb-3">
-                        <input type="password" id="inp_password" name="password" class="form-control" placeholder="Password" required minlength="6" data-msg-required="Password is required" data-msg-minlength="Password must be at least 6 characters">
-                        <label for="inp_password" class="text-secondary">Password</label>
-                    </div>
 
-                    <!-- Organization Selection -->
-                    <div class="form-floating mb-3">
-                    </div>
-
-                    <!-- Remember Me & Forgot Password -->
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="form-check">
-                            <input type="checkbox" id="remember" name="remember" class="form-check-input">
-                            <label class="form-check-label text-secondary small" for="remember">Stay signed in</label>
-                        </div>
-                        <a href="/forgot-password" class="small text-decoration-none">Reset password</a>
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button id="login1_submit" class="btn btn-primary w-100" type="submit" dmx-bind:disabled="login1.state.executing">
-                        <span dmx-show="!login1.state.executing">Sign in</span>
-                        <span dmx-show="login1.state.executing" class="d-inline-flex align-items-center">
-                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                            Authenticating...
-                        </span>
-                    </button>
-
-                    <!-- Error Message -->
-                    <div class="alert alert-danger border-0 rounded-3 mt-3 p-2 ps-3 d-flex align-items-center" role="alert" dmx-show="login1.data.error">
-                        <i class="fas fa-exclamation-circle me-2"></i>
-                        <span dmx-text="login1.data.error" class="small"></span>
-                    </div>
-
-                    <!-- Sign Up Link -->
-                    <div class="mt-4 pt-3 border-top text-center">
-                        <p class="mb-0 text-secondary small">Don't have an account?
-                            <a href="/register" class="text-decoration-none">Create account</a>
-                        </p>
-                    </div>
-                </form>
-
-                <!-- Footer Links -->
-                <div class="mt-5 text-center">
-                    <div class="d-flex justify-content-center gap-3 small">
-                        <a href="#" class="text-decoration-none text-secondary">Privacy Policy</a>
-                        <a href="#" class="text-decoration-none text-secondary">Terms of Service</a>
-                        <a href="#" class="text-decoration-none text-secondary">Contact Support</a>
-                    </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div class="modal fade" id="modMultiTenant" is="dmx-bs5-modal" tabindex="-1" aria-labelledby="modMultiTenantLabel">
 
-        <!-- Right Panel - Background -->
-        <div class="col-lg-7 col-xl-8 d-none d-lg-block bg-light">
-            <div class="d-flex align-items-center justify-content-center h-100 p-5">
-                <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Diverse group of volunteers working together" class="img-fluid rounded-4 shadow-sm">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-semibold text-primary" id="modMultiTenantLabel">Select Organisation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p>You are a member of several organisations please select the one you wish to use for this session.</p>
+                    <form id="form1Select" method="post" is="dmx-serverconnect-form" action="/api/Sessions/sessionSet" dmx-on:success="run([{comment:{msg:'This Flow fetches rota drop down details'}},{run:{outputType:'text',action:`scRotaCount.load({user_id: login1.data.identity1})`}},{run:{outputType:'text',action:`scGetAllRotas.load({})`}},{alert:{message:`\' number of rotas \'+login1.data.identity1+\'  identity \'`}},{wait:{delay:500}},{condition:{outputType:'boolean',if:`scRotaCount.data.query.rotacount&gt;1`,then:{steps:[{run:{outputType:'text',action:`modMultiTenant.hide()`}},{run:{outputType:'text',action:`modMultiRota.show()`}}]},else:{steps:[{wait:{delay:1000}},{run:{outputType:'text',action:`scSetRotaSessSingle.load({})`}},{wait:{delay:1000}},{run:{outputType:'text',disabled:true,action:`scSetRoles.load({})`}},{wait:{delay:1000}},{run:{outputType:'text',action:`browser1.goto(\'/admin/dashboard/dashboard\')`}}]}}}])">
+
+                        <div class="form-floating mb-3">
+                            <select id="tenant" name="tenantId" class="form-select" required="" data-msg-required="Please select an organisation" dmx-bind:options="scGetTentByUsr.data.query" optiontext="tenantDesc" optionvalue="tenId">
+                                <option value="">Select an organisation</option>
+                            </select>
+                        </div>
+
+                        <input id="inp_tnt" name="inp_tnt" type="hidden" dmx-bind:value="tenant.selectedValue">
+
+
+
+
+
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit" dmx-bind:disabled="tenant_select.state.executing">
+                                <span dmx-show="!tenant_select.state.executing">
+                                    <i class="fas fa-arrow-right me-2"></i>Continue
+                                </span>
+                                <span dmx-show="tenant_select.state.executing" class="d-inline-flex align-items-center">
+                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    Processing...
+                                </span>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </form>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
-<a href="#" class="text-decoration-none text-secondary">Contact Support</a>
+
+
+
+    <div is="dmx-browser" id="browser1"></div>
+    <dmx-notifications id="notifies1"></dmx-notifications>
+    <meta name="ac:route" content="/login">
+    <div class="container-fluid">
+        <div class="row min-vh-100">
+            <!-- Left Panel - Form -->
+            <div class="col-12 col-lg-5 col-xl-4 d-flex">
+                <div class="w-100 p-4 p-md-5 align-self-center">
+                    <!-- Logo or Brand -->
+                    <div class="text-center mb-5">
+                        <img src="assets/images/logo.svg" alt="Company Logo" class="mb-4" height="40">
+                        <h1 class="h5 fw-normal text-secondary">Sign in to your account</h1>
+                    </div>
+
+                    <!-- Login Form -->
+                    <form id="login1" is="dmx-serverconnect-form" method="post" action="/api/login" dmx-on:success="run([{run:{outputType:'text',action:`scTenantCount.load({})`}},{wait:{delay:500}},{condition:{outputType:'boolean',if:`scTenantCount.data.query[0].TenantCount&gt;1`,then:{steps:[{wait:{delay:300}},{run:{name:'showModal',outputType:'text',action:`modMultiTenant.show()`}}]},else:{steps:[{wait:{delay:300}},{run:{outputType:'text',action:`scSessionSetSingle.load({})`}},{wait:{delay:300}},{run:{outputType:'text',action:`scRotaCount.load({user_id: login1.data.identity1})`}},{wait:{delay:300}},{'bootbox.alert':{message:`scRotaCount.data.query[0].rotacount+\'  xxx\'`}},{condition:{outputType:'boolean',if:`scRotaCount.data.query[0].rotacount&gt;1`,then:{steps:[{wait:{delay:200}},{'bootbox.alert':{message:`scRotaCount.data.query.rotacount+\' ccount\'`}},{run:{outputType:'text',action:`modMultiRota.show()`}}]},else:{steps:[{run:{outputType:'text',action:`scSetRoles.load({})`}},{wait:{delay:1000}},{wait:{delay:1000}},{run:{outputType:'text',action:`scGetSessions.load({})`}},{wait:{delay:1000}},{run:{outputType:'text',disabled:true,action:`scGetSessions.load({})`}},{run:{outputType:'text',action:`scSetRotaSessSingle.load({})`}},{wait:{delay:500}},{'bootbox.alert':{title:'Tenant=1 Rota =1 ',message:`\'tenantId\'+scGetSessions.data.tntId+\'  rotaId \'+scGetSessions.data.rotaId+\' userId \'+scGetSessions.data.userId`}},{run:{outputType:'text',action:`browser1.goto(\'/admin/dashboard/dashboard\')`}}]}}}]}}}])" dmx-on:error="notifies1.danger('ooo nooo')">
+                        <!-- Username Field -->
+                        <div class="form-floating mb-3">
+                            <input type="text" id="inp_username" name="username" class="form-control" placeholder="Username" required data-rule-alphanumeric="true" minlength="3" data-msg-required="Username is required" data-msg-alphanumeric="Username can only contain letters, numbers and underscores" data-msg-minlength="Username must be at least 3 characters">
+                            <label for="inp_username" class="text-secondary">Username</label>
+                        </div>
+
+                        <!-- Password Field -->
+                        <div class="form-floating mb-3">
+                            <input type="password" id="inp_password" name="password" class="form-control" placeholder="Password" required minlength="6" data-msg-required="Password is required" data-msg-minlength="Password must be at least 6 characters">
+                            <label for="inp_password" class="text-secondary">Password</label>
+                        </div>
+
+                        <!-- Organization Selection -->
+                        <div class="form-floating mb-3">
+                        </div>
+
+                        <!-- Remember Me & Forgot Password -->
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div class="form-check">
+                                <input type="checkbox" id="remember" name="remember" class="form-check-input">
+                                <label class="form-check-label text-secondary small" for="remember">Stay signed in</label>
+                            </div>
+                            <a href="/forgot-password" class="small text-decoration-none">Reset password</a>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button id="login1_submit" class="btn btn-primary w-100" type="submit" dmx-bind:disabled="login1.state.executing">
+                            <span dmx-show="!login1.state.executing">Sign in</span>
+                            <span dmx-show="login1.state.executing" class="d-inline-flex align-items-center">
+                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Authenticating...
+                            </span>
+                        </button>
+
+                        <!-- Error Message -->
+                        <div class="alert alert-danger border-0 rounded-3 mt-3 p-2 ps-3 d-flex align-items-center" role="alert" dmx-show="login1.data.error">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <span dmx-text="login1.data.error" class="small"></span>
+                        </div>
+
+                        <!-- Sign Up Link -->
+                        <div class="mt-4 pt-3 border-top text-center">
+                            <p class="mb-0 text-secondary small">Don't have an account?
+                                <a href="/register" class="text-decoration-none">Create account</a>
+                            </p>
+                        </div>
+                    </form>
+
+                    <!-- Footer Links -->
+                    <div class="mt-5 text-center">
+                        <div class="d-flex justify-content-center gap-3 small">
+                            <a href="#" class="text-decoration-none text-secondary">Privacy Policy</a>
+                            <a href="#" class="text-decoration-none text-secondary">Terms of Service</a>
+                            <a href="#" class="text-decoration-none text-secondary">Contact Support</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Background -->
+            <div class="col-lg-7 col-xl-8 d-none d-lg-block bg-light">
+                <div class="d-flex align-items-center justify-content-center h-100 p-5">
+                    <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" alt="Diverse group of volunteers working together" class="img-fluid rounded-4 shadow-sm">
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="#" class="text-decoration-none text-secondary">Contact Support</a>
 </div>
 </div>
 </div>

@@ -1,5 +1,13 @@
 [
   {
+    "name": "wait",
+    "module": "core",
+    "action": "wait",
+    "options": {
+      "delay": 1500
+    }
+  },
+  {
     "name": "tntId",
     "module": "core",
     "action": "setvalue",
@@ -7,7 +15,7 @@
       "value": "{{$_SESSION.Ses_Ten_Id}}"
     },
     "meta": [],
-    "outputType": "text",
+    "outputType": "number",
     "output": true
   },
   {
@@ -33,6 +41,24 @@
     "outputType": "number",
     "collapsed": true,
     "output": true
+  },
+  {
+    "name": "rotaId",
+    "module": "core",
+    "action": "setvalue",
+    "options": {
+      "value": "{{$_SESSION.Ses_Rota_Id}}"
+    },
+    "meta": [],
+    "outputType": "number",
+    "collapsed": true,
+    "output": true
+  },
+  {
+    "name": "",
+    "options": {
+      "comment": "next Qry gets name of tenant for the header info bar"
+    }
   },
   {
     "name": "qryHeadTen",
@@ -100,6 +126,88 @@
         "name": "tenantDesc"
       }
     ],
-    "outputType": "object"
+    "outputType": "object",
+    "collapsed": true
+  },
+  {
+    "name": "",
+    "options": {
+      "comment": "next Qry gets Rota info for header bar"
+    }
+  },
+  {
+    "name": "qryHeadRota",
+    "module": "dbconnector",
+    "action": "single",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "SELECT",
+        "columns": [
+          {
+            "table": "tbl_rota_type",
+            "column": "tentantId"
+          },
+          {
+            "table": "tbl_rota_type",
+            "column": "rotaDesc"
+          }
+        ],
+        "params": [
+          {
+            "operator": "equal",
+            "type": "expression",
+            "name": ":P1",
+            "value": "{{$_SESSION.Ses_Rota_Id}}",
+            "test": ""
+          }
+        ],
+        "table": {
+          "name": "tbl_rota_type"
+        },
+        "primary": "rotaId",
+        "joins": [],
+        "query": "select `tentantId`, `rotaDesc` from `tbl_rota_type` where `tbl_rota_type`.`rotaId` = ?",
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "tbl_rota_type.rotaId",
+              "field": "tbl_rota_type.rotaId",
+              "type": "double",
+              "operator": "equal",
+              "value": "{{$_SESSION.Ses_Rota_Id}}",
+              "data": {
+                "table": "tbl_rota_type",
+                "column": "rotaId",
+                "type": "number",
+                "columnObj": {
+                  "type": "increments",
+                  "primary": true,
+                  "nullable": false,
+                  "name": "rotaId"
+                }
+              },
+              "operation": "="
+            }
+          ],
+          "conditional": null,
+          "valid": true
+        }
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "type": "number",
+        "name": "tentantId"
+      },
+      {
+        "type": "text",
+        "name": "rotaDesc"
+      }
+    ],
+    "outputType": "object",
+    "collapsed": true
   }
 ]

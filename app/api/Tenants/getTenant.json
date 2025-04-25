@@ -46,10 +46,6 @@
               },
               {
                 "table": "tbl_user_tenant",
-                "column": "role"
-              },
-              {
-                "table": "tbl_user_tenant",
                 "column": "userId"
               }
             ],
@@ -67,7 +63,7 @@
             },
             "primary": "usrTenId",
             "joins": [],
-            "query": "select `tenantId`, `role`, `userId` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ?",
+            "query": "select `tenantId`, `userId` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ?",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -100,41 +96,16 @@
         "output": true,
         "meta": [
           {
-            "type": "text",
-            "name": "tenantId"
-          },
-          {
             "type": "number",
-            "name": "role"
+            "name": "tenantId"
           },
           {
             "type": "number",
             "name": "userId"
           }
         ],
-        "outputType": "object"
-      },
-      {
-        "name": "",
-        "module": "oauth",
-        "action": "authorize",
-        "options": {},
-        "output": true,
-        "meta": [
-          {
-            "name": "refresh_token",
-            "type": "text"
-          },
-          {
-            "name": "access_token",
-            "type": "text"
-          },
-          {
-            "name": "expires_in",
-            "type": "number"
-          }
-        ],
-        "outputType": "object"
+        "outputType": "object",
+        "collapsed": true
       }
     ]
   }

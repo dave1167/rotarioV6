@@ -36,7 +36,8 @@
     {
       "path": "/admin/user/addNewUser2",
       "page": "admin/user/addNewUser2",
-      "layout": "admin"
+      "layout": "admin",
+      "exec": ""
     },
     {
       "path": "/admin/user/user_list",
@@ -46,6 +47,21 @@
     {
       "path": "/admin/DB_Routines/encrypt",
       "page": "admin/DB_Routines/encrypt",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/user/change_user",
+      "page": "admin/user/change_user",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/dashboard/dashboard2",
+      "page": "admin/dashboard/dashboard2",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/user/test",
+      "page": "admin/user/test",
       "layout": "admin"
     }
   ]

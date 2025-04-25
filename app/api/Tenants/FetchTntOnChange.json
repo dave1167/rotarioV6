@@ -70,10 +70,6 @@
             "columns": [
               {
                 "table": "tbl_user_tenant",
-                "column": "role"
-              },
-              {
-                "table": "tbl_user_tenant",
                 "column": "usrTenId"
               }
             ],
@@ -145,21 +141,18 @@
               "conditional": null,
               "valid": true
             },
-            "query": "select `role`, `usrTenId` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ? and `tbl_user_tenant`.`usrTenId` = ?"
+            "query": "select `usrTenId` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ? and `tbl_user_tenant`.`usrTenId` = ?"
           }
         },
         "output": true,
         "meta": [
           {
             "type": "number",
-            "name": "role"
-          },
-          {
-            "type": "number",
             "name": "usrTenId"
           }
         ],
-        "outputType": "array"
+        "outputType": "array",
+        "collapsed": true
       },
       {
         "name": "wait1",

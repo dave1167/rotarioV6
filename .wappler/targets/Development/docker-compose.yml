@@ -4,8 +4,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: 'QcR51mg8'
       MYSQL_DATABASE: 'rotario_v6'
-      MYSQL_USER: 'db_user'
-      MYSQL_PASSWORD: 'dGIU3gXi'
+      MYSQL_USER: 'newDB'
+      MYSQL_PASSWORD: '9IqJV46ysK-PvhfM'
     volumes:
       - './db_init:/docker-entrypoint-initdb.d'
     ports:

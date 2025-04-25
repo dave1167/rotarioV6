@@ -1,0 +1,372 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "formSelectRota"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "tntid"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inp_tnt",
+        "name": "inp_tnt"
+      },
+      {
+        "type": "text",
+        "fieldName": "tenantId",
+        "name": "tenantId"
+      },
+      {
+        "type": "number",
+        "fieldName": "inp_role",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inp_role"
+      },
+      {
+        "type": "text",
+        "fieldName": "selectRota",
+        "name": "selectRota"
+      },
+      {
+        "type": "number",
+        "fieldName": "inpRota",
+        "name": "inpRota"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "wait_copy_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 600
+        },
+        "collapsed": true
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_user_rota",
+                "column": "rota"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "role"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "userId"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": "1"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{identity}}",
+                "test": "55"
+              }
+            ],
+            "table": {
+              "name": "tbl_user_rota"
+            },
+            "primary": "rotaId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_user_rota.tenantId",
+                  "field": "tbl_user_rota.tenantId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "tenantId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_user_rota"
+                },
+                {
+                  "id": "tbl_user_rota.userId",
+                  "field": "tbl_user_rota.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_user_rota"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `rota`, `role`, `userId` from `tbl_user_rota` where `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`userId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "rota"
+          },
+          {
+            "type": "number",
+            "name": "role"
+          },
+          {
+            "type": "number",
+            "name": "userId"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
+      },
+      {
+        "name": "Ses_Rota_Id",
+        "module": "core",
+        "action": "removesession",
+        "options": {},
+        "disabled": true
+      },
+      {
+        "name": "wait_copy_copy_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 900
+        },
+        "collapsed": true
+      },
+      {
+        "name": "Ses_Rota_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{query.rota}}"
+        },
+        "collapsed": true
+      },
+      {
+        "name": "wait_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 900
+        },
+        "collapsed": true
+      },
+      {
+        "name": "query1",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_user_rota",
+                "column": "tenantId"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "rota"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "role"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{$_SESSION.Ses_Rota_Id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_user_rota"
+            },
+            "primary": "rotaId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_user_rota.userId",
+                  "field": "tbl_user_rota.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_user_rota.tenantId",
+                  "field": "tbl_user_rota.tenantId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "tenantId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_user_rota.rota",
+                  "field": "tbl_user_rota.rota",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Rota_Id}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "rota",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "rota"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tenantId`, `rota`, `userId`, `role` from `tbl_user_rota` where `tbl_user_rota`.`userId` = ? and `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`rota` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "tenantId"
+          },
+          {
+            "type": "number",
+            "name": "rota"
+          },
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "number",
+            "name": "role"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "Ses_Role_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{query1[0].role}}"
+        }
+      }
+    ]
+  }
+}

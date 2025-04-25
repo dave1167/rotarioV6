@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">
                 <dmx-serverconnect id="scFetchSingleUser" url="/api/Users/singleUser" noload="true"></dmx-serverconnect>
-                <form id="frmEditUser" method="post" is="dmx-serverconnect-form" action="/api/Users/updateSingleUser">
+                <form id="frmEditUser" method="post" is="dmx-serverconnect-form" action="/api/Users/updateSingleUser" dmx-on:success="browser1.goto('/admin/user/user_list');modEditUser.hide();notifies1.success('User Updated')">
                     <!-- User Info Section -->
                     <div class="mb-4">
                         <div class="d-flex align-items-center mb-3">
@@ -238,9 +238,9 @@
                         <table class="table table-bordered table-hover table-sm">
                             <thead>
                                 <tr>
-                                    <th>undefined</th>
-                                    <th>undefined</th>
-                                    <th>undefined</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                     <th class="sorting" dmx-on:click="dvUsers.sort('varFName', dvUsers.sort.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="dvUsers.sort.on == 'varFName' && dvUsers.sort.dir == 'asc'" dmx-class:sorting_desc="dvUsers.sort.on == 'varFName' && dvUsers.sort.dir == 'desc'">First Name</th>
                                     <th class="sorting" dmx-on:click="dvUsers.sort('varLName', dvUsers.sort.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="dvUsers.sort.on == 'varLName' && dvUsers.sort.dir == 'asc'" dmx-class:sorting_desc="dvUsers.sort.on == 'varLName' && dvUsers.sort.dir == 'desc'">Last Name</th>
                                     <th class="sorting" dmx-on:click="dvUsers.sort('Email', dvUsers.sort.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="dvUsers.sort.on == 'Email' && dvUsers.sort.dir == 'asc'" dmx-class:sorting_desc="dvUsers.sort.on == 'Email' && dvUsers.sort.dir == 'desc'">Email</th>
@@ -250,8 +250,8 @@
                             </thead>
                             <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="dvUsers.data" id="tableRepeat1">
                                 <tr>
-                                    <td dmx-text="dvUsers.data[$index].varId"></td>
-                                    <td class="align-middle"><button id="btn1" class="btn btn-primary" dmx-on:click="run([{run:{outputType:'text',action:`modEditUser.frmEditUser.reset(true)`}},{run:{outputType:'text',action:`modEditUser.scFetchSingleUser.load({user_id: varId})`}},{run:{outputType:'text',action:`modEditUser.show()`}},{wait:{delay:100}}])">
+                                    <td dmx-text="dvUsers.data[$index].varId" class="visually-hidden"></td>
+                                    <td class="align-middle"><button id="btn1" class="btn btn-primary" dmx-on:click="run([{run:{outputType:'text',action:`modEditUser.frmEditUser.reset(true)`}},{run:{outputType:'text',action:`modEditUser.scFetchSingleUser.load({user_id: varId})`}},{wait:{delay:300}},{run:{outputType:'text',action:`modEditUser.show()`}},{wait:{delay:100}}])">
                                             <i class="fas fa-edit fa-2x" dmx-style:color="'white'"></i>
                                         </button>&nbsp;</td>
                                     <td class="align-middle">

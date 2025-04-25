@@ -38,22 +38,6 @@
         }
       },
       {
-        "name": "role",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{$_SESSION.Ses_Role_Id}}"
-        },
-        "meta": [],
-        "outputType": "text"
-      },
-      {
-        "name": "wait1",
-        "module": "core",
-        "action": "wait",
-        "options": {}
-      },
-      {
         "name": "query",
         "module": "dbconnector",
         "action": "select",
@@ -63,11 +47,11 @@
             "type": "SELECT",
             "columns": [
               {
-                "table": "tbl_roles",
-                "column": "name"
+                "table": "tbl_roles_type",
+                "column": "roleName"
               },
               {
-                "table": "tbl_roles",
+                "table": "tbl_roles_type",
                 "column": "role"
               }
             ],
@@ -81,22 +65,22 @@
               }
             ],
             "table": {
-              "name": "tbl_roles"
+              "name": "tbl_roles_type"
             },
             "primary": "roleId",
             "joins": [],
-            "query": "select `name`, `role` from `tbl_roles` where `tbl_roles`.`role` >= ?",
+            "query": "select `roleName`, `role` from `tbl_roles_type` where `tbl_roles_type`.`role` >= ?",
             "wheres": {
               "condition": "AND",
               "rules": [
                 {
-                  "id": "tbl_roles.role",
-                  "field": "tbl_roles.role",
+                  "id": "tbl_roles_type.role",
+                  "field": "tbl_roles_type.role",
                   "type": "double",
                   "operator": "greater_or_equal",
                   "value": "{{$_SESSION.Ses_Role_Id}}",
                   "data": {
-                    "table": "tbl_roles",
+                    "table": "tbl_roles_type",
                     "column": "role",
                     "type": "number",
                     "columnObj": {
@@ -118,7 +102,7 @@
         "meta": [
           {
             "type": "text",
-            "name": "name"
+            "name": "roleName"
           },
           {
             "type": "number",

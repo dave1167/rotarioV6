@@ -1,0 +1,161 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 300
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_user_rota",
+                "column": "rota"
+              },
+              {
+                "table": "tbl_rota_type",
+                "column": "rotaDesc"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": "2"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{identity}}",
+                "test": "1"
+              }
+            ],
+            "table": {
+              "name": "tbl_user_rota"
+            },
+            "primary": "rotaId",
+            "joins": [
+              {
+                "table": "tbl_rota_type",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_rota_type",
+                      "column": "rotaId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_user_rota",
+                        "column": "rota"
+                      }
+                    }
+                  ]
+                },
+                "primary": "rotaId"
+              }
+            ],
+            "query": "select `tbl_user_rota`.`rota`, `tbl_rota_type`.`rotaDesc` from `tbl_user_rota` inner join `tbl_rota_type` on `tbl_rota_type`.`rotaId` = `tbl_user_rota`.`rota` where `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`userId` = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_user_rota.tenantId",
+                  "field": "tbl_user_rota.tenantId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "tenantId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_user_rota"
+                },
+                {
+                  "id": "tbl_user_rota.userId",
+                  "field": "tbl_user_rota.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{identity}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_user_rota"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "rota"
+          },
+          {
+            "type": "text",
+            "name": "rotaDesc"
+          }
+        ],
+        "outputType": "array",
+        "collapsed": true
+      }
+    ]
+  }
+}

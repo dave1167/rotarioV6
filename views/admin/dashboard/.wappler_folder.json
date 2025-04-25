@@ -1,4 +1,12 @@
 {
+  "testDash.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "dashboard2.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
   "dashboard.ejs": {
     "layoutPage": "admin",
     "description": ""

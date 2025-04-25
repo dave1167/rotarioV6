@@ -22,6 +22,10 @@
       {
         "type": "number",
         "name": "Ses_Role_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_Rota_Id"
       }
     ]
   },

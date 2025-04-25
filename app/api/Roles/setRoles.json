@@ -1,5 +1,21 @@
 [
   {
+    "name": "identity",
+    "module": "auth",
+    "action": "identify",
+    "options": {
+      "provider": "sec"
+    },
+    "output": true,
+    "meta": []
+  },
+  {
+    "name": "wait",
+    "module": "core",
+    "action": "wait",
+    "options": {}
+  },
+  {
     "name": "querySetRole",
     "module": "dbconnector",
     "action": "single",
@@ -9,12 +25,16 @@
         "type": "SELECT",
         "columns": [
           {
-            "table": "tbl_user_tenant",
-            "column": "usrTenId"
+            "table": "tbl_user_rota",
+            "column": "role"
           },
           {
-            "table": "tbl_user_tenant",
-            "column": "role"
+            "table": "tbl_user_rota",
+            "column": "rota"
+          },
+          {
+            "table": "tbl_user_rota",
+            "column": "userId"
           }
         ],
         "params": [
@@ -22,33 +42,53 @@
             "operator": "equal",
             "type": "expression",
             "name": ":P1",
-            "value": "{{$_SESSION.Ses_User_Id}}",
-            "test": ""
+            "value": "{{$_SESSION.Ses_Ten_Id}}",
+            "test": "1"
           },
           {
             "operator": "equal",
             "type": "expression",
             "name": ":P2",
-            "value": "{{$_SESSION.Ses_Ten_Id}}",
-            "test": ""
+            "value": "{{identity}}",
+            "test": "1"
           }
         ],
         "table": {
-          "name": "tbl_user_tenant"
+          "name": "tbl_user_rota"
         },
-        "primary": "usrTenId",
+        "primary": "rotaId",
         "joins": [],
+        "query": "select `role`, `rota`, `userId` from `tbl_user_rota` where `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`userId` = ?",
         "wheres": {
           "condition": "AND",
           "rules": [
             {
-              "id": "tbl_user_tenant.userId",
-              "field": "tbl_user_tenant.userId",
+              "id": "tbl_user_rota.tenantId",
+              "field": "tbl_user_rota.tenantId",
               "type": "double",
               "operator": "equal",
-              "value": "{{$_SESSION.Ses_User_Id}}",
+              "value": "{{$_SESSION.Ses_Ten_Id}}",
               "data": {
-                "table": "tbl_user_tenant",
+                "table": "tbl_user_rota",
+                "column": "tenantId",
+                "type": "number",
+                "columnObj": {
+                  "type": "integer",
+                  "primary": false,
+                  "nullable": true,
+                  "name": "tenantId"
+                }
+              },
+              "operation": "="
+            },
+            {
+              "id": "tbl_user_rota.userId",
+              "field": "tbl_user_rota.userId",
+              "type": "double",
+              "operator": "equal",
+              "value": "{{identity}}",
+              "data": {
+                "table": "tbl_user_rota",
                 "column": "userId",
                 "type": "number",
                 "columnObj": {
@@ -58,49 +98,37 @@
                   "name": "userId"
                 }
               },
-              "operation": "=",
-              "table": "tbl_user_tenant"
-            },
-            {
-              "id": "tbl_user_tenant.tenantId",
-              "field": "tbl_user_tenant.tenantId",
-              "type": "string",
-              "operator": "equal",
-              "value": "{{$_SESSION.Ses_Ten_Id}}",
-              "data": {
-                "table": "tbl_user_tenant",
-                "column": "tenantId",
-                "type": "text",
-                "columnObj": {
-                  "type": "uuid",
-                  "primary": false,
-                  "nullable": true,
-                  "maxLength": 36,
-                  "name": "tenantId"
-                }
-              },
-              "operation": "=",
-              "table": "tbl_user_tenant"
+              "operation": "="
             }
           ],
           "conditional": null,
           "valid": true
-        },
-        "query": "select `usrTenId`, `role` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ? and `tbl_user_tenant`.`tenantId` = ?"
+        }
       }
     },
     "output": true,
     "meta": [
       {
-        "type": "number",
-        "name": "usrTenId"
+        "type": "text",
+        "name": "role"
       },
       {
         "type": "number",
-        "name": "role"
+        "name": "rota"
+      },
+      {
+        "type": "number",
+        "name": "userId"
       }
     ],
-    "outputType": "object"
+    "outputType": "object",
+    "collapsed": true
+  },
+  {
+    "name": "wait1",
+    "module": "core",
+    "action": "wait",
+    "options": {}
   },
   {
     "name": "Ses_Role_Id",
@@ -108,6 +136,7 @@
     "action": "setsession",
     "options": {
       "value": "{{querySetRole.role}}"
-    }
+    },
+    "collapsed": true
   }
 ]

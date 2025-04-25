@@ -53,10 +53,6 @@
               {
                 "table": "tbl_tenants",
                 "column": "tenId"
-              },
-              {
-                "table": "tbl_user_tenant",
-                "column": "role"
               }
             ],
             "params": [
@@ -65,7 +61,7 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{$_SESSION.Ses_User_Id}}",
-                "test": "36"
+                "test": "2"
               }
             ],
             "table": {
@@ -95,7 +91,7 @@
                 "primary": "tenId"
               }
             ],
-            "query": "select `tbl_tenants`.`tenantDesc`, `tbl_user_tenant`.`userId`, `tbl_tenants`.`tenId`, `tbl_user_tenant`.`role` from `tbl_user_tenant` inner join `tbl_tenants` on `tbl_tenants`.`tenId` = `tbl_user_tenant`.`tenantId` where `tbl_user_tenant`.`userId` = ?",
+            "query": "select `tbl_tenants`.`tenantDesc`, `tbl_user_tenant`.`userId`, `tbl_tenants`.`tenId` from `tbl_user_tenant` inner join `tbl_tenants` on `tbl_tenants`.`tenId` = `tbl_user_tenant`.`tenantId` where `tbl_user_tenant`.`userId` = ?",
             "orders": [],
             "wheres": {
               "condition": "AND",
@@ -117,7 +113,8 @@
                       "name": "userId"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "tbl_user_tenant"
                 }
               ],
               "conditional": null,
@@ -136,15 +133,12 @@
             "name": "userId"
           },
           {
-            "type": "text",
-            "name": "tenId"
-          },
-          {
             "type": "number",
-            "name": "role"
+            "name": "tenId"
           }
         ],
-        "outputType": "array"
+        "outputType": "array",
+        "collapsed": true
       }
     ]
   }

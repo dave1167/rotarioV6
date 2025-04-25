@@ -117,17 +117,48 @@
           }
         },
         "name": "role"
+      },
+      {
+        "type": "number",
+        "name": "modifiedBy"
       }
     ],
     "$_SESSION": [
       {
         "type": "text",
         "name": "Ses_Ten_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_Role_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_Rota_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_User_Id"
       }
     ]
   },
   "exec": {
     "steps": [
+      {
+        "name": "",
+        "module": "auth",
+        "action": "restrict",
+        "options": {
+          "provider": "sec",
+          "permissions": [
+            "Adminstrator",
+            "SuperAdmin"
+          ],
+          "loginUrl": "/login",
+          "forbiddenUrl": "/unauthorised"
+        },
+        "disabled": true
+      },
       {
         "name": "identity",
         "module": "auth",
@@ -143,13 +174,14 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{TIMESTAMP.sha1('Q2£ggkXXZs23'.split(10))}}"
+          "value": "{{TIMESTAMP.sha1('Q2£ggkXXZs23')}}"
         },
         "meta": [],
-        "outputType": "text"
+        "outputType": "text",
+        "output": true
       },
       {
-        "name": "insert",
+        "name": "insertUserDets",
         "module": "dbupdater",
         "action": "insert",
         "options": {
@@ -185,7 +217,7 @@
                 "table": "tbl_users",
                 "column": "password",
                 "type": "text",
-                "value": "{{$_POST.password}}"
+                "value": "{{$_POST.password.sha512('q2WC%kkxZ34v')}}"
               },
               {
                 "table": "tbl_users",
@@ -204,11 +236,17 @@
                 "column": "modifiedBy",
                 "type": "number",
                 "value": "{{identity}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "imageName",
+                "type": "text",
+                "value": "dummy"
               }
             ],
             "table": "tbl_users",
             "returning": "userId",
-            "query": "insert into `tbl_users` (`dateModified`, `email`, `fName`, `joinDate`, `lName`, `modifiedBy`, `password`, `userName`) values (?, ?, ?, ?, ?, ?, ?, ?)",
+            "query": "insert into `tbl_users` (`dateModified`, `email`, `fName`, `imageName`, `joinDate`, `lName`, `modifiedBy`, `password`, `userName`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
             "params": [
               {
                 "name": ":P1",
@@ -237,7 +275,7 @@
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{$_POST.password}}",
+                "value": "{{$_POST.password.sha512('q2WC%kkxZ34v')}}",
                 "test": ""
               },
               {
@@ -271,6 +309,35 @@
             "type": "number"
           }
         ],
+        "collapsed": true,
+        "output": true
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 1500
+        }
+      },
+      {
+        "name": "userID",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{insertUserDets.identity}}"
+        },
+        "meta": [],
+        "outputType": "number",
+        "output": true
+      },
+      {
+        "name": "wait_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 1500
+        },
         "collapsed": true
       },
       {
@@ -292,11 +359,10 @@
                 "table": "tbl_ek",
                 "column": "userId",
                 "type": "number",
-                "value": "{{insert.identity}}"
+                "value": "{{userID}}"
               }
             ],
             "table": "tbl_ek",
-            "returning": "ekId",
             "query": "insert into `tbl_ek` (`key`, `userId`) values (?, ?)",
             "params": [
               {
@@ -308,7 +374,7 @@
               {
                 "name": ":P2",
                 "type": "expression",
-                "value": "{{insert.identity}}",
+                "value": "{{userID}}",
                 "test": ""
               }
             ]
@@ -339,17 +405,42 @@
                 "table": "tbl_user_dets",
                 "column": "userId",
                 "type": "number",
-                "value": "{{insert.identity}}"
+                "value": "{{userID}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "modifiedBy",
+                "type": "number",
+                "value": "{{$_POST.modifiedBy}}",
+                "condition": "{{identity}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "dateModified",
+                "type": "text",
+                "value": "{{NOW}}"
               }
             ],
             "table": "tbl_user_dets",
             "returning": "usrDetsId",
-            "query": "insert into `tbl_user_dets` (`userId`) values (?)",
+            "query": "insert into `tbl_user_dets` (`dateModified`, `modifiedBy`, `userId`) values (?, ?, ?)",
             "params": [
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{insert.identity}}",
+                "value": "{{userID}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.modifiedBy}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{NOW}}",
                 "test": ""
               }
             ]
@@ -380,19 +471,13 @@
                 "table": "tbl_user_tenant",
                 "column": "userId",
                 "type": "number",
-                "value": "{{insert.identity}}"
+                "value": "{{userID}}"
               },
               {
                 "table": "tbl_user_tenant",
                 "column": "tenantId",
                 "type": "text",
                 "value": "{{$_SESSION.Ses_Ten_Id}}"
-              },
-              {
-                "table": "tbl_user_tenant",
-                "column": "role",
-                "type": "number",
-                "value": "{{$_POST.role}}"
               },
               {
                 "table": "tbl_user_tenant",
@@ -409,12 +494,12 @@
             ],
             "table": "tbl_user_tenant",
             "returning": "usrTenId",
-            "query": "insert into `tbl_user_tenant` (`modifedBy`, `modifiedDate`, `role`, `tenantId`, `userId`) values (?, ?, ?, ?, ?)",
+            "query": "insert into `tbl_user_tenant` (`modifedBy`, `modifiedDate`, `tenantId`, `userId`) values (?, ?, ?, ?)",
             "params": [
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{insert.identity}}",
+                "value": "{{userID}}",
                 "test": ""
               },
               {
@@ -426,17 +511,11 @@
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.role}}",
-                "test": ""
-              },
-              {
-                "name": ":P4",
-                "type": "expression",
                 "value": "{{identity}}",
                 "test": ""
               },
               {
-                "name": ":P5",
+                "name": ":P4",
                 "type": "expression",
                 "value": "{{NOW}}",
                 "test": ""
@@ -453,7 +532,109 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "collapsed": true
+      },
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "tbl_user_rota",
+                "column": "tenantId",
+                "type": "number",
+                "value": "{{$_SESSION.Ses_Ten_Id}}"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "rota",
+                "type": "number",
+                "value": "{{$_SESSION.Ses_Rota_Id}}"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "modifiedDate",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "modifiedBy",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "userId",
+                "type": "number",
+                "value": "{{userID}}"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "role",
+                "type": "number",
+                "value": "{{$_SESSION.Ses_Role_Id}}"
+              }
+            ],
+            "table": "tbl_user_rota",
+            "returning": "rotaId",
+            "query": "insert into `tbl_user_rota` (`modifiedBy`, `modifiedDate`, `role`, `rota`, `tenantId`, `userId`) values (?, ?, ?, ?, ?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_SESSION.Ses_Rota_Id}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{userID}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_SESSION.Ses_Role_Id}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "collapsed": true
       }
     ]
   }

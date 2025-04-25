@@ -1,0 +1,11 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="test" appConnect="local" -->
+<meta name="ac:route" content="/admin/user/test">
+<dmx-serverconnect id="serverconnect1" url="/api/Rota/rotaCount" noload="true"></dmx-serverconnect>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <input id="text1" name="text1" type="text" class="form-control" dmx-bind:value="serverconnect1.data.query[0].rotacount">
+            <button id="btn1" class="btn" dmx-on:click="serverconnect1.load({})">Button</button>
+        </div>
+    </div>
+</div>

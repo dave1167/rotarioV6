@@ -1,0 +1,15 @@
+{
+  "name": "db",
+  "module": "dbconnector",
+  "action": "connect",
+  "options": {
+    "client": "mysql2",
+    "connection": {
+      "host": "db",
+      "port": 3306,
+      "user": "db_user",
+      "password": "dGIU3gXi",
+      "database": "rotario_v7"
+    }
+  }
+}

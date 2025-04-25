@@ -81,6 +81,44 @@
         "options": {}
       },
       {
+        "name": "Ses_Ten_Id",
+        "module": "core",
+        "action": "removesession",
+        "options": {}
+      },
+      {
+        "name": "Ses_Role_Id",
+        "module": "core",
+        "action": "removesession",
+        "options": {},
+        "collapsed": true
+      },
+      {
+        "name": "Ses_Rota_Id",
+        "module": "core",
+        "action": "removesession",
+        "options": {},
+        "collapsed": true
+      },
+      {
+        "name": "wait1",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 500
+        }
+      },
+      {
+        "name": "identity1",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
         "name": "Ses_User_Id",
         "module": "core",
         "action": "setsession",
@@ -92,7 +130,8 @@
         "name": "wait",
         "module": "core",
         "action": "wait",
-        "options": {}
+        "options": {},
+        "disabled": true
       }
     ]
   }

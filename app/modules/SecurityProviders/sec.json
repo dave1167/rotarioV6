@@ -15,7 +15,7 @@
     },
     "permissions": {
       "SuperAdmin": {
-        "table": "tbl_user_tenant",
+        "table": "tbl_user_rota",
         "identity": "userId",
         "conditions": [
           {
@@ -26,7 +26,7 @@
         ]
       },
       "All Users": {
-        "table": "tbl_user_tenant",
+        "table": "tbl_user_rota",
         "identity": "userId",
         "conditions": [
           {
@@ -37,7 +37,7 @@
         ]
       },
       "Adminstrator": {
-        "table": "tbl_user_tenant",
+        "table": "tbl_user_rota",
         "identity": "userId",
         "conditions": [
           {

@@ -226,6 +226,81 @@
         "meta": [],
         "outputType": "text",
         "output": true
+      },
+      {
+        "name": "qryRotaName",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_rota_type",
+                "column": "rotaId"
+              },
+              {
+                "table": "tbl_rota_type",
+                "column": "rotaDesc"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Rota_Id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_rota_type"
+            },
+            "primary": "rotaId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_rota_type.rotaId",
+                  "field": "tbl_rota_type.rotaId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Rota_Id}}",
+                  "data": {
+                    "table": "tbl_rota_type",
+                    "column": "rotaId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "rotaId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `rotaId`, `rotaDesc` from `tbl_rota_type` where `tbl_rota_type`.`rotaId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "rotaId"
+          },
+          {
+            "type": "text",
+            "name": "rotaDesc"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
       }
     ]
   }

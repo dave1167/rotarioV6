@@ -21,10 +21,6 @@
           {
             "table": "tbl_user_tenant",
             "column": "userId"
-          },
-          {
-            "table": "tbl_user_tenant",
-            "column": "role"
           }
         ],
         "params": [
@@ -67,25 +63,22 @@
           "conditional": null,
           "valid": true
         },
-        "query": "select `tenantId`, `userId`, `role` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ?"
+        "query": "select `tenantId`, `userId` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ?"
       }
     },
     "output": true,
     "meta": [
       {
-        "type": "text",
+        "type": "number",
         "name": "tenantId"
       },
       {
         "type": "number",
         "name": "userId"
-      },
-      {
-        "type": "number",
-        "name": "role"
       }
     ],
-    "outputType": "object"
+    "outputType": "object",
+    "collapsed": true
   },
   {
     "name": "",

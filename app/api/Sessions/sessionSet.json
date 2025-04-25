@@ -39,23 +39,23 @@
         "name": "Ses_Role_Id",
         "module": "core",
         "action": "removesession",
-        "options": {}
+        "options": {},
+        "disabled": true
       },
       {
         "name": "Ses_Ten_Id",
         "module": "core",
         "action": "removesession",
         "options": {},
-        "collapsed": true
+        "disabled": true
       },
       {
-        "name": "wait_copy_copy",
+        "name": "wait",
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 400
-        },
-        "collapsed": true
+          "delay": 200
+        }
       },
       {
         "name": "Ses_Ten_Id",
@@ -63,17 +63,15 @@
         "action": "setsession",
         "options": {
           "value": "{{$_POST.inp_tnt}}"
-        },
-        "collapsed": true
+        }
       },
       {
-        "name": "wait_copy",
+        "name": "wait",
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 500
-        },
-        "collapsed": true
+          "delay": 300
+        }
       }
     ]
   }
