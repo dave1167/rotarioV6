@@ -1,0 +1,6 @@
+{
+  "name": "Sess_Ten_Id",
+  "module": "core",
+  "action": "setsession",
+  "options": {}
+}

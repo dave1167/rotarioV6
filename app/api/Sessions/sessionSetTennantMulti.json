@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/login2.ejs",
+      "linkedForm": "form1"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "tntid"
+      }
+    ],
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inpTenId",
+        "name": "inpTenId"
+      },
+      {
+        "type": "text",
+        "fieldName": "select1",
+        "name": "select1"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 200
+        }
+      },
+      {
+        "name": "Ses_Ten_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{$_POST.inpTenId}}"
+        }
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 300
+        }
+      }
+    ]
+  }
+}

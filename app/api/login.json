@@ -1,63 +1,19 @@
 {
   "meta": {
     "options": {
-      "linkedFile": "/views/login.ejs",
+      "linkedFile": "/views/login2.ejs",
       "linkedForm": "login1"
     },
     "$_POST": [
       {
         "type": "text",
-        "fieldName": "email",
-        "options": {
-          "rules": {
-            "core:email": {
-              "message": "Please enter a valid email address"
-            }
-          }
-        },
-        "name": "email"
+        "fieldName": "inp_user_name",
+        "name": "inp_user_name"
       },
       {
         "type": "text",
         "fieldName": "password",
-        "options": {
-          "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Password is required"
-            },
-            "core:minlength": {
-              "param": "6",
-              "message": "Password must be at least 6 characters"
-            }
-          }
-        },
         "name": "password"
-      },
-      {
-        "type": "text",
-        "fieldName": "remember",
-        "name": "remember"
-      },
-      {
-        "type": "text",
-        "fieldName": "username",
-        "options": {
-          "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Username is required"
-            },
-            "core:minlength": {
-              "param": "3",
-              "message": "Username must be at least 3 characters"
-            },
-            "core:alphanumeric": {
-              "message": "Username can only contain letters, numbers and underscores"
-            }
-          }
-        },
-        "name": "username"
       }
     ]
   },
@@ -68,11 +24,20 @@
         "module": "auth",
         "action": "login",
         "options": {
-          "provider": "sec"
+          "provider": "sec",
+          "username": "{{$_POST.inp_user_name}}"
         },
         "output": true,
         "meta": [],
         "collapsed": true
+      },
+      {
+        "name": "wait1",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 500
+        }
       },
       {
         "name": "Ses_User_Id",
@@ -101,7 +66,7 @@
         "collapsed": true
       },
       {
-        "name": "wait1",
+        "name": "wait",
         "module": "core",
         "action": "wait",
         "options": {
@@ -125,13 +90,6 @@
         "options": {
           "value": "{{identity}}"
         }
-      },
-      {
-        "name": "wait",
-        "module": "core",
-        "action": "wait",
-        "options": {},
-        "disabled": true
       }
     ]
   }

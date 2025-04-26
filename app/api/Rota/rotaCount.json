@@ -81,7 +81,8 @@
                       "name": "userId"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "tbl_user_rota"
                 },
                 {
                   "id": "tbl_user_rota.tenantId",
@@ -100,7 +101,8 @@
                       "name": "tenantId"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "tbl_user_rota"
                 }
               ],
               "conditional": null,

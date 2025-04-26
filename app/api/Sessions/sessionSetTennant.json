@@ -1,13 +1,35 @@
 {
   "meta": {
+    "options": {
+      "linkedFile": "/views/login.ejs",
+      "linkedForm": "form1Select"
+    },
     "$_GET": [
       {
         "type": "text",
-        "name": "sort"
+        "name": "tntid"
+      }
+    ],
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inp_tnt",
+        "name": "inp_tnt"
       },
       {
         "type": "text",
-        "name": "dir"
+        "fieldName": "tenantId",
+        "name": "tenantId"
+      },
+      {
+        "type": "number",
+        "fieldName": "inp_role",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inp_role"
       }
     ]
   },
@@ -24,11 +46,11 @@
         "meta": []
       },
       {
-        "name": "wait",
+        "name": "wait_copy_copy_copy",
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 100
+          "delay": 200
         }
       },
       {
@@ -41,12 +63,12 @@
             "type": "SELECT",
             "columns": [
               {
-                "table": "tbl_tenants",
-                "column": "tenantDesc"
+                "table": "tbl_user_tenant",
+                "column": "userId"
               },
               {
-                "table": "tbl_tenants",
-                "column": "tenId"
+                "table": "tbl_user_tenant",
+                "column": "tenantId"
               }
             ],
             "params": [
@@ -55,37 +77,14 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{identity}}",
-                "test": "1"
+                "test": "55"
               }
             ],
             "table": {
               "name": "tbl_user_tenant"
             },
             "primary": "usrTenId",
-            "joins": [
-              {
-                "table": "tbl_tenants",
-                "column": "*",
-                "type": "INNER",
-                "clauses": {
-                  "condition": "AND",
-                  "rules": [
-                    {
-                      "table": "tbl_tenants",
-                      "column": "tenId",
-                      "operator": "equal",
-                      "operation": "=",
-                      "value": {
-                        "table": "tbl_user_tenant",
-                        "column": "tenantId"
-                      }
-                    }
-                  ]
-                },
-                "primary": "tenId"
-              }
-            ],
-            "query": "select `tbl_tenants`.`tenantDesc`, `tbl_tenants`.`tenId` from `tbl_user_tenant` inner join `tbl_tenants` on `tbl_tenants`.`tenId` = `tbl_user_tenant`.`tenantId` where `tbl_user_tenant`.`userId` = ?",
+            "joins": [],
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -112,22 +111,46 @@
               ],
               "conditional": null,
               "valid": true
-            }
+            },
+            "query": "select `userId`, `tenantId` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ?"
           }
         },
         "output": true,
         "meta": [
           {
-            "type": "text",
-            "name": "tenantDesc"
+            "type": "number",
+            "name": "userId"
           },
           {
             "type": "number",
-            "name": "tenId"
+            "name": "tenantId"
           }
         ],
-        "outputType": "object",
-        "collapsed": true
+        "outputType": "object"
+      },
+      {
+        "name": "wait_copy_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 1200
+        }
+      },
+      {
+        "name": "Ses_Ten_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{query.tenantId}}"
+        }
+      },
+      {
+        "name": "wait_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 1300
+        }
       }
     ]
   }

@@ -63,6 +63,11 @@
       "path": "/admin/user/test",
       "page": "admin/user/test",
       "layout": "admin"
+    },
+    {
+      "path": "/login2",
+      "page": "login2",
+      "layout": "main"
     }
   ]
 }

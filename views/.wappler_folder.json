@@ -14,5 +14,9 @@
   "unauthorised.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "login2.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

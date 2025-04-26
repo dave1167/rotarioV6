@@ -1,0 +1,68 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="login2" appConnect="local" components="{dmxBootstrap5Modal:{},dmxBrowser:{}}" -->
+<div is="dmx-browser" id="browser1"></div>
+<dmx-serverconnect id="scGetTntbyUser" url="/api/Tenants/getTentByUser"></dmx-serverconnect>
+<dmx-serverconnect id="scTenantCount" url="/api/Tenants/tenantCount"></dmx-serverconnect>
+<div class="modal fade" id="modMultiTenant" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-white bg-primary">
+                <h5 class="modal-title">Select Organisation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Sessions/sessionSetTennantMulti" dmx-on:success="browser1.goto('/admin/dashboard/dashboard')">
+
+                            <div class="form-group mb-3">
+                                <label for="select1" class="form-label">Select Organisation</label>
+                                <select id="select1" class="form-select" dmx-bind:options="scGetTntbyUser.data.query" optiontext="tenantDesc" optionvalue="tenId">
+                                    <option value="">Choose the organisation</option>
+                                </select>
+                                <input id="inpTenId" name="inpTenId" type="text" class="form-control" dmx-bind:value="select1.selectedValue">
+                            </div>
+                            <div class="row">
+                                <div class="col"><button type="submit" class="btn btn-primary">Save changes</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<meta name="ac:route" content="/login2">
+<div class="container">
+    <form id="login1" method="post" is="dmx-serverconnect-form" action="/api/login" dmx-on:success="run([{run:{outputType:'text',action:`scTenantCount.load({})`}},{condition:{outputType:'boolean',if:`scTenantCount.data.query[0].TenantCount&gt;1`,then:{steps:{run:{outputType:'text',action:`modMultiTenant.show()`}}}}}])">
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-7 col-xl-5 text-start">
+                <div class="row">
+                    <div class="col">
+                        <h1>Log In</h1>
+                        <p class="text-h3">Enter your details below.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col mt-4">
+                        <input type="text" id="inp_user_name" name="inp_user_name" class="form-control">
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col">
+                        <input type="password" id="inp_password" name="password" class="form-control" placeholder="Password">
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col">
+                        <button id="login1_submit" class="btn btn-success" type="submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
