@@ -50,9 +50,10 @@
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 200
+          "delay": 500
         },
-        "collapsed": true
+        "collapsed": true,
+        "disabled": true
       },
       {
         "name": "query",
@@ -103,18 +104,23 @@
                       "type": "integer",
                       "primary": false,
                       "nullable": true,
+                      "references": "userId",
+                      "inTable": "tbl_users",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "CASCADE",
                       "name": "userId"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_user_tenant"
+                  "operation": "="
                 }
               ],
               "conditional": null,
               "valid": true
             },
             "query": "select `userId`, `tenantId` from `tbl_user_tenant` where `tbl_user_tenant`.`userId` = ?"
-          }
+          },
+          "test": true
         },
         "output": true,
         "meta": [
@@ -128,14 +134,15 @@
           }
         ],
         "outputType": "object",
-        "collapsed": true
+        "collapsed": true,
+        "disabled": true
       },
       {
         "name": "wait_copy_copy",
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 1200
+          "delay": 500
         },
         "collapsed": true
       },
@@ -144,7 +151,7 @@
         "module": "core",
         "action": "setsession",
         "options": {
-          "value": "{{query.tenantId}}"
+          "value": "{{$_GET.tntid}}"
         },
         "collapsed": true
       },
@@ -153,7 +160,7 @@
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 1300
+          "delay": 500
         },
         "collapsed": true
       }

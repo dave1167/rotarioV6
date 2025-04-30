@@ -7,7 +7,7 @@
     "permissions": [
       "All Users"
     ],
-    "loginUrl": "/login",
+    "loginUrl": "/login2",
     "forbiddenUrl": "/unauthorised"
   }
 }

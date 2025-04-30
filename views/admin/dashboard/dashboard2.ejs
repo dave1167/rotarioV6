@@ -1,15 +1,18 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appConnect="local" --><!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local" -->
-<dmx-serverconnect id="scFetchSessions" url="/api/Sessions/getSessions"></dmx-serverconnect>
-<dmx-serverconnect id="serverconnect1" url="/api/Sessions/headerInfo"></dmx-serverconnect>
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local" dmx-on:ready="scFetchSessions.load({})" --><!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local" -->
+<dmx-serverconnect id="scFetchSessions" url="/api/Sessions/getSessions" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="serverconnect1" url="/api/Sessions/sessionSetRotaSingle" dmx-param:user_id="serverconnect1.data.identity" dmx-param:tntid="serverconnect1.data.vartenant"></dmx-serverconnect>
 <meta name="ac:route" content="/admin/dashboard/dashboard2">
 <div class="container">
     <div class="row">
         <div class="col">
+
             <h1>Dashboard</h1>
-            <p>Ten Id {{scFetchSessions.data.tntId}}&nbsp; : {{scFetchSessions.data.qryHeadTen.tenantDesc}}</p>
-            <p>Role Id {{scFetchSessions.data.roleId}}</p>
-            <p>User Id {{scFetchSessions.data.userId}}</p>
-            <p>Rota Id: {{scFetchSessions.data.rotaId}}&nbsp; {{scFetchSessions.data.qryHeadRota.rotaDesc}}</p>
+            <input id="text1" name="text1" type="text" class="form-control" dmx-bind:value="scSession.data.tntId">
+            <input id="text1" name="text1" type="text" class="form-control" dmx-bind:value="scSession.data.rotaId">
+            <p>Ten Id : {{scFetchSessions.data.tntId}}</p>
+            <p>Role Id : {{scFetchSessions.data.roleId}}</p>
+            <p>User Id :{{scFetchSessions.data.userId}}</p>
+            <p>Rota Id: {{scFetchSessions.data.rotaId}}&nbsp; alt {{serverconnect1.data.query.rota}}</p>
         </div>
     </div>
 </div>

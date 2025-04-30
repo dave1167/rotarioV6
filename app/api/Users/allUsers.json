@@ -34,42 +34,40 @@
             "distinct": false,
             "columns": [
               {
+                "table": "tbl_users",
+                "column": "fName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "joinDate"
+              },
+              {
                 "table": "tbl_ek",
-                "column": "key",
-                "field": "tbl_ek.key"
+                "column": "key"
+              },
+              {
+                "table": "tbl_roles_type",
+                "column": "roleName"
               },
               {
                 "table": "tbl_users",
-                "column": "fName",
-                "field": "tbl_users.fName"
+                "column": "imageName"
               },
               {
                 "table": "tbl_users",
-                "column": "lName",
-                "field": "tbl_users.lName"
+                "column": "email"
               },
               {
-                "table": "tbl_users",
-                "column": "email",
-                "field": "tbl_users.email"
-              },
-              {
-                "table": "tbl_users",
-                "column": "joinDate",
-                "field": "tbl_users.joinDate"
-              },
-              {
-                "table": "tbl_users",
-                "column": "imageName",
-                "field": "tbl_users.imageName"
-              },
-              {
-                "table": "tbl_user_tenant",
+                "table": "tbl_user_rota",
                 "column": "userId"
               }
             ],
             "table": {
-              "name": "tbl_user_tenant"
+              "name": "tbl_user_rota"
             },
             "joins": [
               {
@@ -82,13 +80,11 @@
                     {
                       "table": "tbl_users",
                       "column": "userId",
-                      "field": "tbl_users.userId",
-                      "operation": "=",
                       "operator": "equal",
+                      "operation": "=",
                       "value": {
-                        "table": "tbl_user_tenant",
-                        "column": "userId",
-                        "field": "tbl_user_tenant.userId"
+                        "table": "tbl_user_rota",
+                        "column": "userId"
                       }
                     }
                   ]
@@ -105,17 +101,37 @@
                     {
                       "table": "tbl_ek",
                       "column": "userId",
-                      "field": "tbl_ek.userId",
-                      "operation": "=",
                       "operator": "equal",
+                      "operation": "=",
                       "value": {
-                        "table": "tbl_user_tenant",
-                        "column": "userId",
-                        "field": "tbl_user_tenant.userId"
+                        "table": "tbl_user_rota",
+                        "column": "userId"
                       }
                     }
                   ]
-                }
+                },
+                "primary": "ekId"
+              },
+              {
+                "table": "tbl_roles_type",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_roles_type",
+                      "column": "role",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_user_rota",
+                        "column": "role"
+                      }
+                    }
+                  ]
+                },
+                "primary": "roleId"
               }
             ],
             "orders": [],
@@ -126,32 +142,59 @@
                 "name": ":P1",
                 "value": "{{$_SESSION.Ses_Ten_Id}}",
                 "test": "2"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_SESSION.Ses_Rota_Id}}",
+                "test": "1"
               }
             ],
-            "primary": "usrTenId",
-            "query": "select `tbl_ek`.`key`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`email`, `tbl_users`.`joinDate`, `tbl_users`.`imageName`, `tbl_user_tenant`.`userId` from `tbl_user_tenant` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_tenant`.`userId` where `tbl_user_tenant`.`tenantId` = ?",
+            "primary": "rotaId",
+            "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`joinDate`, `tbl_ek`.`key`, `tbl_roles_type`.`roleName`, `tbl_users`.`imageName`, `tbl_users`.`email`, `tbl_user_rota`.`userId` from `tbl_user_rota` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_roles_type` on `tbl_roles_type`.`role` = `tbl_user_rota`.`role` where `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`rota` = ?",
             "wheres": {
               "condition": "AND",
               "rules": [
                 {
-                  "id": "tbl_user_tenant.tenantId",
-                  "field": "tbl_user_tenant.tenantId",
+                  "id": "tbl_user_rota.tenantId",
+                  "field": "tbl_user_rota.tenantId",
                   "type": "double",
                   "operator": "equal",
                   "value": "{{$_SESSION.Ses_Ten_Id}}",
                   "data": {
-                    "table": "tbl_user_tenant",
+                    "table": "tbl_user_rota",
                     "column": "tenantId",
                     "type": "number",
                     "columnObj": {
                       "type": "integer",
                       "primary": false,
                       "nullable": true,
-                      "maxLength": 36,
                       "name": "tenantId"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "tbl_user_rota"
+                },
+                {
+                  "id": "tbl_user_rota.rota",
+                  "field": "tbl_user_rota.rota",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Rota_Id}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "rota",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "rota"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_user_rota"
                 }
               ],
               "conditional": null,
@@ -163,10 +206,6 @@
         "meta": [
           {
             "type": "text",
-            "name": "key"
-          },
-          {
-            "type": "text",
             "name": "fName"
           },
           {
@@ -174,16 +213,24 @@
             "name": "lName"
           },
           {
-            "type": "text",
-            "name": "email"
-          },
-          {
             "type": "date",
             "name": "joinDate"
           },
           {
             "type": "text",
+            "name": "key"
+          },
+          {
+            "type": "text",
+            "name": "roleName"
+          },
+          {
+            "type": "text",
             "name": "imageName"
+          },
+          {
+            "type": "text",
+            "name": "email"
           },
           {
             "type": "number",
@@ -263,11 +310,12 @@
                 "module": "core",
                 "action": "setvalue",
                 "options": {
-                  "value": "{{query[$index].name}}"
+                  "value": "{{query[$index].roleName}}"
                 },
                 "meta": [],
                 "outputType": "text",
-                "output": true
+                "output": true,
+                "collapsed": true
               },
               {
                 "name": "varImage",
@@ -302,10 +350,6 @@
             "type": "object"
           },
           {
-            "name": "key",
-            "type": "text"
-          },
-          {
             "name": "fName",
             "type": "text"
           },
@@ -314,15 +358,23 @@
             "type": "text"
           },
           {
-            "name": "email",
-            "type": "text"
-          },
-          {
             "name": "joinDate",
             "type": "date"
           },
           {
+            "name": "key",
+            "type": "text"
+          },
+          {
+            "name": "roleName",
+            "type": "text"
+          },
+          {
             "name": "imageName",
+            "type": "text"
+          },
+          {
+            "name": "email",
             "type": "text"
           },
           {

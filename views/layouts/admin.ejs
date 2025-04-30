@@ -86,11 +86,14 @@
   <script src="/dmxAppConnect/dmxBootbox5/bootstrap-modbox.min.js" defer></script>
   <script src="/dmxAppConnect/dmxBootbox5/dmxBootbox5.js" defer></script>
   <script src="/dmxAppConnect/dmxDataStore/dmxDatastore.js" defer></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" defer></script>
+  <script src="/dmxAppConnect/dmxLeafletMaps/dmxLeafletMaps.js" defer></script>
 </head>
 
 <body is="dmx-app" id="admin" class="bg-light" dmx-on:ready="scHeaderInfo.load({});scOrgName.load({})">
-  <dmx-serverconnect id="scSession" url="/api/Sessions/getSessions"></dmx-serverconnect>
-  <dmx-serverconnect id="scHeaderInfo" url="/api/Sessions/headerInfo"></dmx-serverconnect>
+  <dmx-serverconnect id="scSession" url="/api/Sessions/getSessions" noload="true"></dmx-serverconnect>
+  <dmx-serverconnect id="scHeaderInfo" url="/api/Sessions/headerInfo" noload="true"></dmx-serverconnect>
   <dmx-serverconnect id="scOrgName" url="/api/Sessions/headerOrgInfo"></dmx-serverconnect>
 
   <dmx-local-manager id="local1"></dmx-local-manager>
@@ -109,8 +112,6 @@
             <i class="fas fa-bars"></i>
           </button>
           <a class="navbar-brand d-flex align-items-center" href="/admin">
-            <i class="fas fa-cube me-2"></i>
-            <span class="fw-bold">Rotario</span>
           </a>
         </div>
         <div class="ms-auto text-white text-end">
@@ -139,7 +140,7 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-            <li><a class="dropdown-item text-danger" dmx-on:click="local1.set('loggedIn',0);scLogOut.load({});browser1.goto('/login')"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+            <li><a class="dropdown-item text-danger" dmx-on:click="local1.set('loggedIn',0);scLogOut.load({});browser1.goto('/login2')"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
           </ul>
         </div>
       </div>

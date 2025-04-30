@@ -318,5 +318,56 @@ dmx.config({
         "name": "encrypt"
       }
     ]
+  },
+  "dashboard": {
+    "data_view1": {
+      "meta": [
+        {
+          "name": "tntId",
+          "type": "number",
+          "sub": []
+        },
+        {
+          "name": "roleId",
+          "type": "number",
+          "sub": []
+        },
+        {
+          "name": "userId",
+          "type": "number",
+          "sub": []
+        },
+        {
+          "name": "rotaId",
+          "type": "number",
+          "sub": []
+        },
+        {
+          "name": "qryHeadTen",
+          "type": "object",
+          "sub": [
+            {
+              "type": "text",
+              "name": "tenantDesc"
+            }
+          ]
+        },
+        {
+          "name": "qryHeadRota",
+          "type": "object",
+          "sub": [
+            {
+              "type": "number",
+              "name": "tentantId"
+            },
+            {
+              "type": "text",
+              "name": "rotaDesc"
+            }
+          ]
+        }
+      ],
+      "outputType": "object"
+    }
   }
 });

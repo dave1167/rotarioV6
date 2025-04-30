@@ -24,6 +24,24 @@
         "meta": []
       },
       {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 400
+        }
+      },
+      {
+        "name": "tenId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_SESSION.Ses_Ten_Id}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
         "name": "query",
         "module": "dbconnector",
         "action": "select",
@@ -44,14 +62,14 @@
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{$_SESSION.Ses_User_Id}}",
+                "value": "{{identity}}",
                 "test": "1"
               },
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P2",
-                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "value": "{{tenId}}",
                 "test": "1"
               }
             ],
@@ -69,7 +87,7 @@
                   "field": "tbl_user_rota.userId",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{$_SESSION.Ses_User_Id}}",
+                  "value": "{{identity}}",
                   "data": {
                     "table": "tbl_user_rota",
                     "column": "userId",
@@ -81,15 +99,14 @@
                       "name": "userId"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_user_rota"
+                  "operation": "="
                 },
                 {
                   "id": "tbl_user_rota.tenantId",
                   "field": "tbl_user_rota.tenantId",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "value": "{{tenId}}",
                   "data": {
                     "table": "tbl_user_rota",
                     "column": "tenantId",
@@ -101,8 +118,7 @@
                       "name": "tenantId"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_user_rota"
+                  "operation": "="
                 }
               ],
               "conditional": null,

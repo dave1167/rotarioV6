@@ -113,7 +113,6 @@
             "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_ek`.`key` from `tbl_users` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?"
           }
         },
-        "output": true,
         "meta": [
           {
             "type": "text",

@@ -35,9 +35,7 @@
         "name": "wait1",
         "module": "core",
         "action": "wait",
-        "options": {
-          "delay": 500
-        }
+        "options": {}
       },
       {
         "name": "Ses_User_Id",

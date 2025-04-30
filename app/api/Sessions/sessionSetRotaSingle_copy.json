@@ -64,18 +64,7 @@
         "meta": []
       },
       {
-        "name": "varId",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{identity}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
-      },
-      {
-        "name": "vartenant",
+        "name": "varTenId",
         "module": "core",
         "action": "setvalue",
         "options": {
@@ -83,15 +72,14 @@
         },
         "meta": [],
         "outputType": "text",
-        "output": true,
-        "collapsed": true
+        "output": true
       },
       {
         "name": "wait_copy_copy",
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 3000
+          "delay": 900
         },
         "collapsed": true
       },
@@ -122,14 +110,14 @@
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{$_GET.tntid}}",
+                "value": "{{varTenId}}",
                 "test": "1"
               },
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P2",
-                "value": "{{$_GET.user_id}}",
+                "value": "{{identity}}",
                 "test": "55"
               }
             ],
@@ -146,7 +134,7 @@
                   "field": "tbl_user_rota.tenantId",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{$_GET.tntid}}",
+                  "value": "{{varTenId}}",
                   "data": {
                     "table": "tbl_user_rota",
                     "column": "tenantId",
@@ -158,15 +146,14 @@
                       "name": "tenantId"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_user_rota"
+                  "operation": "="
                 },
                 {
                   "id": "tbl_user_rota.userId",
                   "field": "tbl_user_rota.userId",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{$_GET.user_id}}",
+                  "value": "{{identity}}",
                   "data": {
                     "table": "tbl_user_rota",
                     "column": "userId",
@@ -178,8 +165,7 @@
                       "name": "userId"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_user_rota"
+                  "operation": "="
                 }
               ],
               "conditional": null,
@@ -211,7 +197,7 @@
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 2900
+          "delay": 900
         },
         "collapsed": true
       },
@@ -220,7 +206,7 @@
         "module": "core",
         "action": "setsession",
         "options": {
-          "value": 1
+          "value": "{{query.rota}}"
         },
         "collapsed": true
       },
@@ -229,7 +215,7 @@
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 2900
+          "delay": 900
         },
         "collapsed": true
       },

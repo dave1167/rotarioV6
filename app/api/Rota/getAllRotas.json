@@ -28,7 +28,7 @@
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 300
+          "delay": 800
         }
       },
       {

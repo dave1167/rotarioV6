@@ -1,13 +1,5 @@
 [
   {
-    "name": "wait",
-    "module": "core",
-    "action": "wait",
-    "options": {
-      "delay": 1500
-    }
-  },
-  {
     "name": "tntId",
     "module": "core",
     "action": "setvalue",
@@ -29,6 +21,15 @@
     "outputType": "number",
     "collapsed": true,
     "output": true
+  },
+  {
+    "name": "wait_copy",
+    "module": "core",
+    "action": "wait",
+    "options": {
+      "delay": 800
+    },
+    "collapsed": true
   },
   {
     "name": "userId",
@@ -53,6 +54,14 @@
     "outputType": "number",
     "collapsed": true,
     "output": true
+  },
+  {
+    "name": "wait",
+    "module": "core",
+    "action": "wait",
+    "options": {
+      "delay": 800
+    }
   },
   {
     "name": "",
@@ -127,6 +136,15 @@
       }
     ],
     "outputType": "object",
+    "collapsed": true
+  },
+  {
+    "name": "wait_copy",
+    "module": "core",
+    "action": "wait",
+    "options": {
+      "delay": 800
+    },
     "collapsed": true
   },
   {

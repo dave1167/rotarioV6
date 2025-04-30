@@ -12,10 +12,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form is="dmx-serverconnect-form" id="profileImageForm" method="post" action="/api/Users/uploadProfileImage" dmx-on:success="modProfileImage.hide();scUserDets.load()">
+                <form is="dmx-serverconnect-form" id="profileImageForm" method="post" action="/api/Users/uploadProfileImage" dmx-on:success="modProfileImage.hide();scUserDets.load();browser1.goto('/admin/user/profile')">
                     <!-- Current Profile Image Preview -->
                     <div class="d-flex flex-column align-items-center mb-4">
-                        <img class="rounded-circle border shadow-sm mb-3" dmx-bind:src="scUserDets.data.query.imageName" style="width: 150px; height: 150px; object-fit: cover;" alt="Current Profile Picture">
+                        <img class="rounded-circle border shadow-sm mb-3" dmx-bind:src="scUserDets.data.query.imageName.jpg" style="width: 150px; height: 150px; object-fit: cover;" alt="Current Profile Picture">
                         <small class="text-muted">Current Profile Picture</small>
                     </div>
 
@@ -23,7 +23,7 @@
                     <div class="mb-3">
                         <label for="profile_image" class="form-label">Choose New Image</label>
                         <div class="input-group">
-                            <input type="file" class="form-control" id="profile_image" name="profile_image" accept="image/*" required data-msg-required="Please select an image file">
+                            <input type="file" class="form-control" id="profile_image" name="profile_image" required="" data-msg-required="Please select an image file" accept=".jpg,.png" image-max-width="280" image-max-height="280">
                         </div>
                         <div class="form-text">Recommended size: 300x300 pixels</div>
                     </div>
@@ -81,6 +81,7 @@
                     <form is="dmx-serverconnect-form" id="profileForm" method="post" action="/api/Users/updateUserProfile" dmx-on:success="successModal.show()">
                         <!-- Profile Header Section -->
                         <div class="d-flex flex-column flex-md-row align-items-center gap-4 mb-4">
+                            <input id="text1" name="text1" type="hidden" class="form-control" dmx-bind:value="serverconnect1.data.query.userId">
                             <!-- Profile Image -->
                             <div class="position-relative">
                                 <img class="rounded-circle border shadow-sm" dmx-bind:src="'\\upload\\images\\profiles\\'+scUserDets.data.query.imageName+'.jpg'" style="width: 150px; height: 150px; object-fit: cover;" alt="Profile Picture">

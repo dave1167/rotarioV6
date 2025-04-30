@@ -60,8 +60,8 @@
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{$_SESSION.Ses_User_Id}}",
-                "test": "1"
+                "value": "{{identity}}",
+                "test": ""
               }
             ],
             "table": {
@@ -101,20 +101,24 @@
                   "field": "tbl_user_tenant.userId",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{$_SESSION.Ses_User_Id}}",
+                  "value": "{{identity}}",
                   "data": {
                     "table": "tbl_user_tenant",
                     "column": "userId",
                     "type": "number",
                     "columnObj": {
-                      "type": "integer",
+                      "type": "reference",
                       "primary": false,
                       "nullable": true,
+                      "references": "userId",
+                      "inTable": "tbl_users",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "CASCADE",
                       "name": "userId"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_user_tenant"
+                  "operation": "="
                 }
               ],
               "conditional": null,

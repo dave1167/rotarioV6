@@ -7,7 +7,7 @@
     "permissions": [
       "Adminstrator"
     ],
-    "loginUrl": "/login",
+    "loginUrl": "/login2",
     "forbiddenUrl": "/unauthorised"
   }
 }

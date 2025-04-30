@@ -1,8 +1,52 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="login2" appConnect="local" components="{dmxBootstrap5Modal:{},dmxBrowser:{}}" -->
-<div is="dmx-browser" id="browser1"></div>
-<dmx-serverconnect id="scGetTntbyUser" url="/api/Tenants/getTentByUser"></dmx-serverconnect>
-<dmx-serverconnect id="scTenantCount" url="/api/Tenants/tenantCount"></dmx-serverconnect>
+<div is="dmx-browser" id="browser1">
+
+
+</div>
+<dmx-serverconnect id="scGetSessions" url="/api/Sessions/getSessions" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scSetRotaSingle" url="/api/Sessions/sessionSetRotaSingle" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scGetAllRotas" url="/api/Rota/getAllRotas" noload="true"></dmx-serverconnect><dmx-serverconnect id="scGetSingleTnt" url="/api/Tenants/getTenant" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scRotaCount" url="/api/Rota/rotaCount" noload="true"></dmx-serverconnect><dmx-serverconnect id="scGetTntbyUser" url="/api/Tenants/getTentByUser" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scTenantCount" url="/api/Tenants/tenantCount" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scSetSessTntId" url="/api/Sessions/sessionSetTennantSingle" noload="true"></dmx-serverconnect>
+<div class="modal" id="modMultiRota" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Select Rota</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+
+
+
+                                        <form id="formRota" method="post" is="dmx-serverconnect-form" action="/api/Sessions/sessionSetRota" dmx-on:success="browser1.goto('/admin/dashboard/dashboard')"><select id="selectRota" class="form-select" dmx-bind:options="scGetAllRotas.data.query" optiontext="rotaDesc" optionvalue="rota">
+                                                <option value="">Select The Rota</option>
+                                            </select><input id="inp_Rota_Id" name="inp_Rota_Id" type="hidden" class="form-control" dmx-bind:value="selectRota.selectedValue"><button type="button" class="btn btn-secondary mt-2" data-bs-dismiss="modal">Close</button><button type="submit" class="btn btn-success text-light mt-2 ms-2 me-2">Select Rota</button>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modMultiTenant" is="dmx-bs5-modal" tabindex="-1">
+
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header text-white bg-primary">
@@ -12,17 +56,17 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col">
-                        <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Sessions/sessionSetTennantMulti" dmx-on:success="browser1.goto('/admin/dashboard/dashboard')">
+                        <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Sessions/sessionSetTennantMulti" dmx-on:success="run([{comment:{msg:'This flow does all the logic for multi tenant'}},{run:{outputType:'text',action:`scRotaCount.load({})`}},{wait:{delay:900}},{alert:{message:`\'user id: \'+scRotaCount.data.identity`}},{condition:{outputType:'boolean',if:`scRotaCount.data.query[0].rotacount&gt;1`,then:{steps:[{run:{outputType:'text',action:`modMultiTenant.hide()`}},{run:{outputType:'text',action:`scGetAllRotas.load({})`}},{run:{outputType:'text',action:`modMultiRota.show()`}}]},else:{steps:[{run:{outputType:'text',action:`scSetRotaSingle.load({})`}},{run:{outputType:'text',action:`browser1.goto(\'/admin/dashboard/dashboard\')`}}]}}}])">
 
                             <div class="form-group mb-3">
                                 <label for="select1" class="form-label">Select Organisation</label>
                                 <select id="select1" class="form-select" dmx-bind:options="scGetTntbyUser.data.query" optiontext="tenantDesc" optionvalue="tenId">
                                     <option value="">Choose the organisation</option>
                                 </select>
-                                <input id="inpTenId" name="inpTenId" type="text" class="form-control" dmx-bind:value="select1.selectedValue">
+                                <input id="inpTenId" name="inpTenId" type="hidden" class="form-control" dmx-bind:value="select1.selectedValue">
                             </div>
                             <div class="row">
-                                <div class="col"><button type="submit" class="btn btn-primary">Save changes</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
+                                <div class="col"><button type="submit" class="btn btn-primary mt-2 mb-2 me-2">Save changes</button><button type="button" class="btn btn-secondary mt-2 mb-2" data-bs-dismiss="modal">Close</button></div>
                             </div>
                         </form>
 
@@ -38,31 +82,46 @@
 </div>
 <meta name="ac:route" content="/login2">
 <div class="container">
-    <form id="login1" method="post" is="dmx-serverconnect-form" action="/api/login" dmx-on:success="run([{run:{outputType:'text',action:`scTenantCount.load({})`}},{condition:{outputType:'boolean',if:`scTenantCount.data.query[0].TenantCount&gt;1`,then:{steps:{run:{outputType:'text',action:`modMultiTenant.show()`}}}}}])">
-        <div class="row">
-            <div class="col-12 col-md-8 col-lg-7 col-xl-5 text-start">
-                <div class="row">
-                    <div class="col">
-                        <h1>Log In</h1>
-                        <p class="text-h3">Enter your details below.</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col mt-4">
-                        <input type="text" id="inp_user_name" name="inp_user_name" class="form-control">
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col">
-                        <input type="password" id="inp_password" name="password" class="form-control" placeholder="Password">
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="col">
-                        <button id="login1_submit" class="btn btn-success" type="submit">Submit</button>
-                    </div>
-                </div>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+            <div class="card shadow mt-3">
+                <div<form id="login1" method="post" is="dmx-serverconnect-form" action="/api/login" dmx-on:success="run([{comment:{msg:'this flow will cycle through and  decide if user is a multi tenant or single and add to Session ud '}},{run:{outputType:'text',action:`scTenantCount.load({})`}},{run:{outputType:'text',action:`scGetAllRotas.load({})`}},{wait:{delay:400}},{condition:{outputType:'boolean',if:`scTenantCount.data.query[0].TenantCount&gt;1`,then:{steps:[{run:{outputType:'text',action:`scGetTntbyUser.load({})`}},{run:{outputType:'text',action:`modMultiTenant.show()`}}]},else:{steps:[{run:{outputType:'text',action:`scGetTntbyUser.load({})`}},{wait:{delay:500}},{run:{outputType:'text',action:`scSetSessTntId.load({tntid: scGetTntbyUser.data.query[0].tenId})`}},{wait:{delay:500}},{run:{outputType:'text',action:`scGetSessions.load({})`}},{wait:{delay:1000}},{run:{outputType:'text',action:`scRotaCount.load({})`}},{wait:{delay:500}},{alert:{message:`\'tenant id:\'+scGetSessions.data.tntId+\' \'`}},{condition:{outputType:'boolean',if:`scRotaCount.data.query[0].rotacount&gt;1`,then:{steps:[{run:{outputType:'text',action:`modMultiRota.show()`}},{run:{outputType:'text',action:`scGetAllRotas.load({})`}},{wait:{delay:500}}]},else:{steps:[{alert:{message:'Noooo'}},{run:{outputType:'text',action:`browser1.goto(\'/admin/dashboard/dashboard\')`}}]}}}]}}}])">
+                    <form id="login1" method="post" is="dmx-serverconnect-form" action="/api/login" dmx-on:success="run([{comment:{msg:'this flow will cycle through and  decide if user is a multi tenant or single and add to Session ud '}},{run:{outputType:'text',action:`scTenantCount.load({})`}},{wait:{delay:400}},{condition:{outputType:'boolean',if:`scTenantCount.data.query[0].TenantCount&gt;1`,then:{steps:[{run:{outputType:'text',action:`scGetTntbyUser.load({})`}},{run:{outputType:'text',action:`modMultiTenant.show()`}}]},else:{steps:[{alert:{disabled:true,message:'first else'}},{run:{outputType:'text',action:`scGetTntbyUser.load({})`}},{wait:{delay:500}},{run:{outputType:'text',action:`scSetSessTntId.load({tntid: scGetTntbyUser.data.query[0].tenId})`}},{wait:{delay:500}},{run:{outputType:'text',disabled:true,action:`scGetSessions.load({})`}},{wait:{delay:1000}},{run:{outputType:'text',action:`scRotaCount.load({})`}},{wait:{delay:500}},{condition:{outputType:'boolean',if:`scRotaCount.data.query[0].rotacount&gt;1`,then:{steps:[{run:{outputType:'text',action:`modMultiRota.show()`}},{run:{outputType:'text',action:`scGetAllRotas.load({})`}},{wait:{delay:500}}]},else:{steps:[{run:{outputType:'text',action:`scGetTntbyUser.load({})`}},{alert:{disabled:true,message:`\' t: \'+scGetSessions.data.tntId+\' R:\'+scGetSessions.data.rotaId+\' u:    get:\'+scGetTntbyUser.data.query[0].tenId`}},{wait:{delay:900}},{run:{outputType:'text',action:`scSetRotaSingle.load({tntid: scGetTntbyUser.data.query[0].tenId, user_id: scGetTntbyUser.data.identity})`}},{run:{outputType:'text',disabled:true,action:`scGetSessions.load({})`}},{wait:{delay:900}},{run:{outputType:'text',action:`browser1.goto(\'admin/dashboard/dashboard2\')`}}]}}}]}}}])">
+                        <div class="row">
+                            <div class="col-12 col-md-8 col-lg-7 col-xl-5 text-start">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <img src="/assets/images/rotario_logo.png" width="100" height="100">
+                                    </div>
+                                    <div class="col">
+                                        <h1 class="ms-2">Log In</h1>
+                                        <p class="text-h3 ms-2">Enter your details below.</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col mt-4">
+                                        <input type="text" id="inp_user_name" name="inp_user_name" class="form-control ms-2" placeholder="User Name">
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <input type="password" id="inp_password" name="password" class="form-control ms-2" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="row mt-4">
+                                    <div class="col">
+                                        <button id="login1_submit" class="btn btn-success mt-2 mb-2 ms-2" type="submit">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
             </div>
         </div>
-    </form>
+    </div>
+    <div class="col"></div>
+
+</div>
+
 </div>

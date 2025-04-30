@@ -20,7 +20,7 @@
               "message": "Please select an image file"
             },
             "upload:accept": {
-              "param": "image/*"
+              "param": ".jpg,.png"
             }
           }
         },
@@ -114,7 +114,7 @@
           "fields": "{{$_POST.profile_image}}",
           "replaceSpace": true,
           "overwrite": true,
-          "template": "vol_Id{{identity}}"
+          "template": "vol_Id{{identity}}{ext}"
         },
         "meta": [
           {
@@ -158,7 +158,7 @@
                 "table": "tbl_users",
                 "column": "imageName",
                 "type": "text",
-                "value": "{{upload.name}}"
+                "value": "{{upload.name.replace('.jpg', '')}}"
               }
             ],
             "table": "tbl_users",
@@ -186,7 +186,7 @@
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{upload.name}}",
+                "value": "{{upload.name.replace('.jpg', '')}}",
                 "test": ""
               },
               {

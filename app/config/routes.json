@@ -57,7 +57,8 @@
     {
       "path": "/admin/dashboard/dashboard2",
       "page": "admin/dashboard/dashboard2",
-      "layout": "admin"
+      "layout": "admin",
+      "exec": ""
     },
     {
       "path": "/admin/user/test",
