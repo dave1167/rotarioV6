@@ -369,5 +369,57 @@ dmx.config({
       ],
       "outputType": "object"
     }
+  },
+  "test": {
+    "query": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
+    "data_view1": {
+      "meta": [
+        {
+          "name": "varId",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varFName",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varLName",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varEmail",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varJoinDate",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varRole",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "varImage",
+          "type": "text",
+          "sub": []
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });

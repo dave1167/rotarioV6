@@ -1,10 +1,41 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="test" appConnect="local" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="test" appConnect="local" components="{dmxStateManagement:{},dmxBootstrap5TableGenerator:{},dmxDataTraversal:{},dmxFormatter:{}}" -->
+<dmx-data-view id="data_view1" dmx-bind:data="serverconnect1.data.repeat" filter="varLName.contains(text2.value, true)||varLName.contains(text2.value, true)||varEmail.contains(text2.value, true)"></dmx-data-view>
+<dmx-query-manager id="query1"></dmx-query-manager>
 <meta name="ac:route" content="/admin/user/test">
-<dmx-serverconnect id="serverconnect1" url="/api/Rota/rotaCount" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="serverconnect1" url="/api/Users/allUsers" dmx-param:sort="query1.data.sort" dmx-param:dir="query1.data.dir"></dmx-serverconnect>
 <div class="container">
     <div class="row">
         <div class="col">
-            <input id="text1" name="text1" type="text" class="form-control" dmx-bind:value="serverconnect1.data.query[0].rotacount">
+            <input id="text2" name="text2" type="text" class="form-control">
+            <button id="btn2" class="btn">Button</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm">
+                    <thead>
+                        <tr>
+                            <th class="sorting" dmx-on:click="query1.set('sort','varId');query1.set('dir',query1.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="query1.data.sort=='varId' && query1.data.dir == 'asc'" dmx-class:sorting_desc="query1.data.sort=='varId' && query1.data.dir == 'desc'">Var</th>
+                            <th class="sorting" dmx-on:click="query1.set('sort','varFName');query1.set('dir',query1.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="query1.data.sort=='varFName' &amp;&amp; query1.data.dir == 'asc'" dmx-class:sorting_desc="query1.data.sort=='varFName'&amp;&amp;query1.data.dir=='desc'">Var fname</th>
+                            <th class="sorting" dmx-on:click="query1.set('sort','varLName');query1.set('dir',query1.data.dir == 'desc' ? 'asc' : 'desc')" dmx-class:sorting_asc="query1.data.sort=='varLName' && query1.data.dir == 'asc'" dmx-class:sorting_desc="query1.data.sort=='varLName' && query1.data.dir == 'desc'">Var lname</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-bind:repeat="data_view1.data">
+                        <tr>
+                            <td dmx-text="varId"></td>
+                            <td dmx-text="varFName"></td>
+                            <td dmx-text="varLName"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input id="text1" name="text1" type="text" class="form-control" dmx-bind:value="serverconnect1.data.query[0].varFName">
+
             <button id="btn1" class="btn" dmx-on:click="serverconnect1.load({})">Button</button>
         </div>
     </div>
