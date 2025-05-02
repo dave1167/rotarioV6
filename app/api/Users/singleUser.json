@@ -159,6 +159,14 @@
               {
                 "table": "tbl_users",
                 "column": "imageName"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "emgcyCntctNme"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "emgcyCntctTel"
               }
             ],
             "params": [
@@ -263,8 +271,13 @@
                       "type": "integer",
                       "primary": false,
                       "nullable": true,
-                      "maxLength": 36,
-                      "name": "tenantId"
+                      "references": "tenId",
+                      "inTable": "tbl_tenants",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "CASCADE",
+                      "name": "tenantId",
+                      "maxLength": 36
                     }
                   },
                   "operation": "="
@@ -283,6 +296,11 @@
                       "type": "integer",
                       "primary": false,
                       "nullable": true,
+                      "references": "userId",
+                      "inTable": "tbl_users",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "CASCADE",
                       "name": "userId"
                     }
                   },
@@ -292,7 +310,7 @@
               "conditional": null,
               "valid": true
             },
-            "query": "select `tbl_user_tenant`.`tenantId`, `tbl_user_tenant`.`userId` as `userIDut`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`email`, `tbl_users`.`dateModified`, `tbl_users`.`modifiedBy`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`town2`, `tbl_user_dets`.`county`, `tbl_user_dets`.`postcode`, `tbl_user_dets`.`mobile`, `tbl_user_dets`.`tel`, `tbl_ek`.`key`, `tbl_users`.`userId` as `uid`, `tbl_ek`.`userId` as `uidk`, `tbl_users`.`imageName` from `tbl_user_tenant` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_tenant`.`userId` where `tbl_user_tenant`.`tenantId` = ? and `tbl_user_tenant`.`userId` = ?"
+            "query": "select `tbl_user_tenant`.`tenantId`, `tbl_user_tenant`.`userId` as `userIDut`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`email`, `tbl_users`.`dateModified`, `tbl_users`.`modifiedBy`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`town2`, `tbl_user_dets`.`county`, `tbl_user_dets`.`postcode`, `tbl_user_dets`.`mobile`, `tbl_user_dets`.`tel`, `tbl_ek`.`key`, `tbl_users`.`userId` as `uid`, `tbl_ek`.`userId` as `uidk`, `tbl_users`.`imageName`, `tbl_user_dets`.`emgcyCntctNme`, `tbl_user_dets`.`emgcyCntctTel` from `tbl_user_tenant` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_user_tenant`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_tenant`.`userId` where `tbl_user_tenant`.`tenantId` = ? and `tbl_user_tenant`.`userId` = ?"
           }
         },
         "output": true,
@@ -372,6 +390,14 @@
           {
             "type": "text",
             "name": "imageName"
+          },
+          {
+            "type": "text",
+            "name": "emgcyCntctNme"
+          },
+          {
+            "type": "text",
+            "name": "emgcyCntctTel"
           }
         ],
         "outputType": "object",
@@ -404,8 +430,7 @@
             }
           }
         },
-        "outputType": "boolean",
-        "collapsed": true
+        "outputType": "boolean"
       },
       {
         "name": "",
@@ -547,8 +572,7 @@
             }
           }
         },
-        "outputType": "boolean",
-        "collapsed": true
+        "outputType": "boolean"
       },
       {
         "name": "",
@@ -571,8 +595,53 @@
             }
           }
         },
-        "outputType": "boolean",
-        "collapsed": true
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.emgcyCntctNme.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleEmgyCntctNme",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.emgcyCntctNme.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.emgcyCntctTel.length()>0}}",
+          "then": {
+            "steps": {
+              "name": "SingleEmgyCntctTel",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.emgcyCntctTel.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
+        },
+        "outputType": "boolean"
       }
     ]
   }

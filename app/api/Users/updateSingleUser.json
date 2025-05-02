@@ -88,6 +88,14 @@
       {
         "type": "text",
         "name": "postcode"
+      },
+      {
+        "type": "text",
+        "name": "emgcyCntctNme"
+      },
+      {
+        "type": "text",
+        "name": "emgcyCntctTel"
       }
     ]
   },
@@ -166,7 +174,8 @@
                       "name": "userId"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "tbl_ek"
                 }
               ],
               "conditional": null,
@@ -189,8 +198,7 @@
             "name": "ekId"
           }
         ],
-        "outputType": "object",
-        "collapsed": true
+        "outputType": "object"
       },
       {
         "name": "Key",
@@ -310,8 +318,7 @@
             "name": "affected",
             "type": "number"
           }
-        ],
-        "collapsed": true
+        ]
       },
       {
         "name": "updateAdd",
@@ -369,6 +376,18 @@
                 "column": "mobile",
                 "type": "text",
                 "value": "{{$_POST.inpMobile.encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "emgcyCntctNme",
+                "type": "text",
+                "value": "{{$_POST.emgcyCntctNme.encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "emgcyCntctTel",
+                "type": "text",
+                "value": "{{$_POST.emgcyCntctTel.encrypt(query.key)}}"
               }
             ],
             "table": "tbl_user_dets",
@@ -391,7 +410,7 @@
               "valid": true
             },
             "returning": "usrDetsId",
-            "query": "update `tbl_user_dets` set `town1` = ?, `town2` = ?, `county` = ?, `add1` = ?, `add2` = ?, `postcode` = ?, `tel` = ?, `mobile` = ? where `userId` = ?",
+            "query": "update `tbl_user_dets` set `town1` = ?, `town2` = ?, `county` = ?, `add1` = ?, `add2` = ?, `postcode` = ?, `tel` = ?, `mobile` = ?, `emgcyCntctNme` = ?, `emgcyCntctTel` = ? where `userId` = ?",
             "params": [
               {
                 "name": ":P1",
@@ -442,9 +461,21 @@
                 "test": ""
               },
               {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{$_POST.emgcyCntctNme.encrypt(query.key)}}",
+                "test": ""
+              },
+              {
+                "name": ":P10",
+                "type": "expression",
+                "value": "{{$_POST.emgcyCntctTel.encrypt(query.key)}}",
+                "test": ""
+              },
+              {
                 "operator": "equal",
                 "type": "expression",
-                "name": ":P9",
+                "name": ":P11",
                 "value": "{{$_POST.inpUserId}}",
                 "test": ""
               }

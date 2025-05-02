@@ -269,25 +269,6 @@
         },
         "parent": "tbl_users"
       },
-      "tbl_user_role_old": {
-        "db": {},
-        "columns": {
-          "userId": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "role": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          }
-        }
-      },
       "tbl_user_rota": {
         "db": {},
         "columns": {
@@ -491,15 +472,24 @@
             }
           },
           "dateModified": {
-            "db_edits": {
-              "name": "dateModified",
-              "maxLength": ""
-            },
-            "status": {
-              "new": true
-            },
             "db": {
               "type": "datetime",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "emgcyCntctNme": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "emgcyCntctTel": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
               "primary": false,
               "nullable": true
             }

@@ -125,7 +125,27 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Personal Information Section -->
+                        <div class="mb-4">
+                        </div>
 
+                        <!-- Emergency Contact Section -->
+                        <div class="mb-4">
+                            <h6 class="text-primary">Emergency Contact Details</h6>
+                            <div class="row g-3">
+                                <!-- Emergency Contact Name -->
+                                <div class="col-md-6">
+                                    <label for="emContactName" class="form-label">Emergency Contact Name</label>
+                                    <input type="text" id="emContactName" name="emContactName" class="form-control" dmx-bind:value="scUserDets.data.DecEmCtctName">
+                                </div>
+
+                                <!-- Emergency Telephone Number -->
+                                <div class="col-md-6">
+                                    <label for="emTelNo" class="form-label">Emergency Telephone Number</label>
+                                    <input type="tel" id="emTelNo" name="emTelNo" class="form-control" pattern="[0-9]{10}" dmx-bind:value="scUserDets.data.DecEmCtctTel">
+                                </div>
+                            </div>
+                        </div>
                         <!-- Address Section -->
                         <div class="mb-4">
                             <h6 class="text-primary mb-3 pb-2 border-bottom">Address Details</h6>

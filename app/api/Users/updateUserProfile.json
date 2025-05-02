@@ -188,6 +188,28 @@
       {
         "type": "text",
         "name": "town2"
+      },
+      {
+        "type": "text",
+        "fieldName": "text1",
+        "name": "text1"
+      },
+      {
+        "type": "text",
+        "fieldName": "emContactName",
+        "name": "emContactName"
+      },
+      {
+        "type": "text",
+        "fieldName": "emTelNo",
+        "options": {
+          "rules": {
+            "core:pattern": {
+              "param": "[0-9]{10}"
+            }
+          }
+        },
+        "name": "emTelNo"
       }
     ]
   },
@@ -485,6 +507,30 @@
                 "column": "tel",
                 "type": "text",
                 "value": "{{$_POST.tel.encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "emgcyCntctNme",
+                "type": "text",
+                "value": "{{$_POST.emContactName.encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "emgcyCntctTel",
+                "type": "text",
+                "value": "{{$_POST.emTelNo.encrypt(query.key)}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "modifiedBy",
+                "type": "number",
+                "value": "{{identity}}"
+              },
+              {
+                "table": "tbl_user_dets",
+                "column": "dateModified",
+                "type": "datetime",
+                "value": "{{NOW}}"
               }
             ],
             "table": "tbl_user_dets",
@@ -507,7 +553,7 @@
               "valid": true
             },
             "returning": "usrDetsId",
-            "query": "update `tbl_user_dets` set `add1` = ?, `add2` = ?, `town1` = ?, `town2` = ?, `county` = ?, `postcode` = ?, `mobile` = ?, `tel` = ? where `userId` = ?",
+            "query": "update `tbl_user_dets` set `add1` = ?, `add2` = ?, `town1` = ?, `town2` = ?, `county` = ?, `postcode` = ?, `mobile` = ?, `tel` = ?, `emgcyCntctNme` = ?, `emgcyCntctTel` = ?, `modifiedBy` = ?, `dateModified` = ? where `userId` = ?",
             "params": [
               {
                 "name": ":P1",
@@ -558,9 +604,33 @@
                 "test": ""
               },
               {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{$_POST.emContactName.encrypt(query.key)}}",
+                "test": ""
+              },
+              {
+                "name": ":P10",
+                "type": "expression",
+                "value": "{{$_POST.emTelNo.encrypt(query.key)}}",
+                "test": ""
+              },
+              {
+                "name": ":P11",
+                "type": "expression",
+                "value": "{{identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P12",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
                 "operator": "equal",
                 "type": "expression",
-                "name": ":P9",
+                "name": ":P13",
                 "value": "{{identity}}",
                 "test": ""
               }
