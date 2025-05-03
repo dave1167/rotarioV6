@@ -1,5 +1,9 @@
 {
   "meta": {
+    "options": {
+      "linkedFile": "/views/admin/user/user_list.ejs",
+      "linkedForm": "frmEditUser"
+    },
     "$_POST": [
       {
         "type": "text",
@@ -12,6 +16,79 @@
       {
         "type": "number",
         "name": "userId"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpFName",
+        "options": {
+          "rules": {}
+        },
+        "name": "inpFName"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpLName",
+        "name": "inpLName"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpEmail",
+        "options": {
+          "rules": {
+            "core:email": {}
+          }
+        },
+        "name": "inpEmail"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpPhone",
+        "name": "inpPhone"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpMobile",
+        "name": "inpMobile"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpUserId",
+        "name": "inpUserId"
+      },
+      {
+        "type": "text",
+        "fieldName": "egContactNme",
+        "name": "egContactNme"
+      },
+      {
+        "type": "text",
+        "fieldName": "egContactTel",
+        "name": "egContactTel"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpAdd1",
+        "name": "inpAdd1"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpAdd2",
+        "name": "inpAdd2"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpTown",
+        "name": "inpTown"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpTown2",
+        "name": "inpTown2"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpCounty",
+        "name": "inpCounty"
       }
     ]
   },
@@ -375,7 +452,8 @@
         "meta": [],
         "outputType": "text",
         "output": true,
-        "collapsed": true
+        "collapsed": true,
+        "disabled": true
       },
       {
         "name": "DecEmCtctTel",
@@ -387,7 +465,8 @@
         "meta": [],
         "outputType": "text",
         "output": true,
-        "collapsed": true
+        "collapsed": true,
+        "disabled": true
       }
     ]
   }

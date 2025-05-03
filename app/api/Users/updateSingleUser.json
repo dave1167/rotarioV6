@@ -96,6 +96,16 @@
       {
         "type": "text",
         "name": "emgcyCntctTel"
+      },
+      {
+        "type": "text",
+        "fieldName": "egContactNme",
+        "name": "egContactNme"
+      },
+      {
+        "type": "text",
+        "fieldName": "egContactTel",
+        "name": "egContactTel"
       }
     ]
   },
@@ -381,13 +391,13 @@
                 "table": "tbl_user_dets",
                 "column": "emgcyCntctNme",
                 "type": "text",
-                "value": "{{$_POST.emgcyCntctNme.encrypt(query.key)}}"
+                "value": "{{$_POST.egContactNme.encrypt(query.key)}}"
               },
               {
                 "table": "tbl_user_dets",
                 "column": "emgcyCntctTel",
                 "type": "text",
-                "value": "{{$_POST.emgcyCntctTel.encrypt(query.key)}}"
+                "value": "{{$_POST.egContactTel.encrypt(query.key)}}"
               }
             ],
             "table": "tbl_user_dets",
@@ -463,13 +473,13 @@
               {
                 "name": ":P9",
                 "type": "expression",
-                "value": "{{$_POST.emgcyCntctNme.encrypt(query.key)}}",
+                "value": "{{$_POST.egContactNme.encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P10",
                 "type": "expression",
-                "value": "{{$_POST.emgcyCntctTel.encrypt(query.key)}}",
+                "value": "{{$_POST.egContactTel.encrypt(query.key)}}",
                 "test": ""
               },
               {
