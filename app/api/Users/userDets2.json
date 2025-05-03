@@ -452,8 +452,7 @@
         "meta": [],
         "outputType": "text",
         "output": true,
-        "collapsed": true,
-        "disabled": true
+        "collapsed": true
       },
       {
         "name": "DecEmCtctTel",
@@ -465,8 +464,7 @@
         "meta": [],
         "outputType": "text",
         "output": true,
-        "collapsed": true,
-        "disabled": true
+        "collapsed": true
       }
     ]
   }
