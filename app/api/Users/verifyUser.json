@@ -1,0 +1,291 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/user/user_registration.ejs",
+      "linkedForm": "register1"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inp_verification",
+        "name": "inp_verification"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_email",
+        "name": "inp_email"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "options": {
+          "comment": "check verification code"
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_ek",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "key"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.inp_verification}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_ek"
+            },
+            "primary": "ekId",
+            "joins": [],
+            "query": "select `userId`, `key` from `tbl_ek` where `tbl_ek`.`ver` = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_ek.ver",
+                  "field": "tbl_ek.ver",
+                  "type": "string",
+                  "operator": "equal",
+                  "value": "{{$_POST.inp_verification}}",
+                  "data": {
+                    "table": "tbl_ek",
+                    "column": "ver",
+                    "type": "text",
+                    "columnObj": {
+                      "type": "string",
+                      "maxLength": 255,
+                      "primary": false,
+                      "nullable": true,
+                      "name": "ver"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "text",
+            "name": "key"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 300
+        }
+      },
+      {
+        "name": "Ses_Temp_User_Id",
+        "module": "core",
+        "action": "setsession",
+        "options": {
+          "value": "{{query.userId}}"
+        }
+      },
+      {
+        "name": "wait_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 300
+        },
+        "collapsed": true
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{query.userId}}",
+          "then": {
+            "steps": [
+              {
+                "name": "varUserId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{query.userId}}",
+                  "key": "gblUserId"
+                },
+                "meta": [],
+                "outputType": "number",
+                "output": true
+              },
+              {
+                "name": "qryEmail",
+                "module": "dbconnector",
+                "action": "single",
+                "options": {
+                  "connection": "db",
+                  "sql": {
+                    "type": "SELECT",
+                    "columns": [
+                      {
+                        "table": "tbl_users",
+                        "column": "email"
+                      }
+                    ],
+                    "params": [
+                      {
+                        "operator": "equal",
+                        "type": "expression",
+                        "name": ":P1",
+                        "value": "{{varUserId}}",
+                        "test": ""
+                      }
+                    ],
+                    "table": {
+                      "name": "tbl_users"
+                    },
+                    "primary": "userId",
+                    "joins": [],
+                    "wheres": {
+                      "condition": "AND",
+                      "rules": [
+                        {
+                          "id": "tbl_users.userId",
+                          "field": "tbl_users.userId",
+                          "type": "double",
+                          "operator": "equal",
+                          "value": "{{varUserId}}",
+                          "data": {
+                            "table": "tbl_users",
+                            "column": "userId",
+                            "type": "number",
+                            "columnObj": {
+                              "type": "increments",
+                              "primary": true,
+                              "nullable": false,
+                              "name": "userId"
+                            }
+                          },
+                          "operation": "=",
+                          "table": "tbl_users"
+                        }
+                      ],
+                      "conditional": null,
+                      "valid": true
+                    },
+                    "query": "select `email` from `tbl_users` where `tbl_users`.`userId` = ?"
+                  }
+                },
+                "output": true,
+                "meta": [
+                  {
+                    "type": "text",
+                    "name": "email"
+                  }
+                ],
+                "outputType": "object",
+                "collapsed": true
+              },
+              {
+                "name": "decEmail",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{qryEmail.email.decrypt(query.key)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "",
+                "module": "core",
+                "action": "condition",
+                "options": {
+                  "if": "{{decEmail==$_POST.inp_email}}",
+                  "then": {
+                    "steps": [
+                      {
+                        "name": "",
+                        "module": "core",
+                        "action": "response",
+                        "options": {
+                          "status": 200,
+                          "data": "Verified"
+                        }
+                      },
+                      {
+                        "name": "decEmail_copy",
+                        "module": "core",
+                        "action": "setvalue",
+                        "options": {
+                          "value": "{{qryEmail.email.decrypt(query.key)}}"
+                        },
+                        "meta": [],
+                        "outputType": "text",
+                        "output": true,
+                        "collapsed": true
+                      }
+                    ]
+                  },
+                  "else": {
+                    "steps": {
+                      "name": "",
+                      "module": "core",
+                      "action": "response",
+                      "options": {
+                        "status": 401,
+                        "data": "Email Address is incorrect"
+                      }
+                    }
+                  }
+                },
+                "outputType": "boolean"
+              }
+            ]
+          },
+          "else": {
+            "steps": {
+              "name": "",
+              "module": "core",
+              "action": "response",
+              "options": {
+                "status": 401,
+                "data": "The verification code is incorrect"
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
+      }
+    ]
+  }
+}

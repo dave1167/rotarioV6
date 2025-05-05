@@ -10,6 +10,10 @@
       "user": "newDB",
       "password": "9IqJV46ysK-PvhfM",
       "database": "rotario_v6"
-    }
-  }
+    },
+    "meta": {}
+  },
+  "actionFilePath": "file:///C:/Wappler%20Projects/rotario_v6/app/modules/connections/db.json",
+  "serverType": "node",
+  "fileName": "db.json"
 }

@@ -25,7 +25,8 @@
         "action": "login",
         "options": {
           "provider": "sec",
-          "username": "{{$_POST.inp_user_name}}"
+          "username": "{{$_POST.inp_user_name}}",
+          "password": "{{$_POST.password.sha256('dD5%gJ45*v')}}"
         },
         "output": true,
         "meta": [],

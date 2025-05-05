@@ -64,6 +64,14 @@
               {
                 "table": "tbl_user_rota",
                 "column": "userId"
+              },
+              {
+                "table": "tbl_users",
+                "column": "verified"
+              },
+              {
+                "table": "tbl_users",
+                "column": "active"
               }
             ],
             "table": {
@@ -141,18 +149,25 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{$_SESSION.Ses_Ten_Id}}",
-                "test": "2"
+                "test": ""
               },
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P2",
                 "value": "{{$_SESSION.Ses_Rota_Id}}",
-                "test": "1"
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{1}}",
+                "test": ""
               }
             ],
             "primary": "rotaId",
-            "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`joinDate`, `tbl_ek`.`key`, `tbl_roles_type`.`roleName`, `tbl_users`.`imageName`, `tbl_users`.`email`, `tbl_user_rota`.`userId` from `tbl_user_rota` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_roles_type` on `tbl_roles_type`.`role` = `tbl_user_rota`.`role` where `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`rota` = ?",
+            "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`joinDate`, `tbl_ek`.`key`, `tbl_roles_type`.`roleName`, `tbl_users`.`imageName`, `tbl_users`.`email`, `tbl_user_rota`.`userId`, `tbl_users`.`verified`, `tbl_users`.`active` from `tbl_user_rota` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_roles_type` on `tbl_roles_type`.`role` = `tbl_user_rota`.`role` where `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`rota` = ? and `tbl_users`.`verified` = ?",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -173,8 +188,7 @@
                       "name": "tenantId"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_user_rota"
+                  "operation": "="
                 },
                 {
                   "id": "tbl_user_rota.rota",
@@ -193,8 +207,26 @@
                       "name": "rota"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_user_rota"
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_users.verified",
+                  "field": "tbl_users.verified",
+                  "type": "boolean",
+                  "operator": "equal",
+                  "value": "{{1}}",
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "verified",
+                    "type": "boolean",
+                    "columnObj": {
+                      "type": "boolean",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "verified"
+                    }
+                  },
+                  "operation": "="
                 }
               ],
               "conditional": null,
@@ -235,6 +267,14 @@
           {
             "type": "number",
             "name": "userId"
+          },
+          {
+            "type": "boolean",
+            "name": "verified"
+          },
+          {
+            "type": "boolean",
+            "name": "active"
           }
         ],
         "outputType": "array",
@@ -380,6 +420,14 @@
           {
             "name": "userId",
             "type": "number"
+          },
+          {
+            "name": "verified",
+            "type": "boolean"
+          },
+          {
+            "name": "active",
+            "type": "boolean"
           },
           {
             "name": "varId",

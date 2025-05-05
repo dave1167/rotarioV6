@@ -91,21 +91,13 @@
       },
       {
         "type": "text",
-        "name": "emgcyCntctNme"
+        "fieldName": "inpEgCntctNme",
+        "name": "inpEgCntctNme"
       },
       {
         "type": "text",
-        "name": "emgcyCntctTel"
-      },
-      {
-        "type": "text",
-        "fieldName": "egContactNme",
-        "name": "egContactNme"
-      },
-      {
-        "type": "text",
-        "fieldName": "egContactTel",
-        "name": "egContactTel"
+        "fieldName": "inpEgCnctTel",
+        "name": "inpEgCnctTel"
       }
     ]
   },
@@ -328,7 +320,8 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "collapsed": true
       },
       {
         "name": "updateAdd",
@@ -391,13 +384,13 @@
                 "table": "tbl_user_dets",
                 "column": "emgcyCntctNme",
                 "type": "text",
-                "value": "{{$_POST.egContactNme.encrypt(query.key)}}"
+                "value": "{{$_POST.inpEgCntctNme.encrypt(query.key)}}"
               },
               {
                 "table": "tbl_user_dets",
                 "column": "emgcyCntctTel",
                 "type": "text",
-                "value": "{{$_POST.egContactTel.encrypt(query.key)}}"
+                "value": "{{$_POST.inpEgCnctTel.encrypt(query.key)}}"
               }
             ],
             "table": "tbl_user_dets",
@@ -473,13 +466,13 @@
               {
                 "name": ":P9",
                 "type": "expression",
-                "value": "{{$_POST.egContactNme.encrypt(query.key)}}",
+                "value": "{{$_POST.inpEgCntctNme.encrypt(query.key)}}",
                 "test": ""
               },
               {
                 "name": ":P10",
                 "type": "expression",
-                "value": "{{$_POST.egContactTel.encrypt(query.key)}}",
+                "value": "{{$_POST.inpEgCnctTel.encrypt(query.key)}}",
                 "test": ""
               },
               {

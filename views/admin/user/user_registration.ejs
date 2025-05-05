@@ -1,0 +1,95 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="user_registration" appConnect="local" components="{dmxBootstrap5Modal:{},dmxValidator:{},dmxBootstrap5Tooltips:{}}" -->
+<div class="modal" id="modNotVerified" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="text-danger fw-bolder"><i class="fas fa-ban fa-2x" dmx-style:color="'red'"></i>
+                    Verification Problem</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Something went wrong with your Rotario registration. Check your email and verification code and retry. If problem still persists contact your administrator</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modChngePsword" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-light bg-primary fw-bolder">
+                <h5 class="modal-title">Setup Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="frmChngePwrd" method="post" is="dmx-serverconnect-form" action="/api/Users/createUserNamePword">
+                    <div class="form-group mb-3"> <label for="inp_user_name" class="form-label">Create User Name</label>
+                        <input type="text" class="form-control" id="inp_user_name" name="inp_user_name" aria-describedby="input1_help" placeholder="User Name">
+                    </div>
+                    <div class="form-group mb-3"> <label for="inp_pwrd" class="form-label">Create Password</label>
+                        <input type="text" class="form-control" id="inp_pwrd" name="inp_pwrd" aria-describedby="input1_help" placeholder="Enter password" data-rule-pattern=".*[!@#\\$%\\^&amp;\\*].*">
+                    </div>
+
+                    <div class="form-group mb-3"> <label for="inp_cfrm_pwrd" class="form-label">Re-Enter Your Password</label>
+                        <input type="text" class="form-control" id="inp_cfrm_pwrd" name="inp_cfrm_pwrd" aria-describedby="input1_help" placeholder="Enter password" data-rule-equalto="inp_pwrd">
+                        <div class="modal-footer">
+                            <input id="text1" name="text1" type="text" class="form-control" dmx-bind:value="' '+register1.data.varUserId">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<meta name="ac:route" content="/admin/user/user_registration">
+<div class="row">
+    <div class="col-3 mt-2"></div>
+    <div class="shadow-lg text-center align-self-center mt-2 col-6">
+        <div class="card text-center shadow mt-5 mb-3">
+            <div class="card-header bg-primary">
+                <h4 class="card-title text-light bg-primary">Rotario Registration</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <p>You will have been sent an email to your registered Email address, enter the email and verification code for this email.&nbsp; You will then be invited to create a user name and password</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <form id="register1" method="post" is="dmx-serverconnect-form" action="/api/Users/verifyUser" dmx-on:success="modChngePsword.show()" dmx-on:unauthorized="modNotVerified.show()">
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-lg-10 col-xl-8 text-center">
+                                    <div class="row align-items-center text-center">
+                                        <div class="col-12 col-md-5 mt-4 align-self-center text-center">
+                                            <input type="text" id="inp_email" name="inp_email" class="form-control" placeholder="Email">
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row text-center">
+                                        <div class="col-12 col-md-5 mt-4">
+                                            <input id="inp_verification" name="inp_verification" class="form-control" placeholder="Verification Code" dmx-bs-tooltip="'Enter the verification code from the email'">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6 col-md-2 mt-4">
+                                            <button id="register1_submit" class="btn btn-primary mb-2 ms-2" type="submit">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-3"></div>
+</div>

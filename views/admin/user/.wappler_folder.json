@@ -34,5 +34,9 @@
   "change_user.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "user_registration.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

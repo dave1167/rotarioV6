@@ -26,6 +26,10 @@
       {
         "type": "number",
         "name": "Ses_Rota_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_Temp_User_Id"
       }
     ]
   },

@@ -66,158 +66,6 @@
         },
         "db": {}
       },
-      "tbl_users": {
-        "db": {},
-        "columns": {
-          "userId": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "email": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "password": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "fName": {
-            "db": {
-              "type": "string",
-              "maxLength": 100,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "lName": {
-            "db": {
-              "type": "string",
-              "maxLength": 100,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "joinDate": {
-            "db": {
-              "type": "date",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "dateModified": {
-            "db": {
-              "type": "datetime",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "modifiedBy": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "userName": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "imageName": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          }
-        },
-        "refs": {
-          "tbl_activity_log": "userId"
-        },
-        "sub": {
-          "tbl_user_tenant": "userId",
-          "tbl_user_dets": "userId"
-        }
-      },
-      "tbl_activity_log": {
-        "columns": {
-          "logId": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "userId": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": false,
-              "references": "userId",
-              "inTable": "tbl_users",
-              "referenceType": "integer",
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION"
-            }
-          },
-          "activity": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "description": {
-            "db": {
-              "type": "text",
-              "maxLength": 65535,
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "ipAddress": {
-            "db": {
-              "type": "string",
-              "maxLength": 45,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "createdDate": {
-            "db": {
-              "type": "timestamp",
-              "default": "knex.fn.now()",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "updatedDate": {
-            "db": {
-              "type": "timestamp",
-              "default": "knex.fn.now()",
-              "primary": false,
-              "nullable": true
-            }
-          }
-        },
-        "db": {}
-      },
       "tbl_user_tenant": {
         "db": {},
         "columns": {
@@ -351,34 +199,6 @@
           }
         }
       },
-      "tbl_ek": {
-        "columns": {
-          "ekId": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "key": {
-            "db": {
-              "type": "text",
-              "maxLength": 65535,
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "userId": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": false,
-              "referenceType": "integer"
-            }
-          }
-        },
-        "db": {}
-      },
       "tbl_user_dets": {
         "columns": {
           "usrDetsId": {
@@ -497,6 +317,246 @@
         },
         "db": {},
         "parent": "tbl_users"
+      },
+      "tbl_ek": {
+        "columns": {
+          "ekId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "key": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "userId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": false,
+              "referenceType": "integer"
+            }
+          },
+          "ver": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {}
+      },
+      "tbl_activities": {
+        "db": {},
+        "columns": {
+          "activityId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "activityDesc": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "tbl_activity_log": {
+        "columns": {
+          "logId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "userId": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": false,
+              "references": "userId",
+              "inTable": "tbl_users",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "activity": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": false
+            }
+          },
+          "descrId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": false
+            }
+          },
+          "ipAddress": {
+            "db": {
+              "type": "string",
+              "maxLength": 45,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "createdDate": {
+            "db": {
+              "type": "timestamp",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "updatedDate": {
+            "db": {
+              "type": "timestamp",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {}
+      },
+      "tbl_settings": {
+        "columns": {
+          "settingsId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "tenantId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {}
+      },
+      "tbl_users": {
+        "db": {},
+        "columns": {
+          "userId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "email": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "password": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "fName": {
+            "db": {
+              "type": "string",
+              "maxLength": 100,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "lName": {
+            "db": {
+              "type": "string",
+              "maxLength": 100,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "joinDate": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "dateModified": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "modifiedBy": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "userName": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "imageName": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "active": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "verified": {
+            "db": {
+              "type": "boolean",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "sub": {
+          "tbl_user_tenant": "userId",
+          "tbl_user_dets": "userId"
+        },
+        "refs": {
+          "tbl_activity_log": "userId"
+        }
       }
     },
     "views": {},

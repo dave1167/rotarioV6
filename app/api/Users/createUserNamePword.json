@@ -1,0 +1,249 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/user/user_registration.ejs",
+      "linkedForm": "register1"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inp_user_name",
+        "name": "inp_user_name"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_pwrd",
+        "options": {
+          "rules": {
+            "core:pattern": {
+              "param": ".*[!@#\\\\$%\\\\^&\\\\*].*"
+            }
+          }
+        },
+        "name": "inp_pwrd"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_cfrm_pwrd",
+        "options": {
+          "rules": {
+            "core:equalTo": {
+              "param": "inp_pwrd"
+            }
+          }
+        },
+        "name": "inp_cfrm_pwrd"
+      },
+      {
+        "type": "number",
+        "name": "userId"
+      },
+      {
+        "type": "text",
+        "fieldName": "text1",
+        "name": "text1"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_email",
+        "name": "inp_email"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_verification",
+        "name": "inp_verification"
+      },
+      {
+        "type": "text",
+        "name": "ipAddress"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "number",
+        "name": "Ses_Temp_User_Id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "varUserId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_SESSION.Ses_Temp_User_Id}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {}
+      },
+      {
+        "name": "updateUserDets",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "tbl_users",
+                "column": "password",
+                "type": "text",
+                "value": "{{$_POST.inp_pwrd.sha256('dD5%gJ45*v')}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "verified",
+                "type": "boolean",
+                "value": "{{1}}"
+              }
+            ],
+            "table": "tbl_users",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "userId",
+                  "field": "userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{varUserId}}",
+                  "data": {
+                    "column": "userId"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "userId",
+            "query": "update `tbl_users` set `password` = ?, `verified` = ? where `userId` = ?",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.inp_pwrd.sha256('dD5%gJ45*v')}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{1}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{varUserId}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "collapsed": true
+      },
+      {
+        "name": "insertActLog",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "tbl_activity_log",
+                "column": "userId",
+                "type": "number",
+                "value": "{{$_SESSION.Ses_Temp_User_Id}}"
+              },
+              {
+                "table": "tbl_activity_log",
+                "column": "activity",
+                "type": "text",
+                "value": "{{1}}"
+              },
+              {
+                "table": "tbl_activity_log",
+                "column": "ipAddress",
+                "type": "text",
+                "value": "{{$_POST.ipAddress}}"
+              },
+              {
+                "table": "tbl_activity_log",
+                "column": "updatedDate",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              }
+            ],
+            "table": "tbl_activity_log",
+            "returning": "logId",
+            "query": "insert into `tbl_activity_log` (`activity`, `ipAddress`, `updatedDate`, `userId`) values (?, ?, ?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_SESSION.Ses_Temp_User_Id}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{1}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.ipAddress}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

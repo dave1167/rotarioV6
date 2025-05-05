@@ -4,16 +4,22 @@
       "linkedFile": "/views/admin/user/addNewUser.ejs",
       "linkedForm": "addUserForm"
     },
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
     "$_POST": [
       {
         "type": "text",
         "fieldName": "fName",
         "options": {
           "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Please enter first name"
-            },
             "core:lettersonly": {
               "message": "Only letters are allowed"
             }
@@ -26,10 +32,6 @@
         "fieldName": "lName",
         "options": {
           "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Please enter last name"
-            },
             "core:lettersonly": {
               "message": "Only letters are allowed"
             }
@@ -42,10 +44,6 @@
         "fieldName": "email",
         "options": {
           "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Please enter an email address"
-            },
             "core:email": {
               "message": "Please enter a valid email address"
             }
@@ -58,10 +56,6 @@
         "fieldName": "password",
         "options": {
           "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Please enter a password"
-            },
             "core:minlength": {
               "param": "6",
               "message": "Password must be at least 8 characters"
@@ -75,10 +69,6 @@
         "fieldName": "username",
         "options": {
           "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Please enter a username"
-            },
             "core:alphanumeric": {
               "message": "Username can only contain letters and numbers"
             },
@@ -109,18 +99,17 @@
         "type": "text",
         "fieldName": "role",
         "options": {
-          "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Please select a role"
-            }
-          }
+          "rules": {}
         },
         "name": "role"
       },
       {
         "type": "number",
         "name": "modifiedBy"
+      },
+      {
+        "type": "text",
+        "name": "ver"
       }
     ],
     "$_SESSION": [
@@ -177,8 +166,7 @@
           "value": "{{TIMESTAMP.sha1('Q2£ggkXXZs23')}}"
         },
         "meta": [],
-        "outputType": "text",
-        "output": true
+        "outputType": "text"
       },
       {
         "name": "insertUserDets",
@@ -377,7 +365,8 @@
                 "value": "{{userID}}",
                 "test": ""
               }
-            ]
+            ],
+            "returning": "ekId"
           }
         },
         "meta": [
@@ -578,7 +567,7 @@
                 "table": "tbl_user_rota",
                 "column": "role",
                 "type": "number",
-                "value": "{{$_SESSION.Ses_Role_Id}}"
+                "value": "{{$_POST.role}}"
               }
             ],
             "table": "tbl_user_rota",
@@ -618,7 +607,7 @@
               {
                 "name": ":P6",
                 "type": "expression",
-                "value": "{{$_SESSION.Ses_Role_Id}}",
+                "value": "{{$_POST.role}}",
                 "test": ""
               }
             ]
@@ -634,6 +623,235 @@
             "type": "number"
           }
         ],
+        "collapsed": true
+      },
+      {
+        "name": "varNewId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{insertUserDets.identity}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "wait1",
+        "module": "core",
+        "action": "wait",
+        "options": {}
+      },
+      {
+        "name": "preVerifCode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{TIMESTAMP.md5('E45yT^a').trunc(7, false, '' + 'z').trim()}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "verifCode",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{preVerifCode+'-'+insertUserDets.identity}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "wait2",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 500
+        }
+      },
+      {
+        "name": "updateVerCode",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "tbl_ek",
+                "column": "ver",
+                "type": "text",
+                "value": "{{verifCode}}"
+              }
+            ],
+            "table": "tbl_ek",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "userId",
+                  "field": "userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{insertUserDets.identity}}",
+                  "data": {
+                    "column": "userId"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "returning": "ekId",
+            "query": "update `tbl_ek` set `ver` = ? where `userId` = ?",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{verifCode}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{insertUserDets.identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "collapsed": true
+      },
+      {
+        "name": "wait2_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 500
+        },
+        "collapsed": true
+      },
+      {
+        "name": "qryUserDets",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_users",
+                "column": "fName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "email"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{userID}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_users"
+            },
+            "primary": "userId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_users.userId",
+                  "field": "tbl_users.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{userID}}",
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `fName`, `lName`, `email` from `tbl_users` where `tbl_users`.`userId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "fName"
+          },
+          {
+            "type": "text",
+            "name": "lName"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          }
+        ],
+        "outputType": "array",
+        "collapsed": true
+      },
+      {
+        "name": "varFname",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{qryUserDets[0].fName.decrypt(key)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      "Mailer/mail",
+      {
+        "name": "",
+        "module": "mail",
+        "action": "send",
+        "options": {
+          "instance": "mail",
+          "fromName": "Rotario",
+          "fromEmail": "admin@rotario.co.uk",
+          "toEmail": "{{qryUserDets[0].email}}",
+          "body": "Dear {{varFname}} \n\nYou're invited to join the Rotario Volunteer Management System. Log in here to  join. Your verification code is  {{verifCode}}",
+          "subject": "Joining instructions for Rotario",
+          "toName": "{{varFname}}",
+          "contentType": "html",
+          "recipientType": "extended",
+          "bcc": "daverowe1167@gmail.com"
+        },
+        "output": true,
         "collapsed": true
       }
     ]

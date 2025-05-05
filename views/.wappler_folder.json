@@ -18,5 +18,9 @@
   "login2.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "password_change.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

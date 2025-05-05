@@ -1,0 +1,18 @@
+[
+  "Mailer/mail",
+  {
+    "name": "",
+    "module": "mail",
+    "action": "send",
+    "options": {
+      "instance": "mail",
+      "subject": "Test fromWappler",
+      "fromName": "Rotario Admin",
+      "fromEmail": "admin@rotario.co.uk",
+      "toName": "Dave Rowe",
+      "toEmail": "daverowe1167@gmail.com",
+      "body": "HEll yes"
+    },
+    "output": true
+  }
+]
