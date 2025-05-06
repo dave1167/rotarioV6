@@ -242,9 +242,9 @@
 <!-- Data View for sorting and filtering
 <dmx-data-view id="dvUsers1" dmx-bind:data="scAllUsers.data.repeat" filter="varFName.contains(searchInput.value, true)||varLName.contains(searchInput.value, true)||varEmail.contains(searchInput.value, true)||varRole.contains(searchInput.value, true)" sortOn="varLName"></dmx-data-view> -->
 
-<dmx-data-view id="dvUsers1" dmx-bind:data="scAllUsers.data.repeat" dmx-bind:sorton="sortField.value" dmx-bind:sortdir="sortDirection.value" filter="varFName.contains(searchInput.value, true)||varLName.contains(searchInput.value, true)||varEmail.contains(searchInput.value, true)&amp;&amp;(varActive == actInactSwitch.value)">
+<dmx-data-view id="dvUsers1" dmx-bind:data="scAllUsers.data.repeat" dmx-bind:sorton="sortField.value" dmx-bind:sortdir="sortDirection.value" filter="varFName.contains(searchInput.value, true)||varLName.contains(searchInput.value, true)||varRole.contains(searchInput.value, true)||varJoinDate.contains(searchInput.value, true)||varEmail.contains(searchInput.value, true)">
 </dmx-data-view>
-
+<dmx-value id="actInactSwitch" value="1"></dmx-value>
 
 <!-- Server Connection -->
 
@@ -256,19 +256,14 @@
             <div class="card">
                 <!-- Card Header with Controls -->
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Users List</h5>
-                    <div class="d-flex gap-2">
-                        <div class="col-sm-10 align-self-center">
-                            <div class="form-group mb-3">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input mt-3" type="checkbox" value="1" id="actInactSwitch" name="actInactSwitch">
-                                    <label class="form-check-label col-form-label-lg" for="actInactSwitch">Inactive/Active Users</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-3 row">
+                    <h6 class="card-title mb-0 fw-bolder">Users List</h6>
+                    <div class="d-flex gap-2 align-items-center">
 
+                        <div class="form-check form-switch">
+                            <input class="form-check-input mt-3" type="checkbox" id="actInactSwitchCheckbox" name="actInactSwitch" dmx-on:checked="actInactSwitch.setValue(1)" dmx-on:unchecked="actInactSwitch.setValue(0)" value="1">
+                            <label class="form-check-label col-form-label-sm" for="actInactSwitchCheckbox">Inactive/Active Users</label>
                         </div>
+
                         <!-- Search Input -->
 
 

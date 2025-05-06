@@ -537,7 +537,7 @@
           },
           "active": {
             "db": {
-              "type": "integer",
+              "type": "boolean",
               "primary": false,
               "nullable": true
             }
