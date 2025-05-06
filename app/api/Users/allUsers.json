@@ -12,6 +12,16 @@
       {
         "type": "text",
         "name": "filter"
+      },
+      {
+        "type": "number",
+        "name": "actv"
+      }
+    ],
+    "$_PARAM": [
+      {
+        "type": "number",
+        "name": "filterSwitch"
       }
     ]
   },
@@ -164,10 +174,17 @@
                 "name": ":P3",
                 "value": "{{1}}",
                 "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P4",
+                "value": "{{$_GET.actv}}",
+                "test": ""
               }
             ],
             "primary": "rotaId",
-            "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`joinDate`, `tbl_ek`.`key`, `tbl_roles_type`.`roleName`, `tbl_users`.`imageName`, `tbl_users`.`email`, `tbl_user_rota`.`userId`, `tbl_users`.`verified`, `tbl_users`.`active` from `tbl_user_rota` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_roles_type` on `tbl_roles_type`.`role` = `tbl_user_rota`.`role` where `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`rota` = ? and `tbl_users`.`verified` = ?",
+            "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`joinDate`, `tbl_ek`.`key`, `tbl_roles_type`.`roleName`, `tbl_users`.`imageName`, `tbl_users`.`email`, `tbl_user_rota`.`userId`, `tbl_users`.`verified`, `tbl_users`.`active` from `tbl_user_rota` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_roles_type` on `tbl_roles_type`.`role` = `tbl_user_rota`.`role` where `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`rota` = ? and `tbl_users`.`verified` = ? and `tbl_users`.`active` = ?",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -224,6 +241,25 @@
                       "primary": false,
                       "nullable": true,
                       "name": "verified"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_users.active",
+                  "field": "tbl_users.active",
+                  "type": "boolean",
+                  "operator": "equal",
+                  "value": "{{$_GET.actv}}",
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "active",
+                    "type": "boolean",
+                    "columnObj": {
+                      "type": "boolean",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "active"
                     }
                   },
                   "operation": "="
@@ -300,6 +336,18 @@
                 "meta": [],
                 "outputType": "text",
                 "output": true
+              },
+              {
+                "name": "varActive",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{query[$index].active}}"
+                },
+                "meta": [],
+                "outputType": "boolean",
+                "output": true,
+                "collapsed": true
               },
               {
                 "name": "varFName",
@@ -432,6 +480,11 @@
           {
             "name": "varId",
             "type": "text",
+            "sub": []
+          },
+          {
+            "name": "varActive",
+            "type": "boolean",
             "sub": []
           },
           {

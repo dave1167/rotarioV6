@@ -276,36 +276,50 @@ dmx.config({
       }
     ],
     "dvUsers": {
+      "meta": [],
+      "outputType": "boolean"
+    },
+    "dvNonActive": {
       "meta": [
         {
-          "name": "varFName",
           "type": "text",
-          "sub": []
+          "name": "fName"
         },
         {
-          "name": "varLName",
           "type": "text",
-          "sub": []
+          "name": "lName"
         },
         {
-          "name": "varEmail",
-          "type": "text",
-          "sub": []
+          "type": "date",
+          "name": "joinDate"
         },
         {
-          "name": "varJoinDate",
           "type": "text",
-          "sub": []
+          "name": "key"
         },
         {
-          "name": "varRole",
           "type": "text",
-          "sub": []
+          "name": "roleName"
         },
         {
-          "name": "varImage",
           "type": "text",
-          "sub": []
+          "name": "imageName"
+        },
+        {
+          "type": "text",
+          "name": "email"
+        },
+        {
+          "type": "number",
+          "name": "userId"
+        },
+        {
+          "type": "boolean",
+          "name": "verified"
+        },
+        {
+          "type": "boolean",
+          "name": "active"
         }
       ],
       "outputType": "array"

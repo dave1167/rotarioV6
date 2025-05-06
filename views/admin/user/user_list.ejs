@@ -1,7 +1,7 @@
 <!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="user_list" appConnect="local" components="{dmxIndexedDB:{},dmxDataTraversal:{},dmxFormatter:{},dmxDatastore:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxStateManagement:{}}" -->
 <dmx-query-manager id="query1"></dmx-query-manager>
 
-<dmx-serverconnect id="scAllUsers" url="/api/Users/allUsers" autoload="true" dmx-param:sort="query1.data.sort" dmx-param:dir="query1.data.dir" dmx-param:filter="scAllUsers.data.query[0].active==actInactSwitch.value"></dmx-serverconnect><dmx-serverconnect id="scFetchSingleUser" url="/api/Users/singleUser" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scAllUsers" url="/api/Users/allUsers" autoload="true" dmx-param:sort="query1.data.sort" dmx-param:dir="query1.data.dir" dmx-param:filter="" dmx-param:actv="actInactSwitch.value"></dmx-serverconnect><dmx-serverconnect id="scFetchSingleUser" url="/api/Users/singleUser" noload="true"></dmx-serverconnect>
 <dmx-value id="sortField" value="varLName"></dmx-value>
 <dmx-value id="sortDirection" value="asc"></dmx-value>
 
@@ -240,9 +240,9 @@
 }"></dmx-indexed-db>
 
 <!-- Data View for sorting and filtering
-<dmx-data-view id="dvUsers" dmx-bind:data="scAllUsers.data.repeat" filter="varFName.contains(searchInput.value, true)||varLName.contains(searchInput.value, true)||varEmail.contains(searchInput.value, true)||varRole.contains(searchInput.value, true)" sortOn="varLName"></dmx-data-view> -->
+<dmx-data-view id="dvUsers1" dmx-bind:data="scAllUsers.data.repeat" filter="varFName.contains(searchInput.value, true)||varLName.contains(searchInput.value, true)||varEmail.contains(searchInput.value, true)||varRole.contains(searchInput.value, true)" sortOn="varLName"></dmx-data-view> -->
 
-<dmx-data-view id="dvUsers" dmx-bind:data="scAllUsers.data.repeat" filter="varFName.contains(searchInput.value, true) || varLName.contains(searchInput.value, true) || varEmail.contains(searchInput.value, true) || varRole.contains(searchInput.value, true)" dmx-bind:sorton="sortField.value" dmx-bind:sortdir="sortDirection.value">
+<dmx-data-view id="dvUsers1" dmx-bind:data="scAllUsers.data.repeat" dmx-bind:sorton="sortField.value" dmx-bind:sortdir="sortDirection.value" filter="varFName.contains(searchInput.value, true)||varLName.contains(searchInput.value, true)||varEmail.contains(searchInput.value, true)&amp;&amp;(varActive == actInactSwitch.value)">
 </dmx-data-view>
 
 
@@ -261,7 +261,7 @@
                         <div class="col-sm-10 align-self-center">
                             <div class="form-group mb-3">
                                 <div class="form-check form-switch">
-                                    <input class="form-check-input mt-3" type="checkbox" value="1" id="actInactSwitch" name="actInactSwitch" dmx-bind:checked="1">
+                                    <input class="form-check-input mt-3" type="checkbox" value="1" id="actInactSwitch" name="actInactSwitch">
                                     <label class="form-check-label col-form-label-lg" for="actInactSwitch">Inactive/Active Users</label>
                                 </div>
                             </div>
@@ -283,12 +283,6 @@
                 </div>
 
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col mt-2 mb-2 ms-2 me-2 shadow-sm">
-
-                        </div>
-                        <div class="col align-self-center"></div>
-                    </div>
                     <!-- Loading State -->
                     <div class="text-center py-4" dmx-show="scAllUsers.loading">
 
@@ -344,19 +338,19 @@
 
                                 </tr>
                             </thead>
-                            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="dvUsers.data" id="tableRepeat1" dmx-state="query1" dmx-sort="sort" dmx-order="dir">
+                            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="dvUsers1.data" id="tableRepeat1" dmx-state="query1" dmx-sort="sort" dmx-order="dir">
                                 <tr>
-                                    <td dmx-text="dvUsers.data[$index].varId" dmx-hide="!varId.isEmpty()"></td>
+                                    <td dmx-text="dvUsers1.data[$index].varId" dmx-hide="!varId.isEmpty()"></td>
                                     <td class="align-middle"><button id="btn1" class="btn btn-primary align-self-center mt-3" dmx-on:click="run([{run:{outputType:'text',action:`modEditUser.frmEditUser.reset(true)`}},{wait:{delay:300}},{run:{outputType:'text',action:`modEditUser.show()`}},{run:{outputType:'text',action:`scFetchSingleUser.load({user_id: varId})`}},{wait:{delay:100}}])">
                                             <i class="fas fa-edit fa-lg" dmx-style:color="'white'"></i>
                                         </button>&nbsp;</td>
                                     <td class="align-middle">
-                                        <img dmx-bind:src="'\\upload\\images\\profiles\\'+dvUsers.data[$index].varImage+'.jpg'" class="rounded-circle" width="40" height="40" text="User'&quot;" dmx-bind:alt="varFName + ' ' + varLName">
+                                        <img dmx-bind:src="'\\upload\\images\\profiles\\'+dvUsers1.data[$index].varImage+'.jpg'" class="rounded-circle" width="40" height="40" text="User'&quot;" dmx-bind:alt="varFName + ' ' + varLName">
                                     </td>
-                                    <td class="align-middle" dmx-text="dvUsers.data[$index].varFName"></td>
-                                    <td class="align-middle" dmx-text="dvUsers.data[$index].varLName"></td>
-                                    <td class="align-middle d-none d-sm-table-cell" dmx-text="dvUsers.data[$index].varEmail"></td>
-                                    <td class="align-middle d-none d-sm-table-cell" dmx-text="dvUsers.data[$index].varJoinDate.formatDate('dd-MM-yyyy')"></td>
+                                    <td class="align-middle" dmx-text="dvUsers1.data[$index].varFName"></td>
+                                    <td class="align-middle" dmx-text="dvUsers1.data[$index].varLName"></td>
+                                    <td class="align-middle d-none d-sm-table-cell" dmx-text="dvUsers1.data[$index].varEmail"></td>
+                                    <td class="align-middle d-none d-sm-table-cell" dmx-text="dvUsers1.data[$index].varJoinDate.formatDate('dd-MM-yyyy')"></td>
                                     <td class="align-middle" dmx-text="varRole"></td>
                                 </tr>
                             </tbody>
