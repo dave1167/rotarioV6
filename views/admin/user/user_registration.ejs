@@ -1,4 +1,44 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="user_registration" appConnect="local" components="{dmxBootstrap5Modal:{},dmxValidator:{},dmxBootstrap5Tooltips:{}}" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="user_registration" appConnect="local" components="{dmxBootstrap5Modal:{},dmxValidator:{},dmxBootstrap5Tooltips:{},dmxStateManagement:{},dmxBrowser:{}}" -->
+<div is="dmx-browser" id="browser1"></div>
+<dmx-cookie-manager id="cookies1"></dmx-cookie-manager>
+<div class="modal fade" id="modSendToLogIn" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <form id="frmSendToLogin" method="post" action="/api/Cookies/setFirstTime" is="dmx-serverconnect-form" dmx-on:success="browser1.goto('/admin/user/first_time_profile')">
+                            <div class="row">
+                                <div class="col">
+                                    <p><b>You're all set!
+                                        </b>
+                                    <p>You can now log in using your new username and password.
+                                    </p>
+                                    <p>After logging in, you’ll be prompted to complete your profile.
+                                    </p>
+                                    <p>Once that’s done, you’re ready to start using the site.</p>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save changes</button><button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal" id="modNotVerified" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -24,7 +64,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="frmChngePwrd" method="post" is="dmx-serverconnect-form" action="/api/Users/createUserNamePword">
+                <form id="frmChngePwrd" method="post" is="dmx-serverconnect-form" action="/api/Users/createUserNamePword" dmx-on:success="modChngePsword.hide();modSendToLogIn.show()">
                     <div class="form-group mb-3"> <label for="inp_user_name" class="form-label">Create User Name</label>
                         <input type="text" class="form-control" id="inp_user_name" name="inp_user_name" aria-describedby="input1_help" placeholder="User Name">
                     </div>
@@ -37,7 +77,7 @@
                         <div class="modal-footer">
                             <input id="text1" name="text1" type="text" class="form-control" dmx-bind:value="' '+register1.data.varUserId">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <button class="btn btn-primary" type="submit">Create</button>
                         </div>
                     </div>
                 </form>

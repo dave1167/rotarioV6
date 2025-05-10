@@ -26,9 +26,19 @@
         }
       },
       {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
         "name": "qryUserName",
         "module": "dbconnector",
-        "action": "select",
+        "action": "single",
         "options": {
           "connection": "db",
           "sql": {
@@ -52,7 +62,7 @@
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P1",
-                "value": "{{$_SESSION.Ses_User_Id}}",
+                "value": "{{identity}}",
                 "test": "1"
               }
             ],
@@ -91,7 +101,7 @@
                   "field": "tbl_users.userId",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{$_SESSION.Ses_User_Id}}",
+                  "value": "{{identity}}",
                   "data": {
                     "table": "tbl_users",
                     "column": "userId",
@@ -103,8 +113,7 @@
                       "name": "userId"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_users"
+                  "operation": "="
                 }
               ],
               "conditional": null,
@@ -127,24 +136,37 @@
             "name": "key"
           }
         ],
-        "outputType": "array"
+        "outputType": "object",
+        "type": "dbconnector_single",
+        "collapsed": true
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 300
+        }
       },
       {
         "name": "UserName",
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{qryUserName[0].fName.decrypt(qryUserName[0].key)}}"
+          "value": "{{qryUserName.fName.decrypt(qryUserName.key)}}"
         },
         "meta": [],
         "outputType": "text",
         "output": true
       },
       {
-        "name": "wait",
+        "name": "wait_copy",
         "module": "core",
         "action": "wait",
-        "options": {}
+        "options": {
+          "delay": 300
+        },
+        "collapsed": true
       },
       {
         "name": "qryOrgName",
@@ -213,7 +235,17 @@
           }
         ],
         "outputType": "object",
-        "type": "dbconnector_single"
+        "type": "dbconnector_single",
+        "collapsed": true
+      },
+      {
+        "name": "wait_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 300
+        },
+        "collapsed": true
       },
       {
         "name": "orgName",
@@ -225,6 +257,15 @@
         "meta": [],
         "outputType": "text",
         "output": true
+      },
+      {
+        "name": "wait_copy_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 300
+        },
+        "collapsed": true
       },
       {
         "name": "qryRotaName",
@@ -250,7 +291,7 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{$_SESSION.Ses_Rota_Id}}",
-                "test": ""
+                "test": "1"
               }
             ],
             "table": {
@@ -278,7 +319,8 @@
                       "name": "rotaId"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "tbl_rota_type"
                 }
               ],
               "conditional": null,
@@ -299,6 +341,18 @@
           }
         ],
         "outputType": "object",
+        "collapsed": true
+      },
+      {
+        "name": "rotaName",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{qryRotaName.rotaDesc}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
         "collapsed": true
       }
     ]

@@ -1,7 +1,7 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="profile" appConnect="local" components="{dmxBootstrap5Modal:{},dmxNotifications:{},dmxValidator:{}}" -->
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="first_time_profile" appConnect="local" components="{dmxBootstrap5Modal:{}}" -->
 <dmx-serverconnect id="serverconnect1" url="/api/Security/fetchTnSSN"></dmx-serverconnect>
-<meta name="ac:route" content="/admin/user/profile">
-<dmx-serverconnect id="scUserDets" url="/api/Users/userDets2"></dmx-serverconnect>
+<meta name="ac:route" content="/admin/user/first_time_profile">
+<dmx-serverconnect id="scUserDetsFstTime" url="/api/Users/userDetsFirstTime"></dmx-serverconnect>
 
 <!-- Profile Image Modal -->
 <div class="modal fade" id="modProfileImage" is="dmx-bs5-modal" tabindex="-1">
@@ -78,7 +78,7 @@
                     </button>
                 </div>
                 <div class="card-body">
-                    <form is="dmx-serverconnect-form" id="profileForm" method="post" action="/api/Users/updateUserProfile" dmx-on:success="successModal.show()">
+                    <form is="dmx-serverconnect-form" id="profileForm" method="post" action="/api/Users/updateUserFstTime" dmx-on:success="successModal.show()">
                         <!-- Profile Header Section -->
                         <div class="d-flex flex-column flex-md-row align-items-center gap-4 mb-4">
                             <input id="text1" name="text1" type="hidden" class="form-control" dmx-bind:value="serverconnect1.data.query.userId">
@@ -93,11 +93,11 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label for="inp_fName" class="form-label">First Name</label>
-                                        <input type="text" class="form-control" id="inp_fName" name="fName" dmx-bind:value="scUserDets.data.DecFname" data-rule-lettersonly="true" data-msg-lettersonly="Please enter only letters">
+                                        <input type="text" class="form-control" id="inp_fName" name="fName" dmx-bind:value="scUserDetsFstTime.data.DecFname" data-rule-lettersonly="true" data-msg-lettersonly="Please enter only letters">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="inp_lName" class="form-label">Last Name</label>
-                                        <input type="text" class="form-control" id="inp_lName" name="lName" dmx-bind:value="scUserDets.data.DecLname" required data-rule-lettersonly="true" data-msg-required="Please enter your last name" data-msg-lettersonly="Please enter only letters">
+                                        <input type="text" class="form-control" id="inp_lName" name="lName" dmx-bind:value="scUserDetsFstTime.data.DecLname" required="" data-rule-lettersonly="true" data-msg-required="Please enter your last name" data-msg-lettersonly="Please enter only letters">
                                     </div>
                                 </div>
                             </div>
@@ -109,15 +109,15 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label for="inp_email" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" id="inp_email" name="email" dmx-bind:value="scUserDets.data.DecEmail" required data-rule-email="true" data-msg-required="Please enter your email" data-msg-email="Please enter a valid email address">
+                                    <input type="email" class="form-control" id="inp_email" name="email" dmx-bind:value="scUserDetsFstTime.data.DecEmail" required="" data-rule-email="true" data-msg-required="Please enter your email" data-msg-email="Please enter a valid email address">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inp_userName" class="form-label">Username</label>
-                                    <input type="text" class="form-control" id="inp_userName" name="userName" dmx-bind:value="scUserDets.data.query.userName" required data-rule-nowhitespace="true" data-msg-required="Please enter your username" data-msg-nowhitespace="Username cannot contain spaces">
+                                    <input type="text" class="form-control" id="inp_userName" name="userName" dmx-bind:value="scUserDetsFstTime.data.query.userName" required="" data-rule-nowhitespace="true" data-msg-required="Please enter your username" data-msg-nowhitespace="Username cannot contain spaces">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inp_mobile" class="form-label">Mobile Number</label>
-                                    <input type="tel" class="form-control" id="inp_mobile" name="mobile" dmx-bind:value="scUserDets.data.DecMobile" required data-rule-digits="true" data-msg-required="Please enter your mobile number" data-msg-digits="Please enter only numbers">
+                                    <input type="tel" class="form-control" id="inp_mobile" name="mobile" dmx-bind:value="" required="" data-rule-digits="true" data-msg-required="Please enter your mobile number" data-msg-digits="Please enter only numbers">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inp_tel" class="form-label">Landline <span class="text-muted">(Optional)</span></label>
@@ -136,13 +136,13 @@
                                 <!-- Emergency Contact Name -->
                                 <div class="col-md-6">
                                     <label for="emContactName" class="form-label">Emergency Contact Name</label>
-                                    <input type="text" id="emContactName" name="emContactName" class="form-control" dmx-bind:value="scUserDets.data.DecEmCtctName">
+                                    <input type="text" id="emContactName" name="emContactName" class="form-control" dmx-bind:value="">
                                 </div>
 
                                 <!-- Emergency Telephone Number -->
                                 <div class="col-md-6">
                                     <label for="emTelNo" class="form-label">Emergency Telephone Number</label>
-                                    <input type="tel" id="emTelNo" name="emTelNo" class="form-control" pattern="[0-9]{10}" dmx-bind:value="scUserDets.data.DecEmCtctTel">
+                                    <input type="tel" id="emTelNo" name="emTelNo" class="form-control" pattern="[0-9]{10}" dmx-bind:value="">
                                 </div>
                             </div>
                         </div>
@@ -152,11 +152,11 @@
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label for="inp_add1" class="form-label">Address Line 1</label>
-                                    <input type="text" class="form-control" id="inp_add1" name="add1" dmx-bind:value="scUserDets.data.DecAdd1" required data-msg-required="Please enter your address">
+                                    <input type="text" class="form-control" id="inp_add1" name="add1" dmx-bind:value="" required="" data-msg-required="Please enter your address">
                                 </div>
                                 <div class="col-12">
                                     <label for="inp_add2" class="form-label">Address Line 2 <span class="text-muted">(Optional)</span></label>
-                                    <input type="text" class="form-control" id="inp_add2" name="add2" dmx-bind:value="scUserDets.data.DecAdd2">
+                                    <input type="text" class="form-control" id="inp_add2" name="add2" dmx-bind:value="">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inp_town" class="form-label">Town Line 1</label>
@@ -164,11 +164,11 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inp_town1" class="form-label">Town Line 2 (Optional)</label>
-                                    <input type="text" class="form-control" id="inp_town1" name="town1" dmx-bind:value="scUserDets.data.query.town1" required="" data-rule-lettersonly="true" data-msg-required="Please enter your town" data-msg-lettersonly="Please enter only letters">
+                                    <input type="text" class="form-control" id="inp_town1" name="town1" dmx-bind:value="">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inp_county" class="form-label">County</label>
-                                    <input type="text" class="form-control" id="inp_county" name="county" dmx-bind:value="scUserDets.data.query.county" required data-rule-lettersonly="true" data-msg-required="Please enter your county" data-msg-lettersonly="Please enter only letters">
+                                    <input type="text" class="form-control" id="inp_county" name="county" dmx-bind:value="">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inp_postcode" class="form-label">Postcode</label>
@@ -178,7 +178,7 @@
                         </div>
 
                         <!-- Hidden Fields -->
-                        <input type="hidden" id="inp_user_id" name="inp_user_id" dmx-bind:value="scUserDets.data.query.userId">
+                        <input id="inp_user_id" name="inp_user_id" dmx-bind:value="scUserDetsFstTime.data.query.userId">
 
                         <!-- Form Actions -->
                         <div class="d-flex justify-content-end gap-2 border-top pt-4">

@@ -1,0 +1,11 @@
+{
+  "name": "key",
+  "module": "core",
+  "action": "setvalue",
+  "options": {
+    "value": "{{TIMESTAMP.sha1('Q2£ggkXXZs23')}}"
+  },
+  "meta": [],
+  "outputType": "text",
+  "output": true
+}

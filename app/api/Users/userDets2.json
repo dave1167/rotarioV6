@@ -105,6 +105,14 @@
         "meta": []
       },
       {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 100
+        }
+      },
+      {
         "name": "query",
         "module": "dbconnector",
         "action": "single",
@@ -192,7 +200,7 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{identity}}",
-                "test": "55"
+                "test": ""
               }
             ],
             "table": {
@@ -264,8 +272,7 @@
                       "name": "userId"
                     }
                   },
-                  "operation": "=",
-                  "table": "tbl_users"
+                  "operation": "="
                 }
               ],
               "conditional": null,
@@ -383,88 +390,171 @@
         "collapsed": true
       },
       {
-        "name": "DecAdd1",
+        "name": "",
         "module": "core",
-        "action": "setvalue",
+        "action": "condition",
         "options": {
-          "value": "{{query.add1.decrypt(query.key)}}"
+          "if": "{{'!'+query.add1}}",
+          "else": {
+            "steps": {
+              "name": "DecAdd1",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.add1.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
         },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
+        "outputType": "boolean",
         "collapsed": true
       },
       {
-        "name": "DecAdd2",
+        "name": "",
         "module": "core",
-        "action": "setvalue",
+        "action": "condition",
         "options": {
-          "value": "{{query.add2.decrypt(query.key)}}"
+          "if": "{{'!'+query.add2}}",
+          "else": {
+            "steps": {
+              "name": "DecAdd2",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.add2.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
         },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
+        "outputType": "boolean",
         "collapsed": true
       },
       {
-        "name": "DecPostCode",
+        "name": "",
         "module": "core",
-        "action": "setvalue",
+        "action": "condition",
         "options": {
-          "value": "{{query.postcode.decrypt(query.key)}}"
+          "if": "{{'!'+query.postcode}}",
+          "else": {
+            "steps": {
+              "name": "DecPostCode",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.postcode.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
         },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
+        "outputType": "boolean",
         "collapsed": true
       },
       {
-        "name": "DecMobile",
+        "name": "",
         "module": "core",
-        "action": "setvalue",
+        "action": "condition",
         "options": {
-          "value": "{{query.mobile.decrypt(query.key)}}"
+          "if": "{{'!'+query.mobile}}",
+          "else": {
+            "steps": {
+              "name": "DecMobile",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.mobile.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
         },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
+        "outputType": "boolean",
         "collapsed": true
       },
       {
-        "name": "DecTel",
+        "name": "",
         "module": "core",
-        "action": "setvalue",
+        "action": "condition",
         "options": {
-          "value": "{{query.tel.decrypt(query.key)}}"
+          "if": "{{'!'+query.tel}}",
+          "else": {
+            "steps": {
+              "name": "DecTel",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.tel.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
         },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
+        "outputType": "boolean",
         "collapsed": true
       },
       {
-        "name": "DecEmCtctName",
+        "name": "",
         "module": "core",
-        "action": "setvalue",
+        "action": "condition",
         "options": {
-          "value": "{{query.emgcyCntctNme.decrypt(query.key)}}"
+          "if": "{{'!'+query.emgcyCntctNme}}",
+          "else": {
+            "steps": {
+              "name": "DecEmCtctName",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.emgcyCntctNme.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
         },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
+        "outputType": "boolean",
         "collapsed": true
       },
       {
-        "name": "DecEmCtctTel",
+        "name": "",
         "module": "core",
-        "action": "setvalue",
+        "action": "condition",
         "options": {
-          "value": "{{query.emgcyCntctTel.decrypt(query.key)}}"
+          "if": "{{'!'+query.emgcyCntctTel}}",
+          "else": {
+            "steps": {
+              "name": "DecEmCtctTel",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{query.emgcyCntctTel.decrypt(query.key)}}"
+              },
+              "meta": [],
+              "outputType": "text",
+              "output": true,
+              "collapsed": true
+            }
+          }
         },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "collapsed": true
+        "outputType": "boolean"
       }
     ]
   }

@@ -15,7 +15,7 @@
       "path": "/admin/user/profile",
       "page": "admin/user/profile",
       "layout": "admin",
-      "exec": "/api/Security/secAllUsers"
+      "exec": ""
     },
     {
       "path": "/admin/dashboard/dashboard",
@@ -68,6 +68,16 @@
     {
       "path": "/admin/user/user_registration",
       "page": "admin/user/user_registration",
+      "layout": "main"
+    },
+    {
+      "path": "/admin/user/first_time_profile",
+      "page": "admin/user/first_time_profile",
+      "layout": "main"
+    },
+    {
+      "path": "/admin/DbRoutines/manual_encrypt",
+      "page": "admin/DbRoutines/manual_encrypt",
       "layout": "main"
     }
   ]

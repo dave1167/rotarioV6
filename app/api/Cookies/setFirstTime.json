@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "$_COOKIE": [
+      {
+        "type": "number",
+        "name": "fstTmPrfl"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "fstTmPrfl",
+        "module": "core",
+        "action": "removecookie",
+        "options": {}
+      },
+      {
+        "name": "fstTmPrfl",
+        "module": "core",
+        "action": "setcookie",
+        "options": {
+          "value": 1,
+          "secure": true
+        }
+      }
+    ]
+  }
+}

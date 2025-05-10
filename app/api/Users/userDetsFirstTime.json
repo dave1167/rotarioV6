@@ -1,0 +1,285 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/user/user_list.ejs",
+      "linkedForm": "frmEditUser"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "name": "key"
+      },
+      {
+        "type": "text",
+        "name": "emailEnc"
+      },
+      {
+        "type": "number",
+        "name": "userId"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpFName",
+        "options": {
+          "rules": {}
+        },
+        "name": "inpFName"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpLName",
+        "name": "inpLName"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpEmail",
+        "options": {
+          "rules": {
+            "core:email": {}
+          }
+        },
+        "name": "inpEmail"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpPhone",
+        "name": "inpPhone"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpMobile",
+        "name": "inpMobile"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpUserId",
+        "name": "inpUserId"
+      },
+      {
+        "type": "text",
+        "fieldName": "egContactNme",
+        "name": "egContactNme"
+      },
+      {
+        "type": "text",
+        "fieldName": "egContactTel",
+        "name": "egContactTel"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpAdd1",
+        "name": "inpAdd1"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpAdd2",
+        "name": "inpAdd2"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpTown",
+        "name": "inpTown"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpTown2",
+        "name": "inpTown2"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpCounty",
+        "name": "inpCounty"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "identify",
+        "options": {
+          "provider": "sec"
+        },
+        "output": true,
+        "meta": []
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_ek",
+                "column": "key"
+              },
+              {
+                "table": "tbl_users",
+                "column": "fName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_users",
+                "column": "email"
+              },
+              {
+                "table": "tbl_users",
+                "column": "userName"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "key"
+              },
+              {
+                "table": "tbl_users",
+                "column": "imageName"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Temp_User_Id}}",
+                "test": "147"
+              }
+            ],
+            "table": {
+              "name": "tbl_users"
+            },
+            "primary": "userId",
+            "joins": [
+              {
+                "table": "tbl_ek",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_ek",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_users",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "ekId"
+              }
+            ],
+            "query": "select `tbl_ek`.`key`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`userId`, `tbl_users`.`email`, `tbl_users`.`userName`, `tbl_ek`.`key`, `tbl_users`.`imageName` from `tbl_users` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_users.userId",
+                  "field": "tbl_users.userId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Temp_User_Id}}",
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "userId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "userId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "key"
+          },
+          {
+            "type": "text",
+            "name": "fName"
+          },
+          {
+            "type": "text",
+            "name": "lName"
+          },
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          },
+          {
+            "type": "text",
+            "name": "userName"
+          },
+          {
+            "type": "text",
+            "name": "imageName"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
+      },
+      {
+        "name": "DecFname",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.fName.decrypt(query.key)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "DecLname",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.lName.decrypt(query.key)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "DecEmail",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query.email.decrypt(query.key)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      }
+    ]
+  }
+}

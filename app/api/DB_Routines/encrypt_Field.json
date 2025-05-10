@@ -1,30 +1,26 @@
 {
   "meta": {
     "options": {
-      "linkedFile": "/views/admin/DB_Routines/encrypt.ejs",
-      "linkedForm": "formEncDec"
+      "linkedFile": "/views/admin/DbRoutines/manual_encrypt.ejs",
+      "linkedForm": "form1"
     },
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "unencrypttext"
+      }
+    ],
     "$_POST": [
       {
         "type": "text",
-        "fieldName": "input1",
+        "fieldName": "encText",
         "multiple": true,
-        "name": "input1"
-      },
-      {
-        "type": "text",
-        "fieldName": "inp_Dec",
-        "name": "inp_Dec"
+        "name": "encText"
       },
       {
         "type": "text",
         "fieldName": "key",
         "name": "key"
-      },
-      {
-        "type": "text",
-        "fieldName": "encryp",
-        "name": "encryp"
       }
     ]
   },
@@ -35,7 +31,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{$_POST.inp_Dec.encrypt($_POST.key)}}"
+          "value": "{{$_GET.unencrypttext.encrypt($_POST.key)}}"
         },
         "meta": [],
         "outputType": "text",
@@ -45,7 +41,9 @@
         "name": "wait",
         "module": "core",
         "action": "wait",
-        "options": {},
+        "options": {
+          "delay": 100
+        },
         "output": false
       }
     ]

@@ -93,7 +93,7 @@
 </head>
 
 <body is="dmx-app" id="admin" class="bg-light" dmx-on:ready="scHeaderInfo.load({});scOrgName.load({})">
-  <dmx-serverconnect id="scSession" url="/api/Sessions/getSessions" noload="true"></dmx-serverconnect>
+  <dmx-serverconnect id="scSession" url="/api/Sessions/getSessions" noload="true">&nbsp;</dmx-serverconnect>
   <dmx-serverconnect id="scHeaderInfo" url="/api/Sessions/headerInfo" noload="true"></dmx-serverconnect>
   <dmx-serverconnect id="scOrgName" url="/api/Sessions/headerOrgInfo"></dmx-serverconnect>
 
@@ -116,7 +116,7 @@
           </a>
         </div>
         <div class="ms-auto text-white text-end">
-          <p class="small mb-0">Welcome {{scHeaderInfo.data.UserName}}&nbsp;&nbsp;</p>
+          <p class="small mb-0">Welcome&nbsp; {{scHeaderInfo.data.UserName}}&nbsp;</p>
         </div>
       </div>
 

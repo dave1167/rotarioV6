@@ -435,5 +435,21 @@ dmx.config({
       ],
       "outputType": "array"
     }
+  },
+  "user_registration": {
+    "cookies": [
+      {
+        "type": "number",
+        "name": "fstTime"
+      }
+    ]
+  },
+  "login2": {
+    "cookies": [
+      {
+        "type": "number",
+        "name": "fstTmPrfl"
+      }
+    ]
   }
 });

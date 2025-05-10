@@ -227,9 +227,21 @@
               {
                 "table": "tbl_user_dets",
                 "column": "tel"
+              },
+              {
+                "table": "tbl_users",
+                "column": "verified"
               }
             ],
-            "params": [],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_User_Id}}",
+                "test": ""
+              }
+            ],
             "table": {
               "name": "tbl_users"
             },
@@ -257,7 +269,7 @@
                 "primary": "usrDetsId"
               }
             ],
-            "query": "select `tbl_users`.`userId`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`joinDate`, `tbl_users`.`email`, `tbl_users`.`userName`, `tbl_users`.`password`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`tel` from `tbl_users` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?",
+            "query": "select `tbl_users`.`userId`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`joinDate`, `tbl_users`.`email`, `tbl_users`.`userName`, `tbl_users`.`password`, `tbl_user_dets`.`add1`, `tbl_user_dets`.`add2`, `tbl_user_dets`.`town1`, `tbl_user_dets`.`tel`, `tbl_users`.`verified` from `tbl_users` inner join `tbl_user_dets` on `tbl_user_dets`.`userId` = `tbl_users`.`userId` where `tbl_users`.`userId` = ?",
             "wheres": {
               "condition": "AND",
               "rules": [
@@ -266,7 +278,7 @@
                   "field": "tbl_users.userId",
                   "type": "double",
                   "operator": "equal",
-                  "value": 1,
+                  "value": "{{$_SESSION.Ses_User_Id}}",
                   "data": {
                     "table": "tbl_users",
                     "column": "userId",
@@ -331,200 +343,13 @@
           {
             "type": "text",
             "name": "tel"
+          },
+          {
+            "type": "boolean",
+            "name": "verified"
           }
         ],
         "outputType": "object",
-        "collapsed": true
-      },
-      {
-        "name": "valFName",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{query.fName.decrypt(identity)}}",
-          "key": "gblFname"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "collapsed": true,
-        "disabled": true
-      },
-      {
-        "name": "valLName",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{query.lName.decrypt(identity)}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "valEmail",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{query.email.decrypt(identity)}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "valAdd1",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{query.add1.decrypt(identity)}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "valAdd2",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{query.add2.decrypt(identity)}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "collapsed": true,
-        "disabled": true
-      },
-      {
-        "name": "vallPcode",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{query.postcode.decrypt(identity)}}"
-        },
-        "meta": [
-          {
-            "name": "userId",
-            "type": "number"
-          },
-          {
-            "name": "fName",
-            "type": "text"
-          },
-          {
-            "name": "lName",
-            "type": "text"
-          },
-          {
-            "name": "joinDate",
-            "type": "date"
-          },
-          {
-            "name": "email",
-            "type": "text"
-          },
-          {
-            "name": "userName",
-            "type": "text"
-          },
-          {
-            "name": "password",
-            "type": "text"
-          },
-          {
-            "name": "add1",
-            "type": "text"
-          },
-          {
-            "name": "add2",
-            "type": "text"
-          },
-          {
-            "name": "town1",
-            "type": "text"
-          },
-          {
-            "name": "tel",
-            "type": "text"
-          }
-        ],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      },
-      {
-        "name": "vallMob",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{query.mobile.decrypt(identity)}}"
-        },
-        "meta": [
-          {
-            "name": "userId",
-            "type": "number"
-          },
-          {
-            "name": "fName",
-            "type": "text"
-          },
-          {
-            "name": "lName",
-            "type": "text"
-          },
-          {
-            "name": "joinDate",
-            "type": "date"
-          },
-          {
-            "name": "email",
-            "type": "text"
-          },
-          {
-            "name": "userName",
-            "type": "text"
-          },
-          {
-            "name": "password",
-            "type": "text"
-          },
-          {
-            "name": "add1",
-            "type": "text"
-          },
-          {
-            "name": "add2",
-            "type": "text"
-          },
-          {
-            "name": "town1",
-            "type": "text"
-          },
-          {
-            "name": "tel",
-            "type": "text"
-          }
-        ],
-        "outputType": "text",
-        "output": true,
-        "disabled": true,
-        "collapsed": true
-      },
-      {
-        "name": "vallTel",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{query.tel.decrypt(identity)}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true,
         "collapsed": true
       }
     ]

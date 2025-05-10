@@ -2,5 +2,9 @@
   "encrypt.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "manual_encrypt.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

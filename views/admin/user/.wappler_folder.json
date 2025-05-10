@@ -38,5 +38,13 @@
   "user_registration.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "user_registration2.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "first_time_profile.ejs": {
+    "layoutPage": "main",
+    "description": ""
   }
 }

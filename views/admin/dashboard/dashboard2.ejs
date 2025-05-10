@@ -1,5 +1,7 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local" dmx-on:ready="scFetchSessions.load({})" --><!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local" -->
-<dmx-serverconnect id="scFetchSessions" url="/api/Sessions/getSessions" noload="true"></dmx-serverconnect>
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local" dmx-on:ready="run([{run:{outputType:'text',action:`scFetchSessions.load({})`}},{run:{outputType:'text',action:`scUserDets.load({})`}},{'bootbox.alert':{message:`scUserDets.data.query.fName+\' \'+scUserDets.data.query.userId+\' ok\'`}},{condition:{outputType:'boolean',if:`scUserDets.data.query.verified==1`,then:{steps:{run:{outputType:'text',action:`browser1.goto(\'/admin/dashboard/dashboard\')`}}},else:{steps:{run:{outputType:'text',action:`browser1.goto(\'/admin/user/profile\')`}}}}}])" -->
+<dmx-serverconnect id="scUserDets" url="/api/Users/user_dets"></dmx-serverconnect>
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="dashboard" appconnect="local" -->
+<dmx-serverconnect id="scFetchSessions" url="/api/Sessions/getSessions"></dmx-serverconnect>
 <dmx-serverconnect id="serverconnect1" url="/api/Sessions/sessionSetRotaSingle" dmx-param:user_id="serverconnect1.data.identity" dmx-param:tntid="serverconnect1.data.vartenant"></dmx-serverconnect>
 <meta name="ac:route" content="/admin/dashboard/dashboard2">
 <div class="container">

@@ -191,12 +191,6 @@
               },
               {
                 "table": "tbl_activity_log",
-                "column": "ipAddress",
-                "type": "text",
-                "value": "{{$_POST.ipAddress}}"
-              },
-              {
-                "table": "tbl_activity_log",
                 "column": "updatedDate",
                 "type": "datetime",
                 "value": "{{NOW}}"
@@ -204,7 +198,7 @@
             ],
             "table": "tbl_activity_log",
             "returning": "logId",
-            "query": "insert into `tbl_activity_log` (`activity`, `ipAddress`, `updatedDate`, `userId`) values (?, ?, ?, ?)",
+            "query": "insert into `tbl_activity_log` (`activity`, `updatedDate`, `userId`) values (?, ?, ?)",
             "params": [
               {
                 "name": ":P1",
@@ -221,12 +215,6 @@
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.ipAddress}}",
-                "test": ""
-              },
-              {
-                "name": ":P4",
-                "type": "expression",
                 "value": "{{NOW}}",
                 "test": ""
               }
@@ -242,7 +230,8 @@
             "name": "affected",
             "type": "number"
           }
-        ]
+        ],
+        "collapsed": true
       }
     ]
   }

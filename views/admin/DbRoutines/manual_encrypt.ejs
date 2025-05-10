@@ -1,0 +1,58 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="manual_encrypt" appConnect="local" components="{dmxBrowser:{}}" -->
+<div is="dmx-browser" id="browser1"></div>
+<dmx-serverconnect id="scGenKey" url="/api/DB_Routines/generateKey" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scEncText" url="/api/DB_Routines/encrypt_Field" noload="true"></dmx-serverconnect>
+<meta name="ac:route" content="/admin/DbRoutines/manual_encrypt">
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form id="form1">
+
+
+                <div class="row">
+
+                    <div class="col">
+                        <input id="key" name="key" type="text" class="form-control mt-2 mb-2" dmx-bind:value="scGenKey.data.key">
+                    </div>
+                    <div class="col">
+                        <button id="btn4" class="btn mt-2" dmx-on:click="browser1.writeTextToClipboard(scGenKey.data.key)">Copy Key</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button id="btn1" class="btn btn-danger mt-1 mb-1" dmx-on:click="scGenKey.load({})">Generate Key</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form id="form2">
+
+
+                <div class="row">
+                    <div class="col">
+                        <input id="unencText" name="unencText" type="text" class="form-control mt-2 mb-2" placeholder="Enter Text">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <input id="txtEncryptString1" name="txtEncryptString1" type="text" class="form-control" dmx-bind:value="scEncText.data.encString">
+                    </div>
+                    <div class="col">
+                        <button id="btn3" class="btn" dmx-on:click="browser1.writeTextToClipboard(txtEncryptString1.value)">Copy field</button>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button id="btn2" class="btn mt-1 mb-1 btn-success" dmx-on:click="scEncText.load({unencrypttext: unencText.value})">Encrypt Text</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -91,7 +91,7 @@
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 3000
+          "delay": 300
         },
         "collapsed": true
       },
@@ -211,7 +211,7 @@
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 2900
+          "delay": 290
         },
         "collapsed": true
       },
@@ -229,14 +229,14 @@
         "module": "core",
         "action": "wait",
         "options": {
-          "delay": 2900
+          "delay": 290
         },
         "collapsed": true
       },
       {
         "name": "query1",
         "module": "dbconnector",
-        "action": "select",
+        "action": "single",
         "options": {
           "connection": "db",
           "sql": {
@@ -373,15 +373,27 @@
             "name": "role"
           }
         ],
-        "outputType": "array"
+        "outputType": "object",
+        "type": "dbconnector_single",
+        "collapsed": true
+      },
+      {
+        "name": "wait_copy_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 290
+        },
+        "collapsed": true
       },
       {
         "name": "Ses_Role_Id",
         "module": "core",
         "action": "setsession",
         "options": {
-          "value": "{{query1[0].role}}"
-        }
+          "value": "{{query1.role}}"
+        },
+        "collapsed": true
       }
     ]
   }

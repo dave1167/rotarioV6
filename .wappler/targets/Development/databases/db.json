@@ -403,13 +403,6 @@
               "nullable": false
             }
           },
-          "descrId": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": false
-            }
-          },
           "ipAddress": {
             "db": {
               "type": "string",
