@@ -200,7 +200,7 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{identity}}",
-                "test": ""
+                "test": "55"
               }
             ],
             "table": {
@@ -272,12 +272,14 @@
                       "name": "userId"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "tbl_users"
                 }
               ],
               "conditional": null,
               "valid": true
-            }
+            },
+            "orders": []
           }
         },
         "output": true,
@@ -394,8 +396,8 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{'!'+query.add1}}",
-          "else": {
+          "if": "{{query.add1}}",
+          "then": {
             "steps": {
               "name": "DecAdd1",
               "module": "core",
@@ -418,8 +420,8 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{'!'+query.add2}}",
-          "else": {
+          "if": "{{query.add2}}",
+          "then": {
             "steps": {
               "name": "DecAdd2",
               "module": "core",
@@ -442,8 +444,8 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{'!'+query.postcode}}",
-          "else": {
+          "if": "{{query.postcode}}",
+          "then": {
             "steps": {
               "name": "DecPostCode",
               "module": "core",
@@ -466,8 +468,8 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{'!'+query.mobile}}",
-          "else": {
+          "if": "{{query.mobile}}",
+          "then": {
             "steps": {
               "name": "DecMobile",
               "module": "core",
@@ -490,8 +492,8 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{'!'+query.tel}}",
-          "else": {
+          "if": "{{query.tel}}",
+          "then": {
             "steps": {
               "name": "DecTel",
               "module": "core",
@@ -514,8 +516,8 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{'!'+query.emgcyCntctNme}}",
-          "else": {
+          "if": "{{query.emgcyCntctNme}}",
+          "then": {
             "steps": {
               "name": "DecEmCtctName",
               "module": "core",
@@ -538,8 +540,8 @@
         "module": "core",
         "action": "condition",
         "options": {
-          "if": "{{'!'+query.emgcyCntctTel}}",
-          "else": {
+          "if": "{{query.emgcyCntctTel}}",
+          "then": {
             "steps": {
               "name": "DecEmCtctTel",
               "module": "core",
@@ -554,7 +556,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "collapsed": true
       }
     ]
   }

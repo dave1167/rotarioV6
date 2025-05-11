@@ -74,10 +74,6 @@
         "fieldName": "mobile",
         "options": {
           "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Please enter your mobile number"
-            },
             "core:digits": {
               "message": "Please enter only numbers"
             }
@@ -155,10 +151,6 @@
             "core:required": {
               "param": "",
               "message": "Please enter your postcode"
-            },
-            "core:pattern": {
-              "param": "^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$",
-              "message": "Please enter a valid UK postcode"
             }
           }
         },
@@ -203,11 +195,7 @@
         "type": "text",
         "fieldName": "emTelNo",
         "options": {
-          "rules": {
-            "core:pattern": {
-              "param": "[0-9]{10}"
-            }
-          }
+          "rules": {}
         },
         "name": "emTelNo"
       }
@@ -230,6 +218,14 @@
         },
         "output": true,
         "meta": []
+      },
+      {
+        "name": "wait1",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 100
+        }
       },
       {
         "name": "query",
@@ -449,6 +445,15 @@
           }
         ],
         "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "wait_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 100
+        },
         "collapsed": true
       },
       {

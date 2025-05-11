@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inp_mobile" class="form-label">Mobile Number</label>
-                                    <input type="tel" class="form-control" id="inp_mobile" name="mobile" dmx-bind:value="scUserDets.data.DecMobile" required data-rule-digits="true" data-msg-required="Please enter your mobile number" data-msg-digits="Please enter only numbers">
+                                    <input type="tel" class="form-control" id="inp_mobile" name="mobile" dmx-bind:value="scUserDets.data.DecMobile" data-rule-digits="true" data-msg-digits="Please enter only numbers">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inp_tel" class="form-label">Landline <span class="text-muted">(Optional)</span></label>
@@ -164,7 +164,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inp_town1" class="form-label">Town Line 2 (Optional)</label>
-                                    <input type="text" class="form-control" id="inp_town1" name="town1" dmx-bind:value="scUserDets.data.query.town1" required="" data-rule-lettersonly="true" data-msg-required="Please enter your town" data-msg-lettersonly="Please enter only letters">
+                                    <input type="text" class="form-control" id="inp_town1" name="town1" dmx-bind:value="scUserDets.data.query.town1" data-rule-lettersonly="true" data-msg-lettersonly="Please enter only letters">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inp_county" class="form-label">County</label>
@@ -172,7 +172,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="inp_postcode" class="form-label">Postcode</label>
-                                    <input type="text" class="form-control text-uppercase" id="inp_postcode" name="postcode" dmx-bind:value="scUserDets.data.DecPostCode" required data-rule-pattern="^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$" data-msg-required="Please enter your postcode" data-msg-pattern="Please enter a valid UK postcode">
+                                    <input type="text" class="form-control text-uppercase" id="inp_postcode" name="postcode" dmx-bind:value="scUserDets.data.DecPostCode" required="" data-msg-required="Please enter your postcode">
                                 </div>
                             </div>
                         </div>

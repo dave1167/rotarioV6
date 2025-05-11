@@ -2,7 +2,7 @@
   "meta": {
     "options": {
       "linkedFile": "/views/admin/DbRoutines/manual_encrypt.ejs",
-      "linkedForm": "form1"
+      "linkedForm": "form2"
     },
     "$_GET": [
       {
@@ -21,6 +21,16 @@
         "type": "text",
         "fieldName": "key",
         "name": "key"
+      },
+      {
+        "type": "text",
+        "fieldName": "unencText",
+        "name": "unencText"
+      },
+      {
+        "type": "text",
+        "fieldName": "txtEncryptString1",
+        "name": "txtEncryptString1"
       }
     ]
   },
@@ -31,7 +41,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{$_GET.unencrypttext.encrypt($_POST.key)}}"
+          "value": "{{$_POST.unencText.decrypt($_POST.key)}}"
         },
         "meta": [],
         "outputType": "text",

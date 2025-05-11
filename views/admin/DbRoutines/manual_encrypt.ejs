@@ -30,7 +30,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <form id="form2">
+            <form id="form2" method="post" is="dmx-serverconnect-form" action="/api/DB_Routines/encrypt_Field">
 
 
                 <div class="row">
@@ -49,7 +49,7 @@
                 </div>
                 <div class="row">
                     <div class="col">
-                        <button id="btn2" class="btn mt-1 mb-1 btn-success" dmx-on:click="scEncText.load({unencrypttext: unencText.value})">Encrypt Text</button>
+                        <button id="btn2" class="btn mt-1 mb-1 btn-success" type="submit">Encrypt Text</button>
                     </div>
                 </div>
             </form>
