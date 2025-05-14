@@ -451,5 +451,44 @@ dmx.config({
         "name": "fstTmPrfl"
       }
     ]
+  },
+  "event_list_admin": {
+    "repeat1": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "eventId"
+        },
+        {
+          "type": "text",
+          "name": "eventName"
+        },
+        {
+          "type": "date",
+          "name": "eventDate"
+        },
+        {
+          "type": "number",
+          "name": "modifiedBy"
+        },
+        {
+          "type": "number",
+          "name": "numvols"
+        },
+        {
+          "type": "number",
+          "name": "weighting"
+        },
+        {
+          "type": "number",
+          "name": "tenantId"
+        },
+        {
+          "type": "number",
+          "name": "rotaId"
+        }
+      ],
+      "outputType": "array"
+    }
   }
 });

@@ -90,6 +90,11 @@
       "page": "admin/settings/template_list",
       "layout": "admin",
       "exec": "/api/Security/secAuthSupAd"
+    },
+    {
+      "path": "/admin/events/event_list_admin",
+      "page": "admin/events/event_list_admin",
+      "layout": "admin"
     }
   ]
 }

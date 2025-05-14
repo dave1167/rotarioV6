@@ -1,0 +1,6 @@
+{
+  "event_list_admin.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  }
+}
