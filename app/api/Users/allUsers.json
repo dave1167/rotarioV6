@@ -163,28 +163,28 @@
                 "type": "expression",
                 "name": ":P1",
                 "value": "{{$_SESSION.Ses_Ten_Id}}",
-                "test": ""
+                "test": "1"
               },
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P2",
                 "value": "{{$_SESSION.Ses_Rota_Id}}",
-                "test": ""
+                "test": "1"
               },
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P3",
                 "value": "{{1}}",
-                "test": ""
+                "test": "1"
               },
               {
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P4",
                 "value": "{{$_GET.actv}}",
-                "test": ""
+                "test": "1"
               }
             ],
             "primary": "rotaId",

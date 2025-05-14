@@ -1,0 +1,75 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="templateEditor" appConnect="local" components="{dmxSummernote:{}}" jquery_slim_35="cdn" -->
+<meta name="ac:route" content="/admin/settings/templateEditor">
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+
+            <form id="frmTemplate" method="post" is="dmx-serverconnect-form" action="/api/Templates/InsertNewTemplate">
+                <h1 class="h3 text-light bg-primary">Template Editor</h1>
+                <div class="row">
+                    <!-- Column for Summernote Editor -->
+                    <p class="text-muted">Create your own templates and use merge fields to personalize them.&nbsp;</p>
+                    <p class="text-muted">To insert a double line space press enter , to insert a single line space press Shift + Enter&nbsp;</p>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="template_name" class="form-label">Template Name</label>
+                            <input type="text" id="template_name" class="form-control" placeholder="Enter template name" required="" name="template_name">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="subjectLine" class="form-label">Subject Line</label>
+                            <input type="text" id="subjectLine" class="form-control" placeholder="Enter Subject Line which will be used in the Welcome Email" required="" name="subjectLine">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="template_desc" class="form-label">Template Description</label>
+                            <input type="text" id="template_desc" class="form-control" placeholder="Enter a description of the template" required="" name="template_desc">
+                        </div>
+                    </div>
+                    <div class="col-md-8"><label for="template_editor" class="form-label">Template Content</label>
+                        <textarea id="template_editor" class="form-control" rows="15" is="dmx-summernote" dmx-bind:toolbar="[['style',['style']],['font',['bold','underline','clear']],['fontname',['fontname']],['color',['color']],['para',['ul','ol','paragraph']],['table',['table']],['insert',['link','picture','video']],['view',['fullscreen','codeview','help']]]" theme="bootstrap5" name="summernote_editor"></textarea>
+                    </div>
+
+                    <!-- Column for Merge Field Buttons -->
+                    <div class="col-md-4">
+                        <label class="form-label">Merge Fields</label>
+                        <div class="d-flex flex-column gap-2">
+                            <!-- Buttons for inserting merge fields -->
+                            <button type="button" class="btn btn-outline-primary merge-field-btn" data-field="{{first_name}}" dmx-on:click="template_editor.insertText('???FirstName???')">
+                                Insert First Name
+                            </button>
+                            <button type="button" class="btn btn-outline-primary merge-field-btn" data-field="{{last_name}}" dmx-on:click="template_editor.insertText('???LastName???')">Insert&nbsp; Last Name</button>
+                            <button type="button" class="btn btn-outline-primary merge-field-btn" data-field="{{phone}}" dmx-on:click="template_editor.insertText('&lt;&lt;?Signature?&gt;&gt;');template_editor.insertText('???Signature???')">Insert Signature</button>
+                            <button type="button" class="btn btn-outline-primary merge-field-btn" data-field="{{address}}" dmx-on:click="template_editor.insertText('???Hyperlink???')">Insert Hyperlink</button>
+                            <button type="button" class="btn btn-outline-primary merge-field-btn" data-field="{{address}}" dmx-on:click="template_editor.insertText('???signature???')">Insert Signature</button>
+                            <button type="button" class="btn btn-outline-primary merge-field-btn" data-field="{{address}}" dmx-on:click="template_editor.insertText('???vcode???')">Insert Verification Code</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <button id="save_template" class="btn btn-primary" type="submit">
+                            <i class="fas fa-save"></i> Save Template
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+
+
+        </div>
+    </div>
+
+    <!-- Template Name Input -->
+
+
+    <!-- Two-Column Layout -->
+
+
+    <!-- Save Button -->
+
+</div>

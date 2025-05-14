@@ -1,0 +1,196 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/settings/templateEditor.ejs",
+      "linkedForm": "frmTemplate"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "template_name",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "template_name"
+      },
+      {
+        "type": "text",
+        "fieldName": "summernote_editor",
+        "name": "summernote_editor"
+      },
+      {
+        "type": "text",
+        "name": "tempDesc"
+      },
+      {
+        "type": "text",
+        "fieldName": "subjectLine",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "subjectLine"
+      },
+      {
+        "type": "text",
+        "fieldName": "template_desc",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "template_desc"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "number",
+        "name": "Ses_Ten_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_Role_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_User_Id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "tbl_templates",
+              "column": "tenantId",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_Ten_Id}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "rotaId",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_Role_Id}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempHtml",
+              "type": "text",
+              "value": "{{$_POST.summernote_editor}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempName",
+              "type": "text",
+              "value": "{{$_POST.template_name}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "modifiedBy",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_User_Id}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "modifiedDate",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempDesc",
+              "type": "text",
+              "value": "{{$_POST.tempDesc}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "subjectLine",
+              "type": "text",
+              "value": "{{$_POST.subjectLine}}"
+            }
+          ],
+          "table": "tbl_templates",
+          "returning": "templateId",
+          "query": "insert into `tbl_templates` (`modifiedBy`, `modifiedDate`, `rotaId`, `subjectLine`, `tempDesc`, `tempHtml`, `tempName`, `tenantId`) values (?, ?, ?, ?, ?, ?, ?, ?)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_SESSION.Ses_Ten_Id}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_SESSION.Ses_Role_Id}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.summernote_editor}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_POST.template_name}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_SESSION.Ses_User_Id}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{NOW}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.tempDesc}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.subjectLine}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ],
+      "collapsed": true
+    }
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/settings/template_list.ejs",
+      "linkedForm": "frmEditTemplate"
+    },
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "tempid"
+      }
+    ],
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inpTemplateName",
+        "name": "inpTemplateName"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpTempDesc",
+        "name": "inpTempDesc"
+      },
+      {
+        "type": "text",
+        "fieldName": "editor1",
+        "name": "editor1"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "single",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "tbl_templates",
+              "column": "templateId"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tenantId"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "rotaId"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempHtml"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "modifiedBy"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "modifiedDate"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempName"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempDesc"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "subjectLine"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.tempid}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "tbl_templates"
+          },
+          "primary": "templateId",
+          "joins": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "tbl_templates.templateId",
+                "field": "tbl_templates.templateId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.tempid}}",
+                "data": {
+                  "table": "tbl_templates",
+                  "column": "templateId",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "increments",
+                    "primary": true,
+                    "nullable": false,
+                    "name": "templateId"
+                  }
+                },
+                "operation": "=",
+                "table": "tbl_templates"
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select `templateId`, `tenantId`, `rotaId`, `tempHtml`, `modifiedBy`, `modifiedDate`, `tempName`, `tempDesc`, `subjectLine` from `tbl_templates` where `tbl_templates`.`templateId` = ?"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "templateId"
+        },
+        {
+          "type": "number",
+          "name": "tenantId"
+        },
+        {
+          "type": "number",
+          "name": "rotaId"
+        },
+        {
+          "type": "text",
+          "name": "tempHtml"
+        },
+        {
+          "type": "number",
+          "name": "modifiedBy"
+        },
+        {
+          "type": "datetime",
+          "name": "modifiedDate"
+        },
+        {
+          "type": "text",
+          "name": "tempName"
+        },
+        {
+          "type": "text",
+          "name": "tempDesc"
+        },
+        {
+          "type": "text",
+          "name": "subjectLine"
+        }
+      ],
+      "outputType": "object",
+      "collapsed": true
+    }
+  }
+}

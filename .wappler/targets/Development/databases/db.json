@@ -28,7 +28,12 @@
             }
           }
         },
-        "db": {},
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        },
         "refs": {
           "tbl_rota_type": "tentantId",
           "tbl_user_tenant": "tenantId"
@@ -64,10 +69,20 @@
             }
           }
         },
-        "db": {}
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        }
       },
       "tbl_user_tenant": {
-        "db": {},
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        },
         "columns": {
           "usrTenId": {
             "db": {
@@ -118,7 +133,12 @@
         "parent": "tbl_users"
       },
       "tbl_user_rota": {
-        "db": {},
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        },
         "columns": {
           "rotaId": {
             "db": {
@@ -173,7 +193,12 @@
         }
       },
       "tbl_roles_type": {
-        "db": {},
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        },
         "columns": {
           "roleId": {
             "db": {
@@ -315,7 +340,12 @@
             }
           }
         },
-        "db": {},
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        },
         "parent": "tbl_users"
       },
       "tbl_ek": {
@@ -352,10 +382,20 @@
             }
           }
         },
-        "db": {}
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        }
       },
       "tbl_activities": {
-        "db": {},
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        },
         "columns": {
           "activityId": {
             "db": {
@@ -374,83 +414,13 @@
           }
         }
       },
-      "tbl_activity_log": {
-        "columns": {
-          "logId": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "userId": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": false,
-              "references": "userId",
-              "inTable": "tbl_users",
-              "referenceType": "integer",
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION"
-            }
-          },
-          "activity": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": false
-            }
-          },
-          "ipAddress": {
-            "db": {
-              "type": "string",
-              "maxLength": 45,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "createdDate": {
-            "db": {
-              "type": "timestamp",
-              "default": "knex.fn.now()",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "updatedDate": {
-            "db": {
-              "type": "timestamp",
-              "default": "knex.fn.now()",
-              "primary": false,
-              "nullable": true
-            }
-          }
-        },
-        "db": {}
-      },
-      "tbl_settings": {
-        "columns": {
-          "settingsId": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "tenantId": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          }
-        },
-        "db": {}
-      },
       "tbl_users": {
-        "db": {},
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        },
         "columns": {
           "userId": {
             "db": {
@@ -550,6 +520,411 @@
         "refs": {
           "tbl_activity_log": "userId"
         }
+      },
+      "tbl_activity_log": {
+        "columns": {
+          "logId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "userId": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": false,
+              "references": "userId",
+              "inTable": "tbl_users",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "activity": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": false
+            }
+          },
+          "ipAddress": {
+            "db": {
+              "type": "string",
+              "maxLength": 45,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "createdDate": {
+            "db": {
+              "type": "timestamp",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "updatedDate": {
+            "db": {
+              "type": "timestamp",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        }
+      },
+      "tbl_emailStatus": {
+        "columns": {
+          "statusId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "statusDesc": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        },
+        "refs": {
+          "tbl_email": "sendStatus"
+        }
+      },
+      "tbl_email": {
+        "columns": {
+          "emailId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "recipient": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "subject": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "message": {
+            "db": {
+              "type": "text",
+              "maxLength": 65535,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "sendStatus": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "statusId",
+              "inTable": "tbl_emailStatus",
+              "referenceType": "integer",
+              "onUpdate": "CASCADE",
+              "onDelete": "CASCADE"
+            }
+          },
+          "dateSent": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "dateCreated": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "sender": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        }
+      },
+      "tbl_templates": {
+        "columns": {
+          "templateId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "tenantId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "rotaId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "tempHtml": {
+            "db": {
+              "type": "text",
+              "maxLength": 65535,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "modifiedBy": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "modifiedDate": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "tempName": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "tempDesc": {
+            "db": {
+              "type": "text",
+              "maxLength": 65535,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "subjectLine": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        }
+      },
+      "tbl_settings": {
+        "columns": {
+          "settingsId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "tenantId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "emailSenderName": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true,
+              "comment": "this will appear on bottom of emails"
+            }
+          },
+          "rotaId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "newUserTemplate": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "sender": {
+            "db": {
+              "type": "text",
+              "maxLength": 65535,
+              "primary": false,
+              "nullable": false
+            }
+          }
+        },
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        }
+      },
+      "tbl_events": {
+        "columns": {
+          "eventId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "eventName": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "eventDate": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "eventStrtTime": {
+            "db": {
+              "type": "time",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "location": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "venue": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "modifiedBy": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "modifiedDate": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "numvols": {
+            "db": {
+              "type": "integer",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "weighting": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "tenantId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "rotaId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        }
+      },
+      "tbl_event_vol": {
+        "columns": {
+          "evVolId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          }
+        },
+        "db": {}
       }
     },
     "views": {},

@@ -114,6 +114,12 @@
                 "column": "verified",
                 "type": "boolean",
                 "value": "{{1}}"
+              },
+              {
+                "table": "tbl_users",
+                "column": "active",
+                "type": "boolean",
+                "value": "{{1}}"
               }
             ],
             "table": "tbl_users",
@@ -136,7 +142,7 @@
               "valid": true
             },
             "returning": "userId",
-            "query": "update `tbl_users` set `password` = ?, `verified` = ? where `userId` = ?",
+            "query": "update `tbl_users` set `password` = ?, `verified` = ?, `active` = ? where `userId` = ?",
             "params": [
               {
                 "name": ":P1",
@@ -151,9 +157,15 @@
                 "test": ""
               },
               {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{1}}",
+                "test": ""
+              },
+              {
                 "operator": "equal",
                 "type": "expression",
-                "name": ":P3",
+                "name": ":P4",
                 "value": "{{varUserId}}",
                 "test": ""
               }

@@ -1,0 +1,10 @@
+{
+  "templateEditor.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "template_list.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  }
+}

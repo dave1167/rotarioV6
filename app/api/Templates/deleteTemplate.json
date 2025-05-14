@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/settings/template_list.ejs",
+      "linkedForm": "form1"
+    },
+    "$_GET": [
+      {
+        "type": "number",
+        "name": "tempid"
+      }
+    ],
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "tempName",
+        "name": "tempName"
+      },
+      {
+        "type": "text",
+        "fieldName": "tempId",
+        "name": "tempId"
+      },
+      {
+        "type": "text",
+        "fieldName": "txtDesc",
+        "name": "txtDesc"
+      },
+      {
+        "type": "text",
+        "fieldName": "editor1",
+        "name": "editor1"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "delete",
+      "module": "dbupdater",
+      "action": "delete",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "delete",
+          "table": "tbl_templates",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "templateId",
+                "field": "templateId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.tempId}}",
+                "data": {
+                  "column": "templateId"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "templateId",
+          "query": "delete from `tbl_templates` where `templateId` = ?",
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_POST.tempId}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ],
+      "collapsed": true,
+      "output": true
+    }
+  }
+}

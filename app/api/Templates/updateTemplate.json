@@ -1,0 +1,226 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/settings/template_list.ejs",
+      "linkedForm": "form1"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "input1",
+        "name": "input1"
+      },
+      {
+        "type": "text",
+        "fieldName": "txtDesc",
+        "name": "txtDesc"
+      },
+      {
+        "type": "text",
+        "fieldName": "editor1",
+        "name": "editor1"
+      },
+      {
+        "type": "number",
+        "name": "rotaId"
+      },
+      {
+        "type": "text",
+        "name": "tempHtml"
+      },
+      {
+        "type": "number",
+        "name": "modifiedBy"
+      },
+      {
+        "type": "datetime",
+        "name": "modifiedDate"
+      },
+      {
+        "type": "text",
+        "fieldName": "tempName",
+        "name": "tempName"
+      },
+      {
+        "type": "text",
+        "name": "tempDesc"
+      },
+      {
+        "type": "number",
+        "name": "templateId"
+      },
+      {
+        "type": "text",
+        "fieldName": "tempId",
+        "name": "tempId"
+      },
+      {
+        "type": "text",
+        "fieldName": "subjectLine",
+        "name": "subjectLine"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "number",
+        "name": "Ses_Ten_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_Rota_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_User_Id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "tbl_templates",
+              "column": "tenantId",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_Ten_Id}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "rotaId",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_Rota_Id}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempHtml",
+              "type": "text",
+              "value": "{{$_POST.editor1}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "modifiedBy",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_User_Id}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "modifiedDate",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempName",
+              "type": "text",
+              "value": "{{$_POST.tempName}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempDesc",
+              "type": "text",
+              "value": "{{$_POST.txtDesc}}"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "subjectLine",
+              "type": "text",
+              "value": "{{$_POST.subjectLine}}"
+            }
+          ],
+          "table": "tbl_templates",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "templateId",
+                "field": "templateId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.tempId}}",
+                "data": {
+                  "column": "templateId"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "templateId",
+          "query": "update `tbl_templates` set `tenantId` = ?, `rotaId` = ?, `tempHtml` = ?, `modifiedBy` = ?, `modifiedDate` = ?, `tempName` = ?, `tempDesc` = ?, `subjectLine` = ? where `templateId` = ?",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_SESSION.Ses_Ten_Id}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_SESSION.Ses_Rota_Id}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.editor1}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_SESSION.Ses_User_Id}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{NOW}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.tempName}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.txtDesc}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.subjectLine}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P9",
+              "value": "{{$_POST.tempId}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ],
+      "collapsed": true
+    }
+  }
+}

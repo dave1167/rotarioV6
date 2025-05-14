@@ -159,6 +159,29 @@
         "meta": []
       },
       {
+        "name": "validate",
+        "module": "validator",
+        "action": "validate",
+        "options": {
+          "data": [
+            {
+              "name": "email",
+              "value": "",
+              "rules": {
+                "db:notexists": {
+                  "param": {
+                    "connection": "db",
+                    "table": "tbl_users",
+                    "column": "email"
+                  }
+                }
+              },
+              "fieldName": "email"
+            }
+          ]
+        }
+      },
+      {
         "name": "key",
         "module": "core",
         "action": "setvalue",
@@ -297,7 +320,6 @@
             "type": "number"
           }
         ],
-        "collapsed": true,
         "output": true
       },
       {
@@ -325,8 +347,7 @@
         "action": "wait",
         "options": {
           "delay": 1500
-        },
-        "collapsed": true
+        }
       },
       {
         "name": "insertKey",
@@ -378,8 +399,7 @@
             "name": "affected",
             "type": "number"
           }
-        ],
-        "collapsed": true
+        ]
       },
       {
         "name": "insertDetails",
@@ -444,8 +464,7 @@
             "name": "affected",
             "type": "number"
           }
-        ],
-        "collapsed": true
+        ]
       },
       {
         "name": "insertUserTenant",
@@ -521,8 +540,7 @@
             "name": "affected",
             "type": "number"
           }
-        ],
-        "collapsed": true
+        ]
       },
       {
         "name": "insert",
@@ -622,8 +640,7 @@
             "name": "affected",
             "type": "number"
           }
-        ],
-        "collapsed": true
+        ]
       },
       {
         "name": "varNewId",
@@ -639,7 +656,8 @@
         "name": "wait1",
         "module": "core",
         "action": "wait",
-        "options": {}
+        "options": {},
+        "collapsed": true
       },
       {
         "name": "preVerifCode",
@@ -728,8 +746,7 @@
             "name": "affected",
             "type": "number"
           }
-        ],
-        "collapsed": true
+        ]
       },
       {
         "name": "wait2_copy",
@@ -737,8 +754,7 @@
         "action": "wait",
         "options": {
           "delay": 500
-        },
-        "collapsed": true
+        }
       },
       {
         "name": "qryUserDets",
@@ -820,8 +836,15 @@
             "name": "email"
           }
         ],
-        "outputType": "array",
-        "collapsed": true
+        "outputType": "array"
+      },
+      {
+        "name": "wait3",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 100
+        }
       },
       {
         "name": "varFname",
@@ -834,6 +857,397 @@
         "outputType": "text",
         "output": true
       },
+      {
+        "name": "email",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{qryUserDets[0].email.decrypt(key)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "",
+        "options": {
+          "comment": "Create Email from template , "
+        }
+      },
+      {
+        "name": "qryGetNewUsrTemp",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_settings",
+                "column": "tenantId"
+              },
+              {
+                "table": "tbl_settings",
+                "column": "emailSenderName"
+              },
+              {
+                "table": "tbl_settings",
+                "column": "newUserTemplate"
+              },
+              {
+                "table": "tbl_settings",
+                "column": "newUserTemplate"
+              },
+              {
+                "table": "tbl_settings",
+                "column": "rotaId"
+              },
+              {
+                "table": "tbl_settings",
+                "column": "settingsId"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": "1"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_SESSION.Ses_Rota_Id}}",
+                "test": "1"
+              }
+            ],
+            "table": {
+              "name": "tbl_settings"
+            },
+            "primary": "settingsId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_settings.tenantId",
+                  "field": "tbl_settings.tenantId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_settings",
+                    "column": "tenantId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_settings.rotaId",
+                  "field": "tbl_settings.rotaId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Rota_Id}}",
+                  "data": {
+                    "table": "tbl_settings",
+                    "column": "rotaId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "rotaId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tenantId`, `emailSenderName`, `newUserTemplate`, `newUserTemplate`, `rotaId`, `settingsId` from `tbl_settings` where `tbl_settings`.`tenantId` = ? and `tbl_settings`.`rotaId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "tenantId"
+          },
+          {
+            "type": "text",
+            "name": "emailSenderName"
+          },
+          {
+            "type": "number",
+            "name": "newUserTemplate"
+          },
+          {
+            "type": "number",
+            "name": "rotaId"
+          },
+          {
+            "type": "number",
+            "name": "settingsId"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
+      },
+      {
+        "name": "wait3_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 100
+        },
+        "collapsed": true
+      },
+      {
+        "name": "qrySettings",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_settings",
+                "column": "sender"
+              },
+              {
+                "table": "tbl_settings",
+                "column": "newUserTemplate"
+              },
+              {
+                "table": "tbl_settings",
+                "column": "emailSenderName"
+              },
+              {
+                "table": "tbl_settings",
+                "column": "settingsId"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_settings"
+            },
+            "primary": "settingsId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_settings.tenantId",
+                  "field": "tbl_settings.tenantId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_settings",
+                    "column": "tenantId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_settings"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `sender`, `newUserTemplate`, `emailSenderName`, `settingsId` from `tbl_settings` where `tbl_settings`.`tenantId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "sender"
+          },
+          {
+            "type": "number",
+            "name": "newUserTemplate"
+          },
+          {
+            "type": "text",
+            "name": "emailSenderName"
+          },
+          {
+            "type": "number",
+            "name": "settingsId"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "wait3_copy_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 100
+        },
+        "collapsed": true
+      },
+      {
+        "name": "qryTemplate",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_templates",
+                "column": "tenantId"
+              },
+              {
+                "table": "tbl_templates",
+                "column": "rotaId"
+              },
+              {
+                "table": "tbl_templates",
+                "column": "tempHtml"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{qrySettings.newUserTemplate}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_templates"
+            },
+            "primary": "templateId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_templates.templateId",
+                  "field": "tbl_templates.templateId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{qrySettings.newUserTemplate}}",
+                  "data": {
+                    "table": "tbl_templates",
+                    "column": "templateId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "increments",
+                      "primary": true,
+                      "nullable": false,
+                      "name": "templateId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tenantId`, `rotaId`, `tempHtml` from `tbl_templates` where `tbl_templates`.`templateId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "tenantId"
+          },
+          {
+            "type": "number",
+            "name": "rotaId"
+          },
+          {
+            "type": "text",
+            "name": "tempHtml"
+          }
+        ],
+        "outputType": "object",
+        "collapsed": true
+      },
+      {
+        "name": "wait4",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 300
+        }
+      },
+      {
+        "name": "varMessage",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{qryTemplate.tempHtml.replace('???FirstName???', varFname)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "varMessage",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{varMessage.replace('???vcode???', verifCode)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "varMessage",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{varMessage.replace('???Signature???', qrySettings.emailSenderName)}}"
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "wait4_copy",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 500
+        },
+        "collapsed": true
+      },
       "Mailer/mail",
       {
         "name": "",
@@ -841,18 +1255,17 @@
         "action": "send",
         "options": {
           "instance": "mail",
-          "fromName": "Rotario",
           "fromEmail": "admin@rotario.co.uk",
           "toEmail": "{{qryUserDets[0].email}}",
-          "body": "Dear {{varFname}} \n\nYou're invited to join the Rotario Volunteer Management System. Log in here to  join. Your verification code is  {{verifCode}}",
           "subject": "Joining instructions for Rotario",
           "toName": "{{varFname}}",
           "contentType": "html",
           "recipientType": "extended",
-          "bcc": "daverowe1167@gmail.com"
+          "bcc": "daverowe1167@gmail.com",
+          "body": "<p>{{varMessage}}</p>",
+          "fromName": "{{qrySettings.sender}}"
         },
-        "output": true,
-        "collapsed": true
+        "output": true
       }
     ]
   }

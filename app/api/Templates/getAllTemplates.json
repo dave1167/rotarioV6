@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "tbl_templates",
+              "column": "templateId"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tenantId"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "rotaId"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempName"
+            },
+            {
+              "table": "tbl_templates",
+              "column": "tempDesc"
+            }
+          ],
+          "params": [],
+          "table": {
+            "name": "tbl_templates"
+          },
+          "primary": "templateId",
+          "joins": [],
+          "query": "select `templateId`, `tenantId`, `rotaId`, `tempName`, `tempDesc` from `tbl_templates`"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "templateId"
+        },
+        {
+          "type": "number",
+          "name": "tenantId"
+        },
+        {
+          "type": "number",
+          "name": "rotaId"
+        },
+        {
+          "type": "text",
+          "name": "tempName"
+        },
+        {
+          "type": "text",
+          "name": "tempDesc"
+        }
+      ],
+      "outputType": "array",
+      "collapsed": true
+    }
+  }
+}

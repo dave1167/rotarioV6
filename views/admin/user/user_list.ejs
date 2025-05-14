@@ -1,7 +1,7 @@
 <!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="user_list" appConnect="local" components="{dmxIndexedDB:{},dmxDataTraversal:{},dmxFormatter:{},dmxDatastore:{},dmxBootstrap5TableGenerator:{},dmxBootstrap5Modal:{},dmxValidator:{},dmxStateManagement:{}}" -->
 <dmx-query-manager id="query1"></dmx-query-manager>
 
-<dmx-serverconnect id="scAllUsers" url="/api/Users/allUsers" autoload="true" dmx-param:sort="query1.data.sort" dmx-param:dir="query1.data.dir" dmx-param:filter="" dmx-param:actv="actInactSwitch.value" dmx-param:verif="inpVerifiedSwitch.value"></dmx-serverconnect><dmx-serverconnect id="scFetchSingleUser" url="/api/Users/singleUser" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scAllUsers" url="/api/Users/allUsers" autoload="true" dmx-param:sort="query1.data.sort" dmx-param:dir="query1.data.dir" dmx-param:filter="" dmx-param:actv="actInactSwitch.value"></dmx-serverconnect><dmx-serverconnect id="scFetchSingleUser" url="/api/Users/singleUser" noload="true"></dmx-serverconnect>
 <dmx-value id="sortField" value="varLName"></dmx-value>
 <dmx-value id="sortDirection" value="asc"></dmx-value>
 
@@ -260,7 +260,7 @@
                     <div class="d-flex gap-2 align-items-center">
 
                         <div class="form-check form-switch">
-                            <input class="form-check-input mt-2" type="checkbox" id="actInactSwitchCheckbox" name="actInactSwitch" dmx-on:checked="actInactSwitch.setValue(1)" dmx-on:unchecked="actInactSwitch.setValue(0)" value="1">
+                            <input class="form-check-input mt-3" type="checkbox" id="actInactSwitchCheckbox" name="actInactSwitch" dmx-on:checked="actInactSwitch.setValue(1)" dmx-on:unchecked="actInactSwitch.setValue(0)" value="1">
                             <label class="form-check-label col-form-label-sm" for="actInactSwitchCheckbox">Inactive/Active Users</label>
                         </div>
 

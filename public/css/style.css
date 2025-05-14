@@ -1,2 +1,31 @@
 #inp_fName {
 }
+.modal-header.bg-warning {
+  background-color: var(--bs-warning);
+  color: var(--bs-dark);
+}
+
+.alert-warning {
+  background-color: var(--bs-warning-light);
+  border-color: var(--bs-warning);
+}
+
+.modal .btn-danger {
+  background-color: var(--bs-danger);
+  border-color: var(--bs-danger);
+}
+
+.modal .btn-danger:hover {
+  background-color: var(--bs-danger-dark);
+  border-color: var(--bs-danger-dark);
+}
+/* Enhancing the form-label class for bolder text */
+.form-label {
+  font-weight: 600; /* Adjusted for a heavier font weight */
+}
+/* Enhance col-form-label with custom color and bold text */
+.col-form-label {
+  font-weight: 600; /* Make the label text bold */
+  font-size: 0.8 rem; /* Slightly increase the font size for emphasis */
+  color: #27a2fc; /* Set the label color to a custom blue */
+}

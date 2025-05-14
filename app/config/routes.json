@@ -32,7 +32,7 @@
       "path": "/admin/user/addNewUser2",
       "page": "admin/user/addNewUser2",
       "layout": "admin",
-      "exec": ""
+      "exec": "/api/Security/secAuthSupAd"
     },
     {
       "path": "/admin/user/user_list",
@@ -79,6 +79,17 @@
       "path": "/admin/DbRoutines/manual_encrypt",
       "page": "admin/DbRoutines/manual_encrypt",
       "layout": "main"
+    },
+    {
+      "path": "/admin/settings/templateEditor",
+      "page": "admin/settings/templateEditor",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/settings/template_list",
+      "page": "admin/settings/template_list",
+      "layout": "admin",
+      "exec": "/api/Security/secAuthSupAd"
     }
   ]
 }
