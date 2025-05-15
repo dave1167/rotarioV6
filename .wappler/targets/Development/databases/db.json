@@ -28,12 +28,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "refs": {
           "tbl_rota_type": "tentantId",
           "tbl_user_tenant": "tenantId"
@@ -69,20 +64,10 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
+        "db": {}
       },
       "tbl_user_tenant": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "columns": {
           "usrTenId": {
             "db": {
@@ -133,12 +118,7 @@
         "parent": "tbl_users"
       },
       "tbl_user_rota": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "columns": {
           "rotaId": {
             "db": {
@@ -193,12 +173,7 @@
         }
       },
       "tbl_roles_type": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "columns": {
           "roleId": {
             "db": {
@@ -340,12 +315,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "parent": "tbl_users"
       },
       "tbl_ek": {
@@ -382,20 +352,10 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
+        "db": {}
       },
       "tbl_activities": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "columns": {
           "activityId": {
             "db": {
@@ -415,12 +375,7 @@
         }
       },
       "tbl_users": {
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "columns": {
           "userId": {
             "db": {
@@ -518,7 +473,8 @@
           "tbl_user_dets": "userId"
         },
         "refs": {
-          "tbl_activity_log": "userId"
+          "tbl_activity_log": "userId",
+          "tbl_event_vol": "userId"
         }
       },
       "tbl_activity_log": {
@@ -575,12 +531,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
+        "db": {}
       },
       "tbl_emailStatus": {
         "columns": {
@@ -600,12 +551,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "refs": {
           "tbl_email": "sendStatus"
         }
@@ -677,12 +623,7 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
+        "db": {}
       },
       "tbl_templates": {
         "columns": {
@@ -754,11 +695,36 @@
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
+        "db": {}
+      },
+      "tbl_location": {
+        "columns": {
+          "locationId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "location": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "tenantId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {},
+        "refs": {
+          "tbl_events": "location"
         }
       },
       "tbl_settings": {
@@ -809,25 +775,14 @@
             }
           },
           "daysToPublish": {
-            "db_edits": {
+            "db": {
               "type": "integer",
-              "name": "daysToPublish",
-              "maxLength": ""
-            },
-            "status": {
-              "new": true
+              "primary": false,
+              "nullable": true
             }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
-        "status": {
-          "children_modified": true
-        }
+        "db": {}
       },
       "tbl_event_vol": {
         "columns": {
@@ -837,49 +792,56 @@
               "primary": true,
               "nullable": false
             }
-          }
-        },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        }
-      },
-      "tbl_location": {
-        "columns": {
-          "locationId": {
+          },
+          "eventId": {
             "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "eventId",
+              "inTable": "tbl_events",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
             }
           },
-          "location": {
+          "userId": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "userId",
+              "inTable": "tbl_users",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "modifiedDate": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "modifiedBy": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "status": {
             "db": {
               "type": "string",
               "maxLength": 255,
               "primary": false,
               "nullable": true
             }
-          },
-          "tenantId": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
-        "refs": {
-          "tbl_events": "location"
-        }
+        "db": {},
+        "parent": "tbl_events"
       },
       "tbl_venue": {
         "columns": {
@@ -904,14 +866,16 @@
               "primary": false,
               "nullable": true
             }
+          },
+          "location": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
           }
         },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
+        "db": {},
         "refs": {
           "tbl_events": "venue"
         }
@@ -1020,9 +984,26 @@
               "primary": false,
               "nullable": true
             }
+          },
+          "volArrival": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "publishDate": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
           }
         },
-        "db": {}
+        "db": {},
+        "sub": {
+          "tbl_event_vol": "eventId"
+        }
       }
     },
     "views": {},

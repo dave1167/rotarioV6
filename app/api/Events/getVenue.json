@@ -1,0 +1,129 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "number",
+        "name": "location"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "tbl_venue",
+              "column": "location"
+            },
+            {
+              "table": "tbl_venue",
+              "column": "venueDesc"
+            },
+            {
+              "table": "tbl_venue",
+              "column": "venueId"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_SESSION.Ses_Ten_Id}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{$_GET.location}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "tbl_venue"
+          },
+          "primary": "venueId",
+          "joins": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "tbl_venue.tenantId",
+                "field": "tbl_venue.tenantId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "data": {
+                  "table": "tbl_venue",
+                  "column": "tenantId",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "integer",
+                    "primary": false,
+                    "nullable": true,
+                    "name": "tenantId"
+                  }
+                },
+                "operation": "="
+              },
+              {
+                "id": "tbl_venue.location",
+                "field": "tbl_venue.location",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.location}}",
+                "data": {
+                  "table": "tbl_venue",
+                  "column": "location",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "integer",
+                    "primary": false,
+                    "nullable": true,
+                    "name": "location"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select `location`, `venueDesc`, `venueId` from `tbl_venue` where `tbl_venue`.`tenantId` = ? and `tbl_venue`.`location` = ?"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "location"
+        },
+        {
+          "type": "text",
+          "name": "venueDesc"
+        },
+        {
+          "type": "number",
+          "name": "venueId"
+        }
+      ],
+      "outputType": "array",
+      "collapsed": true
+    }
+  }
+}

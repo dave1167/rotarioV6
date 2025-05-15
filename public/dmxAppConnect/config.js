@@ -489,6 +489,20 @@ dmx.config({
         }
       ],
       "outputType": "array"
-    }
+    },
+    "sessionStorage": [
+      {
+        "type": "number",
+        "name": "evId"
+      }
+    ]
+  },
+  "edit_event": {
+    "sessionStorage": [
+      {
+        "type": "number",
+        "name": "evId"
+      }
+    ]
   }
 });

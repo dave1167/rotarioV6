@@ -2,5 +2,9 @@
   "event_list_admin.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "edit_event.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

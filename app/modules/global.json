@@ -8,6 +8,10 @@
       {
         "type": "text",
         "name": "user_id"
+      },
+      {
+        "type": "number",
+        "name": "eventid"
       }
     ],
     "$_SESSION": [

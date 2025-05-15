@@ -1,0 +1,100 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "tbl_location",
+              "column": "locationId"
+            },
+            {
+              "table": "tbl_location",
+              "column": "location"
+            },
+            {
+              "table": "tbl_location",
+              "column": "tenantId"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_SESSION.Ses_Ten_Id}}",
+              "test": ""
+            }
+          ],
+          "table": {
+            "name": "tbl_location"
+          },
+          "primary": "locationId",
+          "joins": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "tbl_location.tenantId",
+                "field": "tbl_location.tenantId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "data": {
+                  "table": "tbl_location",
+                  "column": "tenantId",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "integer",
+                    "primary": false,
+                    "nullable": true,
+                    "name": "tenantId"
+                  }
+                },
+                "operation": "=",
+                "table": "tbl_location"
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select `locationId`, `location`, `tenantId` from `tbl_location` where `tbl_location`.`tenantId` = ?"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "locationId"
+        },
+        {
+          "type": "text",
+          "name": "location"
+        },
+        {
+          "type": "number",
+          "name": "tenantId"
+        }
+      ],
+      "outputType": "array",
+      "collapsed": true
+    }
+  }
+}
