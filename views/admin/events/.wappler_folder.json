@@ -6,5 +6,9 @@
   "edit_event.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "test.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

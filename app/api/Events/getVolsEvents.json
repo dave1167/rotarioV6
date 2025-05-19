@@ -12,145 +12,141 @@
     ]
   },
   "exec": {
-    "steps": {
-      "name": "query",
-      "module": "dbconnector",
-      "action": "select",
-      "options": {
-        "connection": "db",
-        "sql": {
-          "type": "SELECT",
-          "columns": [
-            {
-              "table": "tbl_event_vol",
-              "column": "eventId"
-            },
-            {
-              "table": "tbl_events",
-              "column": "eventName"
-            },
-            {
-              "table": "tbl_users",
-              "column": "fName"
-            },
-            {
-              "table": "tbl_users",
-              "column": "lName"
-            }
-          ],
-          "params": [
-            {
-              "operator": "equal",
-              "type": "expression",
-              "name": ":P1",
-              "value": "{{$_GET.eventid}}",
-              "test": ""
-            }
-          ],
-          "table": {
-            "name": "tbl_event_vol"
-          },
-          "primary": "evVolId",
-          "joins": [
-            {
-              "table": "tbl_users",
-              "column": "*",
-              "type": "INNER",
-              "clauses": {
-                "condition": "AND",
-                "rules": [
-                  {
-                    "table": "tbl_users",
-                    "column": "userId",
-                    "operation": "=",
-                    "operator": "equal",
-                    "value": {
-                      "table": "tbl_event_vol",
-                      "column": "userId",
-                      "type": "number"
-                    }
-                  }
-                ]
-              },
-              "primary": "userId"
-            },
-            {
-              "table": "tbl_events",
-              "column": "*",
-              "type": "INNER",
-              "clauses": {
-                "condition": "AND",
-                "rules": [
-                  {
-                    "table": "tbl_events",
-                    "column": "eventId",
-                    "operation": "=",
-                    "operator": "equal",
-                    "value": {
-                      "table": "tbl_event_vol",
-                      "column": "eventId",
-                      "type": "number"
-                    }
-                  }
-                ]
-              },
-              "primary": "eventId"
-            }
-          ],
-          "wheres": {
-            "condition": "AND",
-            "rules": [
+    "steps": [
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 500
+        },
+        "output": false,
+        "disabled": true
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
               {
-                "id": "tbl_event_vol.eventId",
-                "field": "tbl_event_vol.eventId",
-                "type": "double",
-                "operator": "equal",
-                "value": "{{$_GET.eventid}}",
-                "data": {
-                  "table": "tbl_event_vol",
-                  "column": "eventId",
-                  "type": "number",
-                  "columnObj": {
-                    "type": "reference",
-                    "primary": false,
-                    "nullable": true,
-                    "references": "eventId",
-                    "inTable": "tbl_events",
-                    "referenceType": "integer",
-                    "onUpdate": "NO ACTION",
-                    "onDelete": "NO ACTION",
-                    "name": "eventId"
-                  }
-                },
-                "operation": "="
+                "table": "tbl_event_vol",
+                "column": "eventId"
+              },
+              {
+                "table": "tbl_events",
+                "column": "eventName"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "status"
               }
             ],
-            "conditional": null,
-            "valid": true
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.eventid}}",
+                "test": "2"
+              }
+            ],
+            "table": {
+              "name": "tbl_event_vol"
+            },
+            "primary": "evVolId",
+            "joins": [
+              {
+                "table": "tbl_events",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_events",
+                      "column": "eventId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_event_vol",
+                        "column": "eventId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "eventId"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_event_vol.eventId",
+                  "field": "tbl_event_vol.eventId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.eventid}}",
+                  "data": {
+                    "table": "tbl_event_vol",
+                    "column": "eventId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "nullable": true,
+                      "references": "eventId",
+                      "inTable": "tbl_events",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "eventId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_event_vol"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tbl_event_vol`.`eventId`, `tbl_events`.`eventName`, `tbl_event_vol`.`status` from `tbl_event_vol` inner join `tbl_events` on `tbl_events`.`eventId` = `tbl_event_vol`.`eventId` where `tbl_event_vol`.`eventId` = ?"
           },
-          "query": "select `tbl_event_vol`.`eventId`, `tbl_events`.`eventName`, `tbl_users`.`fName`, `tbl_users`.`lName` from `tbl_event_vol` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_event_vol`.`userId` inner join `tbl_events` on `tbl_events`.`eventId` = `tbl_event_vol`.`eventId` where `tbl_event_vol`.`eventId` = ?"
-        }
+          "test": true
+        },
+        "meta": [
+          {
+            "type": "number",
+            "name": "eventId"
+          },
+          {
+            "type": "text",
+            "name": "eventName"
+          },
+          {
+            "type": "text",
+            "name": "status"
+          }
+        ],
+        "outputType": "array",
+        "collapsed": true,
+        "output": true
       },
-      "output": true,
-      "meta": [
-        {
-          "type": "number",
-          "name": "eventId"
+      {
+        "name": "varFName",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{query[$index].fName}}"
         },
-        {
-          "type": "text",
-          "name": "eventName"
-        },
-        {
-          "type": "text",
-          "name": "fName"
-        },
-        {
-          "type": "text",
-          "name": "lName"
-        }
-      ],
-      "outputType": "array"
-    }
+        "meta": [],
+        "outputType": "text",
+        "output": true,
+        "disabled": true
+      }
+    ]
   }
 }

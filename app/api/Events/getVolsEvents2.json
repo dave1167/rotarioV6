@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_event_vol",
+                "column": "eventId"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_users",
+                "column": "fName",
+                "aggregate": ""
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "status"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "key"
+              },
+              {
+                "table": "tbl_event_vol_status",
+                "column": "desc"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "registeredDate"
+              },
+              {
+                "table": "tbl_users",
+                "column": "imageName"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.eventid}}",
+                "test": "2"
+              }
+            ],
+            "table": {
+              "name": "tbl_event_vol"
+            },
+            "primary": "evVolId",
+            "joins": [
+              {
+                "table": "tbl_users",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_users",
+                      "column": "userId",
+                      "operation": "=",
+                      "operator": "equal",
+                      "value": {
+                        "table": "tbl_event_vol",
+                        "column": "userId",
+                        "type": "number"
+                      }
+                    }
+                  ]
+                },
+                "primary": "userId"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_ek",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_users",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "ekId"
+              },
+              {
+                "table": "tbl_event_vol_status",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_event_vol_status",
+                      "column": "volStatusid",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_event_vol",
+                        "column": "status"
+                      }
+                    }
+                  ]
+                },
+                "primary": "volStatusid"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_event_vol.eventId",
+                  "field": "tbl_event_vol.eventId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.eventid}}",
+                  "data": {
+                    "table": "tbl_event_vol",
+                    "column": "eventId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "nullable": true,
+                      "references": "eventId",
+                      "inTable": "tbl_events",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "eventId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tbl_event_vol`.`eventId`, `tbl_event_vol`.`userId`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_event_vol`.`status`, `tbl_ek`.`key`, `tbl_event_vol_status`.`desc`, `tbl_event_vol`.`registeredDate`, `tbl_users`.`imageName` from `tbl_event_vol` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_event_vol`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` inner join `tbl_event_vol_status` on `tbl_event_vol_status`.`volStatusid` = `tbl_event_vol`.`status` where `tbl_event_vol`.`eventId` = ?"
+          }
+        },
+        "meta": [
+          {
+            "type": "number",
+            "name": "eventId"
+          },
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "text",
+            "name": "fName"
+          },
+          {
+            "type": "text",
+            "name": "lName"
+          },
+          {
+            "type": "text",
+            "name": "status"
+          },
+          {
+            "type": "text",
+            "name": "key"
+          },
+          {
+            "type": "text",
+            "name": "desc"
+          },
+          {
+            "type": "date",
+            "name": "registeredDate"
+          },
+          {
+            "type": "text",
+            "name": "imageName"
+          }
+        ],
+        "outputType": "array",
+        "output": true,
+        "collapsed": true
+      },
+      {
+        "name": "repeat",
+        "module": "core",
+        "action": "repeat",
+        "options": {
+          "repeat": "{{query}}",
+          "outputFields": [],
+          "exec": {
+            "steps": [
+              {
+                "name": "varImage",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{imageName}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "decFname",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{fName.decrypt(key)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "regDate",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{registeredDate.formatDate('dd-MM-yyyy', false)}}"
+                },
+                "meta": [],
+                "output": true,
+                "outputType": "text"
+              },
+              {
+                "name": "decLname",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{lName.decrypt(key)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "collapsed": true
+              },
+              {
+                "name": "status",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{query[$index].desc}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "$index",
+            "type": "number"
+          },
+          {
+            "name": "$number",
+            "type": "number"
+          },
+          {
+            "name": "$name",
+            "type": "text"
+          },
+          {
+            "name": "$value",
+            "type": "object"
+          },
+          {
+            "name": "eventId",
+            "type": "number"
+          },
+          {
+            "name": "userId",
+            "type": "number"
+          },
+          {
+            "name": "fName",
+            "type": "text"
+          },
+          {
+            "name": "lName",
+            "type": "text"
+          },
+          {
+            "name": "status",
+            "type": "text"
+          },
+          {
+            "name": "key",
+            "type": "text"
+          },
+          {
+            "name": "desc",
+            "type": "text"
+          },
+          {
+            "name": "registeredDate",
+            "type": "date"
+          },
+          {
+            "name": "imageName",
+            "type": "text"
+          },
+          {
+            "name": "varImage",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "decFname",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "regDate",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "decLname",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "status",
+            "type": "text",
+            "sub": []
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

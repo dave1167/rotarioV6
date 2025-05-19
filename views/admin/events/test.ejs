@@ -1,0 +1,28 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="test" appConnect="local" components="{dmxBootstrap5TableGenerator:{},dmxStateManagement:{}}" -->
+<meta name="ac:route" content="/admin/events/test">
+<dmx-serverconnect id="serverconnect1" url="/api/Events/getVolsEvents2" dmx-param:eventid="2"></dmx-serverconnect>
+<dmx-session-manager id="session1"></dmx-session-manager>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Status</th>
+                            <th scope="row">Header</th>
+                        </tr>
+                    </thead>
+                    <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="serverconnect1.data.query" id="tableRepeat1">
+                        <tr>
+                            <td dmx-text="eventId"></td>
+                            <td dmx-text="serverconnect1.data.decFname.fName+serverconnect1.data.decFname"></td>
+                            <td dmx-text="status"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

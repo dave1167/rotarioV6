@@ -784,6 +784,43 @@
         },
         "db": {}
       },
+      "tbl_venue": {
+        "columns": {
+          "venueId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "tenantId": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "venueDesc": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "location": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {},
+        "refs": {
+          "tbl_events": "venue"
+        }
+      },
       "tbl_event_vol": {
         "columns": {
           "evVolId": {
@@ -838,47 +875,17 @@
               "primary": false,
               "nullable": true
             }
+          },
+          "registeredDate": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
           }
         },
         "db": {},
         "parent": "tbl_events"
-      },
-      "tbl_venue": {
-        "columns": {
-          "venueId": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "tenantId": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "venueDesc": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "location": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          }
-        },
-        "db": {},
-        "refs": {
-          "tbl_events": "venue"
-        }
       },
       "tbl_events": {
         "columns": {
@@ -1003,7 +1010,30 @@
         "db": {},
         "sub": {
           "tbl_event_vol": "eventId"
+        },
+        "status": {
+          "children_modified": true
         }
+      },
+      "tbl_event_vol_status": {
+        "columns": {
+          "volStatusid": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "desc": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {}
       }
     },
     "views": {},

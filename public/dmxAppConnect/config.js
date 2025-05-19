@@ -434,7 +434,13 @@ dmx.config({
         }
       ],
       "outputType": "array"
-    }
+    },
+    "sessionStorage": [
+      {
+        "type": "text",
+        "name": "evId"
+      }
+    ]
   },
   "user_registration": {
     "cookies": [
@@ -495,7 +501,70 @@ dmx.config({
         "type": "number",
         "name": "evId"
       }
-    ]
+    ],
+    "data_detail1": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "eventId"
+        },
+        {
+          "type": "text",
+          "name": "eventName"
+        },
+        {
+          "type": "text",
+          "name": "fName"
+        },
+        {
+          "type": "text",
+          "name": "lName"
+        },
+        {
+          "type": "text",
+          "name": "key"
+        },
+        {
+          "type": "text",
+          "name": "status"
+        }
+      ],
+      "outputType": "array"
+    },
+    "data_view1": {
+      "meta": [],
+      "outputType": "array"
+    },
+    "dvEvents1": {
+      "meta": [
+        {
+          "name": "varImage",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "decFname",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "regDate",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "decLname",
+          "type": "text",
+          "sub": []
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "sub": []
+        }
+      ],
+      "outputType": "array"
+    }
   },
   "edit_event": {
     "sessionStorage": [

@@ -29,3 +29,26 @@
   font-size: 0.8 rem; /* Slightly increase the font size for emphasis */
   color: #27a2fc; /* Set the label color to a custom blue */
 }
+.card {
+  -webkit-transition:
+    -webkit-transform 0.2s ease-in-out,
+    -webkit-box-shadow 0.2s ease-in-out;
+  transition:
+    -webkit-transform 0.2s ease-in-out,
+    -webkit-box-shadow 0.2s ease-in-out;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+  transition:
+    transform 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out,
+    -webkit-transform 0.2s ease-in-out,
+    -webkit-box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+  -webkit-transform: translateY(-5px);
+  transform: translateY(-5px);
+  -webkit-box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
