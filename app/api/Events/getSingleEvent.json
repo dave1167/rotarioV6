@@ -39,6 +39,22 @@
           {
             "table": "tbl_events",
             "column": "weighting"
+          },
+          {
+            "table": "tbl_events",
+            "column": "volArrival"
+          },
+          {
+            "table": "tbl_events",
+            "column": "venue"
+          },
+          {
+            "table": "tbl_events",
+            "column": "published"
+          },
+          {
+            "table": "tbl_events",
+            "column": "publishDate"
           }
         ],
         "params": [
@@ -127,7 +143,7 @@
           "conditional": null,
           "valid": true
         },
-        "query": "select `tbl_events`.`eventId`, `tbl_events`.`eventName`, `tbl_location`.`location`, `tbl_venue`.`venueDesc`, `tbl_events`.`eventDate`, `tbl_events`.`eventStrtTime`, `tbl_events`.`numvols`, `tbl_events`.`weighting` from `tbl_events` inner join `tbl_location` on `tbl_location`.`locationId` = `tbl_events`.`location` inner join `tbl_venue` on `tbl_venue`.`venueId` = `tbl_events`.`venue` where `tbl_events`.`eventId` = ?"
+        "query": "select `tbl_events`.`eventId`, `tbl_events`.`eventName`, `tbl_location`.`location`, `tbl_venue`.`venueDesc`, `tbl_events`.`eventDate`, `tbl_events`.`eventStrtTime`, `tbl_events`.`numvols`, `tbl_events`.`weighting`, `tbl_events`.`volArrival`, `tbl_events`.`venue`, `tbl_events`.`published`, `tbl_events`.`publishDate` from `tbl_events` inner join `tbl_location` on `tbl_location`.`locationId` = `tbl_events`.`location` inner join `tbl_venue` on `tbl_venue`.`venueId` = `tbl_events`.`venue` where `tbl_events`.`eventId` = ?"
       }
     },
     "output": true,
@@ -163,6 +179,22 @@
       {
         "type": "number",
         "name": "weighting"
+      },
+      {
+        "type": "number",
+        "name": "volArrival"
+      },
+      {
+        "type": "number",
+        "name": "venue"
+      },
+      {
+        "type": "boolean",
+        "name": "published"
+      },
+      {
+        "type": "date",
+        "name": "publishDate"
       }
     ],
     "outputType": "object",
@@ -174,6 +206,7 @@
     "action": "wait",
     "options": {
       "delay": 300
-    }
+    },
+    "disabled": true
   }
 ]

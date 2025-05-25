@@ -1,0 +1,151 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/events/event_list_admin.ejs",
+      "linkedForm": "form1"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "input2",
+        "name": "input2"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpEvIdEdit",
+        "name": "inpEvIdEdit"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpLoc",
+        "name": "inpLoc"
+      },
+      {
+        "type": "text",
+        "fieldName": "venueId",
+        "name": "venueId"
+      },
+      {
+        "type": "date",
+        "fieldName": "inpEvDte",
+        "options": {
+          "rules": {
+            "core:date": {}
+          }
+        },
+        "name": "inpEvDte"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpStrtTime",
+        "name": "inpStrtTime"
+      },
+      {
+        "type": "number",
+        "fieldName": "inpVols",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inpVols"
+      },
+      {
+        "type": "text",
+        "fieldName": "chkpublished",
+        "name": "chkpublished"
+      },
+      {
+        "type": "number",
+        "fieldName": "inpChkPub",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inpChkPub"
+      },
+      {
+        "type": "text",
+        "fieldName": "selLocation",
+        "multiple": true,
+        "name": "selLocation"
+      },
+      {
+        "type": "text",
+        "fieldName": "selWeight",
+        "name": "selWeight"
+      },
+      {
+        "type": "text",
+        "fieldName": "selVolArrival",
+        "name": "selVolArrival"
+      },
+      {
+        "type": "number",
+        "name": "eventId"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "tbl_events",
+              "column": "published",
+              "type": "number",
+              "value": "{{$_POST.inpChkPub}}"
+            }
+          ],
+          "table": "tbl_events",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "eventId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.eventId}}",
+                "data": {
+                  "column": "eventId"
+                },
+                "operation": "="
+              }
+            ]
+          },
+          "returning": "eventId",
+          "query": "update `tbl_events` set `published` = ? where `eventId` = ?",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.inpChkPub}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{$_POST.eventId}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ],
+      "collapsed": true
+    }
+  }
+}

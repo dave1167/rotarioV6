@@ -1,4 +1,6 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list_admin" appConnect="local" components="{dmxBootstrap5Alert:{},dmxFormatter:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{},dmxDataTraversal:{},dmxDatastore:{}}" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list_admin" appConnect="local" components="{dmxBootstrap5Alert:{},dmxFormatter:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{},dmxDataTraversal:{},dmxDatastore:{},dmxBootstrap5Tooltips:{}}" -->
+<dmx-serverconnect id="scUpdateVolEvStatus" url="/api/Events/updateVolEventStatus" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scUpdateEvDets" url="/api/Events/updateEventDetails" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scGetSingleEvent" url="/api/Events/getSingleEvent" noload="true"></dmx-serverconnect>
 
 
@@ -18,20 +20,19 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title text-white bg-primary">Edit event</h4>
-                                <h5>Fancy display heading</h5>
                             </div>
                             <div class="card-body">
 
                                 <div class="row">
                                     <div class="col">
-                                        <form id="form1">
-                                            <input id="inpEvId" name="inpEvId" type="text" class="form-control" dmx-bind:value="repeat1[$index].eventId">
+                                        <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventDetails" dmx-on:success="run([{run:{outputType:'text',disabled:true,action:`scUpdateVolEvStatus.load({evvolid: tableRepeat2[$index].evVolId})`}},{wait:{disabled:true,delay:500}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scGetVolsEvent.data.query`,outputFields:[],exec:{steps:[{'bootbox.alert':{disabled:true,message:`\'id\'+scUpdateVolEvStatus.data.log_inpStatusGrpNw`}},{'bootbox.alert':{message:`\'evvolId:\'+scGetVolsEvent.data.query[$index].evVolId+\'   status: \'+scGetVolsEvent.data.repeat[0].decLname`}},{run:{outputType:'text',action:`scUpdateVolEvStatus.load({evvolid: scGetVolsEvent.data.query[$index].evVolId})`}},{wait:{delay:100}}]}}}])">
+
                                             <div class="row">
                                                 <div class="col">
                                                     <div class="form-group mb-3 row">
                                                         <label for="input2" class="col-sm-2 col-form-label">Event Name</label>
                                                         <div class="col-sm-10">
-                                                            <input type="text" class="form-control form-control-lg" id="input2" name="input2" aria-describedby="input2_help" placeholder="Enter some text" dmx-bind:value="scGetSingleEvent.data.query.eventName">
+                                                            <input type="text" class="form-control form-control-lg" id="input2" name="input2" aria-describedby="input2_help" placeholder="Enter some text" dmx-bind:value="scGetSingleEvent.data.query.eventName"><input id="inpEvIdEdit" name="inpEvIdEdit" type="hidden" class="form-control" dmx-bind:value="scGetSingleEvent.data.query.eventId">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -39,15 +40,17 @@
                                             <div class="row">
 
                                                 <div class="col">
-                                                    <div class="form-group mb-3"> <label for="input1" class="form-label">Location</label>
-                                                        <select id="selLocation" class="form-select" dmx-bind:options="scSelLocation.data.query" optiontext="location" optionvalue="locationId">
+                                                    <div class="form-group mb-3"> <label for="publish" class="form-label">Location</label>
+                                                        <select id="selLocation" class="form-select" dmx-bind:options="scSelLocation.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetSingleEvent.data.query.location">
                                                         </select>
+                                                        <input id="inpLoc" name="inpLoc" type="hidden" class="form-control" dmx-bind:value="selLocation.value">
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group mb-3"> <label for="input1" class="form-label">Venue</label>
-                                                        <select id="selVenue" class="form-select" dmx-bind:options="scVenue.data.query" optiontext="venueDesc" optionvalue="venueId">
+                                                    <div class="form-group mb-3"> <label for="publish" class="form-label">Venue</label>
+                                                        <select id="selVenue" class="form-select" dmx-bind:options="scVenue.data.query" optiontext="venueDesc" optionvalue="venueId" dmx-bind:value="scGetSingleEvent.data.query.venue">
                                                         </select>
+                                                        <input id="venueId" name="venueId" type="hidden" class="form-control" dmx-bind:value="selVenue.value">
                                                     </div>
                                                 </div>
                                             </div>
@@ -61,7 +64,7 @@
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group mb-3"> <label for="inpStrtTime" class="form-label col-form-label-sm">Start Time</label>
-                                                        <input class="form-control form-control-sm" id="inpStrtTime" name="inpStrtTime" aria-describedby="input1_help" placeholder="Enter time" dmx-bind:value="scGetSingleEvent.data.query.eventStrtTime">
+                                                        <input class="form-control form-control-sm" id="inpStrtTime" name="inpStrtTime" aria-describedby="input1_help" placeholder="Enter time" dmx-bind:value="scGetSingleEvent.data.query.eventStrtTime.formatDate('hh:mm')">
                                                     </div>
                                                 </div>
                                                 <div class="col">
@@ -70,8 +73,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <div class="form-group mb-3"> <label for="input1" class="form-label">Event Weighting</label>
-                                                        <select id="selWeight" class="form-select" name="selWeight">
+                                                    <div class="form-group mb-3"> <label for="publish" class="form-label">Event Weighting</label>
+                                                        <select id="selWeight" class="form-select" name="selWeight" dmx-bind:value="scGetSingleEvent.data.query.weighting">
                                                             <option value="1">Low Demand</option>
                                                             <option value="2">Medium Demand</option>
                                                             <option value="3">High Demand</option>
@@ -80,7 +83,7 @@
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-group mb-3"> <label for="input3" class="form-label">Volunteer Arrival Time</label>
-                                                        <select id="selVolArrival" class="form-select" name="selVolArrival" dmx-bind:value="60">
+                                                        <select id="selVolArrival" class="form-select" name="selVolArrival" dmx-bind:value="scGetSingleEvent.data.query.volArrival">
                                                             <option value="15">15</option>
                                                             <option value="20">20</option>
                                                             <option value="25">25</option>
@@ -100,50 +103,75 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="form-group mb-3 row">
+                                                        <legend class="col-sm-2 col-form-label">Published Status</legend>
+                                                        <div class="col-sm-10">
+                                                            <div class="form-check form-switch">
+
+
+
+
+                                                            </div>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" id="chkpublished" name="chkpublished" dmx-bind:checked="scGetSingleEvent.data.query.published==1" value="1" dmx-bs-tooltip="'When an event is published, it makes it visible to volunteers'">
+                                                                <label class="form-check-label" for="chkpublished">Published</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <input id="inpChkPub" name="inpChkPub" class="form-control" type="number">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input id="inpStatusGrpNw" name="inpStatusGrpNw" type="number" class="form-control" dmx-text="scUpdateVolEvStatus.data.log_inpStatusGrpNw">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-striped table-bordered table-sm">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="row"> </th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="dvEvents1.data" id="tableRepeat2">
+                                                                <tr>
+                                                                    <td dmx-text="scGetVolsEvent.data.query[$index].eventId"></td>
+                                                                    <td>
+                                                                        <img dmx-bind:src="'\\upload\\images\\profiles\\'+dvEvents1.data[$index].varImage+'.jpg'" width="40" height="40" class="rounded-circle">
+                                                                    </td>
+                                                                    <td dmx-text="scGetVolsEvent.data.query[$index].evVolId"></td>
+                                                                    <td dmx-text="scGetVolsEvent.data.repeat[$index].decFname"></td>
+                                                                    <td dmx-text="scGetVolsEvent.data.repeat[$index].decLname"></td>
+                                                                    <td dmx-text="regDate"></td>
+                                                                    <td>
+                                                                        <div class="btn-group" role="group" aria-label="Volunteer Status" id="statusGrp" is="dmx-radio-group" dmx-bind:value="dvEvents1.data[$index].status">
+                                                                            <input type="radio" class="btn-check" dmx-bind:id="'pending_' + $index" dmx-bind:name="'choice_' + $index" value="1">
+                                                                            <label class="btn btn-outline-primary" dmx-bind:for="'pending_' + $index"><i class="fas fa-clock"></i></label>
+
+                                                                            <input type="radio" class="btn-check" dmx-bind:id="'selected_' + $index" dmx-bind:name="'choice_' + $index" value="2">
+                                                                            <label class="btn btn-outline-success" dmx-bind:for="'selected_' + $index"><i class="fas fa-check"></i></label>
+
+                                                                            <input type="radio" class="btn-check" dmx-bind:id="'waitlist_' + $index" dmx-bind:name="'choice_' + $index" value="3">
+                                                                            <label class="btn btn-outline-warning" dmx-bind:for="'waitlist_' + $index"><i class="fas fa-hourglass"></i></label>
+
+                                                                            <input type="radio" class="btn-check" dmx-bind:id="'cancelled_' + $index" dmx-bind:name="'choice_' + $index" value="4">
+                                                                            <label class="btn btn-outline-danger" dmx-bind:for="'cancelled_' + $index"><i class="fas fa-times"></i></label>
+                                                                        </div>
+                                                                        <input type="number" dmx-bind:id="'inpStatusGrp_' + $index" dmx-bind:name="'inpStatusGrp[' + $index + ']'" dmx-bind:value="statusGrp.value">
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div><button type="submit" class="btn btn-primary ms-2 me-3">Save changes</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
                                         </form>
                                     </div>
-                                </div>
-                                <div class="d-flex">
-                                    <h6 class="text-success">Volunteers</h6>
-                                    <div class="table-responsive">
-                                        <table class="table table-striped table-bordered table-sm">
-                                            <thead>
-                                                <tr>
-                                                    <th>$index</th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="dvEvents1.data" id="tableRepeat2">
-                                                <tr>
-                                                    <td>
-                                                        <img dmx-bind:src="'\\upload\\images\\profiles\\'+dvEvents1.data[$index].varImage+'.jpg'" width="40" height="40" class="rounded-circle">
-                                                    </td>
-                                                    <td dmx-text="$index+1"></td>
-                                                    <td dmx-text="scGetVolsEvent.data.repeat[$index].decFname"></td>
-                                                    <td dmx-text="scGetVolsEvent.data.repeat[$index].decLname"></td>
-                                                    <td dmx-text="regDate"></td>
-                                                    <td>
-                                                        <div class="btn-group" role="group" aria-label="Volunteer Status">
-                                                            <input type="radio" class="btn-check" dmx-bind:id="'pending_' + $index" dmx-bind:name="'choice_' + $index" value="1">
-                                                            <label class="btn btn-outline-primary" dmx-bind:for="'pending_' + $index"><i class="fas fa-clock"></i></label>
-
-                                                            <input type="radio" class="btn-check" dmx-bind:id="'selected_' + $index" dmx-bind:name="'choice_' + $index" value="2">
-                                                            <label class="btn btn-outline-success" dmx-bind:for="'selected_' + $index"><i class="fas fa-check"></i></label>
-
-                                                            <input type="radio" class="btn-check" dmx-bind:id="'waitlist_' + $index" dmx-bind:name="'choice_' + $index" value="3">
-                                                            <label class="btn btn-outline-warning" dmx-bind:for="'waitlist_' + $index"><i class="fas fa-hourglass"></i></label>
-
-                                                            <input type="radio" class="btn-check" dmx-bind:id="'cancelled_' + $index" dmx-bind:name="'choice_' + $index" value="4">
-                                                            <label class="btn btn-outline-danger" dmx-bind:for="'cancelled_' + $index"><i class="fas fa-times"></i></label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
@@ -151,8 +179,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+
+
             </div>
         </div>
     </div>
@@ -173,7 +201,9 @@
             <div class="card h-100 shadow border-0 rounded-3">
                 <!-- Card Header -->
                 <div class="card-header bg-success text-white text-center">
-                    <h5 class="mb-0 dmx-text=" eventname"="" dmx-text="eventName">Card Title</h5>
+                    <h5 class="dmx-text= mb-1" eventname"="" dmx-text="eventName">Card Title</h5>
+                    <span class="badge bg-warning" dmx-show="scShowAllEvents.data.query[$index].published">Published</span>
+                    <span class="badge bg-danger" dmx-show="!published">Unpublished</span>
                 </div>
 
                 <!-- Card Body -->
@@ -181,6 +211,7 @@
                     <div class="row">
                         <div class="col">
                             <p class="card-text flex-grow-1 text-center" dmx-text="'Date: '+eventDate.formatDate('dd-MM-yyyy')">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <input id="inpEvIdFrm" name="inpEvIdFrm" type="hidden" class="form-control" dmx-bind:value="scShowAllEvents.data.query[$index].eventId">
                         </div>
                     </div>
                     <div class="row">
@@ -203,7 +234,7 @@
 
                 <!-- Card Footer -->
                 <div<a href="#" class="btn btn-primary w-100" dmx-on:click="scGetVolsEvent.load({eventid: eventId});modEditEvent.show()">
-                    <a href="#" class="btn btn-primary w-100" dmx-on:click="run([{run:{outputType:'text',action:`modEditEvent.show()`}},{run:{outputType:'text',action:`session2.set(\'evId\',eventId)`}},{run:{outputType:'text',action:`scGetVolsEvent.reset()`}},{wait:{delay:600}},{run:{outputType:'text',action:`scGetVolsEvent.load({eventid: session2.data.evId})`}},{wait:{delay:500}},{run:{outputType:'text',action:`scGetSingleEvent.load({eventid: session2.data.evId})`}}])">Edit</a>
+                    <a href="#" class="btn btn-primary w-100 text-light text-bg-success" dmx-on:click="run([{run:{outputType:'text',action:`modEditEvent.show()`}},{run:{outputType:'text',action:`session2.set(\'evId\',eventId)`}},{run:{outputType:'text',action:`scGetVolsEvent.reset()`}},{wait:{delay:600}},{run:{outputType:'text',action:`scGetVolsEvent.load({eventid: session2.data.evId})`}},{wait:{delay:500}},{run:{outputType:'text',action:`scGetSingleEvent.load({eventid: session2.data.evId})`}}])">Edit</a>
             </div>
         </div>
     </div>

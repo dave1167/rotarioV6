@@ -58,6 +58,10 @@
               {
                 "table": "tbl_users",
                 "column": "imageName"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "evVolId"
               }
             ],
             "params": [
@@ -164,13 +168,14 @@
                       "name": "eventId"
                     }
                   },
-                  "operation": "="
+                  "operation": "=",
+                  "table": "tbl_event_vol"
                 }
               ],
               "conditional": null,
               "valid": true
             },
-            "query": "select `tbl_event_vol`.`eventId`, `tbl_event_vol`.`userId`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_event_vol`.`status`, `tbl_ek`.`key`, `tbl_event_vol_status`.`desc`, `tbl_event_vol`.`registeredDate`, `tbl_users`.`imageName` from `tbl_event_vol` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_event_vol`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` inner join `tbl_event_vol_status` on `tbl_event_vol_status`.`volStatusid` = `tbl_event_vol`.`status` where `tbl_event_vol`.`eventId` = ?"
+            "query": "select `tbl_event_vol`.`eventId`, `tbl_event_vol`.`userId`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_event_vol`.`status`, `tbl_ek`.`key`, `tbl_event_vol_status`.`desc`, `tbl_event_vol`.`registeredDate`, `tbl_users`.`imageName`, `tbl_event_vol`.`evVolId` from `tbl_event_vol` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_event_vol`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` inner join `tbl_event_vol_status` on `tbl_event_vol_status`.`volStatusid` = `tbl_event_vol`.`status` where `tbl_event_vol`.`eventId` = ?"
           }
         },
         "meta": [
@@ -209,6 +214,10 @@
           {
             "type": "text",
             "name": "imageName"
+          },
+          {
+            "type": "number",
+            "name": "evVolId"
           }
         ],
         "outputType": "array",
@@ -232,7 +241,7 @@
                   "value": "{{imageName}}"
                 },
                 "meta": [],
-                "outputType": "text",
+                "outputType": "object",
                 "output": true
               },
               {
@@ -266,8 +275,7 @@
                 },
                 "meta": [],
                 "outputType": "text",
-                "output": true,
-                "collapsed": true
+                "output": true
               },
               {
                 "name": "status",
@@ -279,6 +287,17 @@
                 "meta": [],
                 "outputType": "text",
                 "output": true
+              },
+              {
+                "name": "evVolId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{evVolId}}"
+                },
+                "meta": [],
+                "output": true,
+                "outputType": "text"
               }
             ]
           }
@@ -338,8 +357,12 @@
             "type": "text"
           },
           {
+            "name": "evVolId",
+            "type": "number"
+          },
+          {
             "name": "varImage",
-            "type": "text",
+            "type": "object",
             "sub": []
           },
           {
