@@ -2,7 +2,7 @@
   "meta": {
     "options": {
       "linkedFile": "/views/admin/events/event_list_admin.ejs",
-      "linkedForm": "form2"
+      "linkedForm": "form1"
     },
     "$_GET": [
       {
@@ -20,20 +20,74 @@
     ],
     "$_POST": [
       {
-        "type": "datetime",
-        "name": "modifiedDate"
-      },
-      {
-        "type": "number",
-        "name": "modifiedBy"
+        "type": "text",
+        "fieldName": "input2",
+        "name": "input2"
       },
       {
         "type": "text",
-        "name": "status"
+        "fieldName": "inpEvIdEdit",
+        "name": "inpEvIdEdit"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpLoc",
+        "name": "inpLoc"
+      },
+      {
+        "type": "text",
+        "fieldName": "venueId",
+        "name": "venueId"
+      },
+      {
+        "type": "date",
+        "fieldName": "inpEvDte",
+        "options": {
+          "rules": {
+            "core:date": {}
+          }
+        },
+        "name": "inpEvDte"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpStrtTime",
+        "name": "inpStrtTime"
       },
       {
         "type": "number",
-        "name": "evVolId"
+        "fieldName": "inpVols",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inpVols"
+      },
+      {
+        "type": "text",
+        "fieldName": "chkpublished",
+        "name": "chkpublished"
+      },
+      {
+        "type": "number",
+        "fieldName": "inpChkPub",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inpChkPub"
+      },
+      {
+        "type": "number",
+        "fieldName": "inpStatusGrpNw",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inpStatusGrpNw"
       },
       {
         "type": "text",
@@ -41,44 +95,20 @@
         "name": "'choice_' + $index"
       },
       {
-        "type": "number",
-        "fieldName": "inpStatusGrp",
-        "options": {
-          "rules": {
-            "core:number": {}
-          }
-        },
-        "name": "inpStatusGrp"
+        "type": "text",
+        "fieldName": "selLocation",
+        "multiple": true,
+        "name": "selLocation"
       },
       {
-        "type": "array",
-        "name": "record",
-        "sub": [
-          {
-            "type": "datetime",
-            "name": "NOW"
-          },
-          {
-            "type": "number",
-            "name": "$_SESSION"
-          },
-          {
-            "type": "text",
-            "name": "$_POST[''choice_'"
-          },
-          {
-            "type": "number",
-            "name": "$_GET"
-          },
-          {
-            "type": "text",
-            "name": "$value"
-          },
-          {
-            "type": "text",
-            "name": "$_POST"
-          }
-        ]
+        "type": "text",
+        "fieldName": "selWeight",
+        "name": "selWeight"
+      },
+      {
+        "type": "text",
+        "fieldName": "selVolArrival",
+        "name": "selVolArrival"
       }
     ],
     "$_SESSION": [
@@ -189,7 +219,7 @@
                 "table": "tbl_event_vol",
                 "column": "status",
                 "type": "text",
-                "value": "{{$_POST.inpStatusGrp}}"
+                "value": "{{$_POST[''choice_' + $index']}}"
               }
             ],
             "table": "tbl_event_vol",
@@ -229,7 +259,7 @@
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.inpStatusGrp}}",
+                "value": "{{$_POST[''choice_' + $index']}}",
                 "test": ""
               },
               {
@@ -311,16 +341,6 @@
           {
             "name": "status",
             "type": "text"
-          },
-          {
-            "name": "update",
-            "type": "text",
-            "sub": [
-              {
-                "name": "affected",
-                "type": "number"
-              }
-            ]
           }
         ],
         "outputType": "array",

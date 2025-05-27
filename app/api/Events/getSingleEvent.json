@@ -206,7 +206,6 @@
     "action": "wait",
     "options": {
       "delay": 300
-    },
-    "disabled": true
+    }
   }
 ]

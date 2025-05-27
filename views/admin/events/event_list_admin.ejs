@@ -25,7 +25,7 @@
 
                                 <div class="row">
                                     <div class="col">
-                                        <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventDetails" dmx-on:success="run([{run:{outputType:'text',disabled:true,action:`scUpdateVolEvStatus.load({evvolid: tableRepeat2[$index].evVolId})`}},{wait:{disabled:true,delay:500}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scGetVolsEvent.data.query`,outputFields:[],exec:{steps:[{'bootbox.alert':{disabled:true,message:`\'id\'+scUpdateVolEvStatus.data.log_inpStatusGrpNw`}},{'bootbox.alert':{message:`\'evvolId:\'+scGetVolsEvent.data.query[$index].evVolId+\'   status: \'+scGetVolsEvent.data.repeat[0].decLname`}},{run:{outputType:'text',action:`scUpdateVolEvStatus.load({evvolid: scGetVolsEvent.data.query[$index].evVolId})`}},{wait:{delay:100}}]}}}])">
+                                        <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventDetails" dmx-on:success="run([{run:{outputType:'text',disabled:true,action:`scUpdateVolEvStatus.load({evvolid: tableRepeat2[$index].evVolId})`}},{wait:{disabled:true,delay:500}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scGetVolsEvent.data.query`,outputFields:[],exec:{steps:[{'bootbox.alert':{disabled:true,message:`\'id\'+scUpdateVolEvStatus.data.log_inpStatusGrpNw`}},{'bootbox.alert':{message:`\'evvolId:\'+scGetVolsEvent.data.query[$index].evVolId+\'   status: \'+tableRepeat2[$index].statusGrp.value[$index].$value+\'  another:\'+tableRepeat2[$index].input.value`}},{run:{outputType:'text',action:`scUpdateVolEvStatus.load({evvolid: scGetVolsEvent.data.query[$index].evVolId})`}},{wait:{delay:100}}]}}}])">
 
                                             <div class="row">
                                                 <div class="col">
@@ -162,7 +162,7 @@
                                                                             <input type="radio" class="btn-check" dmx-bind:id="'cancelled_' + $index" dmx-bind:name="'choice_' + $index" value="4">
                                                                             <label class="btn btn-outline-danger" dmx-bind:for="'cancelled_' + $index"><i class="fas fa-times"></i></label>
                                                                         </div>
-                                                                        <input type="number" dmx-bind:id="'inpStatusGrp_' + $index" dmx-bind:name="'inpStatusGrp[' + $index + ']'" dmx-bind:value="statusGrp.value">
+                                                                        <input type="number" name="InpGrpVal" id="InpGrpVal" dmx-bind:value="statusGrp.value[0].$value">
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
