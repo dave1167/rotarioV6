@@ -500,6 +500,10 @@ dmx.config({
       {
         "type": "number",
         "name": "evId"
+      },
+      {
+        "type": "number",
+        "name": "statusId"
       }
     ],
     "data_detail1": {

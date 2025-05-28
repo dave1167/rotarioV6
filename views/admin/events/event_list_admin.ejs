@@ -1,6 +1,7 @@
 <!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list_admin" appConnect="local" components="{dmxBootstrap5Alert:{},dmxFormatter:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{},dmxDataTraversal:{},dmxDatastore:{},dmxBootstrap5Tooltips:{}}" -->
 <dmx-serverconnect id="scUpdateVolEvStatus" url="/api/Events/updateVolEventStatus" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scUpdateEvDets" url="/api/Events/updateEventDetails" noload="true"></dmx-serverconnect>
+<dmx-datastore id="statusArray" dmx-bind:data="dvEvents1.data.map({value: null})"></dmx-datastore>
 <dmx-serverconnect id="scGetSingleEvent" url="/api/Events/getSingleEvent" noload="true"></dmx-serverconnect>
 
 
@@ -25,7 +26,9 @@
 
                                 <div class="row">
                                     <div class="col">
-                                        <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventDetails" dmx-on:success="run([{run:{outputType:'text',disabled:true,action:`scUpdateVolEvStatus.load({evvolid: tableRepeat2[$index].evVolId})`}},{wait:{disabled:true,delay:500}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scGetVolsEvent.data.query`,outputFields:[],exec:{steps:[{'bootbox.alert':{disabled:true,message:`\'id\'+scUpdateVolEvStatus.data.log_inpStatusGrpNw`}},{'bootbox.alert':{message:`\'evvolId:\'+scGetVolsEvent.data.query[$index].evVolId+\'   status: \'+tableRepeat2[$index].statusGrp.value[$index].$value+\'  another:\'+tableRepeat2[$index].input.value`}},{run:{outputType:'text',action:`scUpdateVolEvStatus.load({evvolid: scGetVolsEvent.data.query[$index].evVolId})`}},{wait:{delay:100}}]}}}])">
+                                        <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventDetails" dmx-on:success="run({'bootbox.alert':{message:`statusArray.value+\'    arr\'`}})">
+                                            <!-- Hidden Input to Pass Status Array -->
+                                            <input type="hidden" name="statusArray" dmx-bind:value="statusArray.data">
 
                                             <div class="row">
                                                 <div class="col">
@@ -149,25 +152,30 @@
                                                                     <td dmx-text="scGetVolsEvent.data.repeat[$index].decLname"></td>
                                                                     <td dmx-text="regDate"></td>
                                                                     <td>
-                                                                        <div class="btn-group" role="group" aria-label="Volunteer Status" id="statusGrp" is="dmx-radio-group" dmx-bind:value="dvEvents1.data[$index].status">
-                                                                            <input type="radio" class="btn-check" dmx-bind:id="'pending_' + $index" dmx-bind:name="'choice_' + $index" value="1">
-                                                                            <label class="btn btn-outline-primary" dmx-bind:for="'pending_' + $index"><i class="fas fa-clock"></i></label>
+                                                                        <div is="dmx-radio-group" id="statusGrp" class="btn-group" dmx-bind:value="statusArray.data[$index]">
+                                                                            <input type="radio" class="btn-check" dmx-bind:name="'status_' + dvEvents1.data[$index].evVolId" dmx-bind:id="'status_pending_' + $index" value="1" dmx-on:updated="statusArray.update($index, {value: 1})">
+                                                                            <label class="btn btn-outline-primary" dmx-bind:for="'status_pending_' + $index">Pending</label>
 
-                                                                            <input type="radio" class="btn-check" dmx-bind:id="'selected_' + $index" dmx-bind:name="'choice_' + $index" value="2">
-                                                                            <label class="btn btn-outline-success" dmx-bind:for="'selected_' + $index"><i class="fas fa-check"></i></label>
+                                                                            <input type="radio" class="btn-check" dmx-bind:name="'status_' + dvEvents1.data[$index].evVolId" dmx-bind:id="'status_approved_' + $index" value="2" dmx-on:updated="statusArray.update($index, {value: 2})">
+                                                                            <label class="btn btn-outline-success" dmx-bind:for="'status_approved_' + $index">Approved</label>
 
-                                                                            <input type="radio" class="btn-check" dmx-bind:id="'waitlist_' + $index" dmx-bind:name="'choice_' + $index" value="3">
-                                                                            <label class="btn btn-outline-warning" dmx-bind:for="'waitlist_' + $index"><i class="fas fa-hourglass"></i></label>
+                                                                            <input type="radio" class="btn-check" dmx-bind:name="'status_' + dvEvents1.data[$index].evVolId" dmx-bind:id="'status_waitlist_' + $index" value="3" dmx-on:updated="statusArray.update($index, {value: 3})">
+                                                                            <label class="btn btn-outline-warning" dmx-bind:for="'status_waitlist_' + $index">Wait List</label>
 
-                                                                            <input type="radio" class="btn-check" dmx-bind:id="'cancelled_' + $index" dmx-bind:name="'choice_' + $index" value="4">
-                                                                            <label class="btn btn-outline-danger" dmx-bind:for="'cancelled_' + $index"><i class="fas fa-times"></i></label>
+                                                                            <input type="radio" class="btn-check" dmx-bind:name="'status_' + dvEvents1.data[$index].evVolId" dmx-bind:id="'status_cancelled_' + $index" value="4" dmx-on:updated="statusArray.update($index, {value: 4})">
+                                                                            <label class="btn btn-outline-danger" dmx-bind:for="'status_cancelled_' + $index">Cancelled</label>
                                                                         </div>
-                                                                        <input type="number" name="InpGrpVal" id="InpGrpVal" dmx-bind:value="statusGrp.value[0].$value">
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                    </div><button type="submit" class="btn btn-primary ms-2 me-3">Save changes</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                    </div>
+                                                    <div>
+                                                        <h5>Status Array:</h5>
+                                                        <pre dmx-text="statusArray.data"></pre>
+                                                    </div>
+                                                    <button type="button" class="btn btn-primary" dmx-on:click="console.log(statusArray.data); alert(statusArray.data)">Show Status Array</button>
+                                                    <button type="submit" class="btn btn-primary">Save changes</button>
                                                 </div>
                                             </div>
                                         </form>

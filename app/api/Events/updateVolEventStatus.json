@@ -90,9 +90,14 @@
         "name": "inpStatusGrpNw"
       },
       {
-        "type": "text",
-        "fieldName": "'choice_' + $index",
-        "name": "'choice_' + $index"
+        "type": "number",
+        "fieldName": "rowId",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "rowId"
       },
       {
         "type": "text",
@@ -109,6 +114,10 @@
         "type": "text",
         "fieldName": "selVolArrival",
         "name": "selVolArrival"
+      },
+      {
+        "type": "text",
+        "name": "rowId[$index]"
       }
     ],
     "$_SESSION": [
@@ -195,6 +204,28 @@
         "collapsed": true
       },
       {
+        "name": "log_rowId",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.rowId[$index]+' row'}}",
+          "output": true
+        },
+        "meta": [],
+        "outputType": "text",
+        "output": true
+      },
+      {
+        "name": "log_rawRequest",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_SERVER['RAW_BODY']+' hehe'}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
         "name": "update",
         "module": "dbupdater",
         "action": "update",
@@ -219,7 +250,7 @@
                 "table": "tbl_event_vol",
                 "column": "status",
                 "type": "text",
-                "value": "{{$_POST[''choice_' + $index']}}"
+                "value": "{{$_POST.rowId[$index]}}"
               }
             ],
             "table": "tbl_event_vol",
@@ -259,7 +290,7 @@
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST[''choice_' + $index']}}",
+                "value": "{{$_POST.rowId[$index]}}",
                 "test": ""
               },
               {
@@ -280,18 +311,6 @@
         ],
         "output": true,
         "collapsed": true
-      },
-      {
-        "name": "log_inpStatusGrp",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{$_POST.inpStatusGrp}}",
-          "output": true
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true
       },
       {
         "name": "repeat",
