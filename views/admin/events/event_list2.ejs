@@ -1,0 +1,130 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxFormatter:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{}}" -->
+<dmx-array id="arr1" dmx-on:updated=""></dmx-array>
+<dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid="2"></dmx-serverconnect>
+<dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
+<div class="modal" id="modEditIndEvent" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventStatus2" dmx-on:success="run([{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scEvVols.data.repeat`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`arr1.add(tableRepeat1[$index].radiogroup.value)`}}}}},{'bootbox.alert':{message:`arr1.items+\'  array\'`}}])">
+
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Image name</th>
+                                                <th>Event</th>
+                                                <th>User</th>
+                                                <th>F name</th>
+                                                <th>L name</th>
+                                                <th>Status</th>
+                                                <th>Desc</th>
+                                                <th>Registered date</th>
+
+                                                <th>Ev vol</th>
+                                                <th scope="row">Header</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="scEvVols.data.query" id="tableRepeat1">
+                                            <tr>
+                                                <td dmx-text="eventId"></td>
+                                                <td>
+                                                    <img dmx-bind:src="'\\upload\\images\\profiles\\'+scEvVols.data.repeat[$index].varImage+'.jpg'" width="50" height="50">
+                                                </td>
+                                                <td dmx-text="eventId"></td>
+                                                <td dmx-text="userId"></td>
+                                                <td dmx-text="scEvVols.data.repeat[0].decFname"></td>
+                                                <td dmx-text="scEvVols.data.repeat[0].decLname"></td>
+                                                <td dmx-text="status"></td>
+                                                <td dmx-text="desc"></td>
+                                                <td dmx-text="registeredDate"></td>
+
+                                                <td dmx-text="evVolId"></td>
+                                                <td>
+                                                    <div is="dmx-radio-group" class="radio-group">
+                                                        <label>
+                                                            <input type="radio" name="option{{$index}}" value="1" id="option" dmx-bind:checked="selected_option == 'A'" dmx-on:change="selected_option = $event.target.value" dmx-bind:name="scEvVols.data.repeat[$index].evVolId" dmx-bind:id="'\'status_\'+$index'"> A
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="option{{$index}}" value="2" id="option" dmx-bind:checked="selected_option == 'B'" dmx-on:change="selected_option = $event.target.value" dmx-bind:id="'\'status_\'+$index'" dmx-bind:name="scEvVols.data.repeat[$index].evVolId"> B
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="option{{$index}}" value="3" id="option" dmx-bind:checked="selected_option == 'C'" dmx-on:change="selected_option = $event.target.value" dmx-bind:id="'\'status_\'+$index'" dmx-bind:name="scEvVols.data.repeat[$index].evVolId"> C
+                                                        </label>
+                                                        <label>
+                                                            <input type="radio" name="option{{$index}}" value="4" id="option" dmx-bind:checked="selected_option == 'D'" dmx-on:change="selected_option = $event.target.value" dmx-bind:id="'\'status_\'+$index'" dmx-bind:name="scEvVols.data.repeat[$index].evVolId"> D
+                                                        </label>
+                                                    </div>
+
+
+
+
+
+                                                </td>
+                                                <td dmx-text="radiogroup.value">
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <div class="row">
+                <div class="col"><button type="button" class="btn btn-primary">Save changes</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
+            </div>
+            <div class="modal-footer">
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<meta name="ac:route" content="/admin/events/event_list2">
+
+<div class="container">
+
+    <div class="row">
+        <div class="col">
+            <h2>Events</h2>
+        </div>
+    </div>
+    <div class="row mt-2 justify-content-between gx-1 gy-1 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-4" is="dmx-repeat" id="repeat1" dmx-bind:repeat="scEventVolData.data.qryGetAllEvents">
+        <div class="col">
+            <div class="card align-self-start h-100 border-1 border rounded-top rounded-3 shadow border-info">
+                <div class="card-header bg-success text-light text-lg-center fw-bolder h-100">
+                    <h5 class="card-title align-self-lg-center fw-bolder" dmx-text="scEventVolData.data.qryGetAllEvents[$index].eventName">Card title</h5>
+                </div>
+                <div class="card-body text-lg-center">
+
+                    <p class="card-text">Venue: {{venueDesc}}</p>
+                    <p class="card-text">Date: {{eventDate.formatDate('dd-MM-yyyy')}}.</p>
+                    <p class="card-text">Time: {{eventStrtTime}}</p>
+                    <p class="card-text">Number of Volunteers: {{numvols}}</p>
+                </div>
+                <div class="card-footer pt-0 pb-0 ps-0 pe-0">
+                    <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="modEditIndEvent.show();modEditIndEvent.data_detail1.select(eventId)">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

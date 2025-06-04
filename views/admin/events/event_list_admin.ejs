@@ -1,4 +1,27 @@
 <!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list_admin" appConnect="local" components="{dmxBootstrap5Alert:{},dmxFormatter:{},dmxStateManagement:{},dmxBootstrap5Modal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{},dmxDataTraversal:{},dmxDatastore:{},dmxBootstrap5Tooltips:{}}" -->
+<div class="modal" id="modEventVolList" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col" is="dmx-data-detail" id="data_detail2" dmx-bind:data="scShowAllEvents.data.query" key="eventId">
+                            <p>{{data_detail2.data.eventName}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 <dmx-serverconnect id="scUpdateVolEvStatus" url="/api/Events/updateVolEventStatus" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scUpdateEvDets" url="/api/Events/updateEventDetails" noload="true"></dmx-serverconnect>
 <dmx-datastore id="statusArray" dmx-bind:data="dvEvents1.data.map({value: null})"></dmx-datastore>

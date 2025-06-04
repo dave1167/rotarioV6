@@ -10,5 +10,9 @@
   "test.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "event_list2.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

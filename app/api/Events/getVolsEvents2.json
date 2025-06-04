@@ -298,6 +298,17 @@
                 "meta": [],
                 "output": true,
                 "outputType": "text"
+              },
+              {
+                "name": "eventId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{eventId}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
               }
             ]
           }
@@ -382,6 +393,11 @@
           },
           {
             "name": "status",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "evVolId",
             "type": "text",
             "sub": []
           }

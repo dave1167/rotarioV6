@@ -1,0 +1,268 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/events/event_list2.ejs",
+      "linkedForm": "form1"
+    },
+    "$_GET": [
+      {
+        "type": "datetime",
+        "name": "eventid"
+      },
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ],
+    "$_POST": [
+      {
+        "type": "datetime",
+        "name": "modifiedDate"
+      },
+      {
+        "type": "number",
+        "name": "modifiedBy"
+      },
+      {
+        "type": "text",
+        "name": "status"
+      },
+      {
+        "type": "number",
+        "name": "evVolId"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "tbl_event_vol",
+                "column": "status"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "modifiedBy"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "modifiedDate"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "eventId"
+              }
+            ],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_GET.eventid}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_event_vol"
+            },
+            "primary": "evVolId",
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_event_vol.eventId",
+                  "field": "tbl_event_vol.eventId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_GET.eventid}}",
+                  "data": {
+                    "table": "tbl_event_vol",
+                    "column": "eventId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "reference",
+                      "primary": false,
+                      "nullable": true,
+                      "references": "eventId",
+                      "inTable": "tbl_events",
+                      "referenceType": "integer",
+                      "onUpdate": "NO ACTION",
+                      "onDelete": "NO ACTION",
+                      "name": "eventId"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `status`, `modifiedBy`, `modifiedDate`, `eventId` from `tbl_event_vol` where `tbl_event_vol`.`eventId` = ?"
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "status"
+          },
+          {
+            "type": "number",
+            "name": "modifiedBy"
+          },
+          {
+            "type": "datetime",
+            "name": "modifiedDate"
+          },
+          {
+            "type": "number",
+            "name": "eventId"
+          }
+        ],
+        "outputType": "array"
+      },
+      {
+        "name": "repeat",
+        "module": "core",
+        "action": "repeat",
+        "options": {
+          "repeat": "{{query}}",
+          "outputFields": []
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "$index",
+            "type": "number"
+          },
+          {
+            "name": "$number",
+            "type": "number"
+          },
+          {
+            "name": "$name",
+            "type": "text"
+          },
+          {
+            "name": "$value",
+            "type": "object"
+          },
+          {
+            "name": "status",
+            "type": "text"
+          },
+          {
+            "name": "modifiedBy",
+            "type": "number"
+          },
+          {
+            "name": "modifiedDate",
+            "type": "datetime"
+          },
+          {
+            "name": "eventId",
+            "type": "number"
+          }
+        ],
+        "outputType": "array",
+        "collapsed": true
+      },
+      {
+        "name": "update",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "tbl_event_vol",
+                "column": "modifiedDate",
+                "type": "datetime",
+                "value": "{{$_GET.eventid}}"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "modifiedBy",
+                "type": "number",
+                "value": "{{$_POST.modifiedBy}}"
+              },
+              {
+                "table": "tbl_event_vol",
+                "column": "status",
+                "type": "text",
+                "value": "{{$_POST.status}}"
+              }
+            ],
+            "table": "tbl_event_vol",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "evVolId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.evVolId}}",
+                  "data": {
+                    "column": "evVolId"
+                  },
+                  "operation": "="
+                }
+              ]
+            },
+            "returning": "evVolId",
+            "query": "update `tbl_event_vol` set `modifiedDate` = ?, `modifiedBy` = ?, `status` = ? where `evVolId` = ?",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_GET.eventid}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.modifiedBy}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.status}}",
+                "test": ""
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P4",
+                "value": "{{$_POST.evVolId}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "collapsed": true
+      }
+    ]
+  }
+}

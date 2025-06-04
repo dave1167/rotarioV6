@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/events/event_list2.ejs",
+      "linkedForm": "form1"
+    }
+  },
+  "exec": {
+    "steps": {
+      "name": "update",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "tbl_event_vol",
+              "column": "modifiedDate",
+              "type": "datetime",
+              "value": "{{$_POST.modifiedDate}}"
+            },
+            {
+              "table": "tbl_event_vol",
+              "column": "modifiedBy",
+              "type": "number",
+              "value": "{{$_POST.modifiedBy}}"
+            },
+            {
+              "table": "tbl_event_vol",
+              "column": "status",
+              "type": "text",
+              "value": "{{$_POST.status}}"
+            }
+          ],
+          "table": "tbl_event_vol",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "evVolId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.evVolId}}",
+                "data": {
+                  "column": "evVolId"
+                },
+                "operation": "="
+              }
+            ]
+          },
+          "returning": "evVolId",
+          "query": "update `tbl_event_vol` set `modifiedDate` = ?, `modifiedBy` = ?, `status` = ? where `evVolId` = ?",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.modifiedDate}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.modifiedBy}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.status}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P4",
+              "value": "{{$_POST.evVolId}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ],
+      "collapsed": true
+    }
+  }
+}

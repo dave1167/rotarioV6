@@ -1,0 +1,8 @@
+{
+  "name": "wait",
+  "module": "core",
+  "action": "wait",
+  "options": {
+    "delay": 10
+  }
+}

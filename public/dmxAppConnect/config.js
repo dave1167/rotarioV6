@@ -518,22 +518,46 @@ dmx.config({
         },
         {
           "type": "text",
-          "name": "fName"
+          "name": "location"
         },
         {
           "type": "text",
-          "name": "lName"
+          "name": "venueDesc"
         },
         {
-          "type": "text",
-          "name": "key"
+          "type": "date",
+          "name": "eventDate"
         },
         {
-          "type": "text",
-          "name": "status"
+          "type": "time",
+          "name": "eventStrtTime"
+        },
+        {
+          "type": "number",
+          "name": "numvols"
+        },
+        {
+          "type": "number",
+          "name": "weighting"
+        },
+        {
+          "type": "number",
+          "name": "volArrival"
+        },
+        {
+          "type": "number",
+          "name": "venue"
+        },
+        {
+          "type": "boolean",
+          "name": "published"
+        },
+        {
+          "type": "date",
+          "name": "publishDate"
         }
       ],
-      "outputType": "array"
+      "outputType": "object"
     },
     "data_view1": {
       "meta": [],
@@ -568,6 +592,59 @@ dmx.config({
         }
       ],
       "outputType": "array"
+    },
+    "data_detail2": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "eventId"
+        },
+        {
+          "type": "text",
+          "name": "eventName"
+        },
+        {
+          "type": "date",
+          "name": "eventDate"
+        },
+        {
+          "type": "number",
+          "name": "modifiedBy"
+        },
+        {
+          "type": "number",
+          "name": "numvols"
+        },
+        {
+          "type": "number",
+          "name": "weighting"
+        },
+        {
+          "type": "number",
+          "name": "tenantId"
+        },
+        {
+          "type": "number",
+          "name": "rotaId"
+        },
+        {
+          "type": "text",
+          "name": "location"
+        },
+        {
+          "type": "text",
+          "name": "venueDesc"
+        },
+        {
+          "type": "time",
+          "name": "eventStrtTime"
+        },
+        {
+          "type": "boolean",
+          "name": "published"
+        }
+      ],
+      "outputType": "array"
     }
   },
   "edit_event": {
@@ -577,5 +654,141 @@ dmx.config({
         "name": "evId"
       }
     ]
+  },
+  "event_list2": {
+    "repeat1": {
+      "meta": [
+        {
+          "type": "text",
+          "name": "eventName"
+        },
+        {
+          "type": "date",
+          "name": "eventDate"
+        },
+        {
+          "type": "time",
+          "name": "eventStrtTime"
+        },
+        {
+          "type": "number",
+          "name": "modifiedBy"
+        },
+        {
+          "type": "datetime",
+          "name": "modifiedDate"
+        },
+        {
+          "type": "number",
+          "name": "numvols"
+        },
+        {
+          "type": "number",
+          "name": "weighting"
+        },
+        {
+          "type": "number",
+          "name": "tenantId"
+        },
+        {
+          "type": "number",
+          "name": "rotaId"
+        },
+        {
+          "type": "number",
+          "name": "location"
+        },
+        {
+          "type": "number",
+          "name": "venue"
+        },
+        {
+          "type": "boolean",
+          "name": "published"
+        },
+        {
+          "type": "number",
+          "name": "volArrival"
+        },
+        {
+          "type": "date",
+          "name": "publishDate"
+        }
+      ],
+      "outputType": "array"
+    },
+    "data_detail1": {
+      "meta": [
+        {
+          "type": "number",
+          "name": "eventId"
+        },
+        {
+          "type": "text",
+          "name": "eventName"
+        },
+        {
+          "type": "date",
+          "name": "eventDate"
+        },
+        {
+          "type": "time",
+          "name": "eventStrtTime"
+        },
+        {
+          "type": "number",
+          "name": "modifiedBy"
+        },
+        {
+          "type": "datetime",
+          "name": "modifiedDate"
+        },
+        {
+          "type": "number",
+          "name": "numvols"
+        },
+        {
+          "type": "number",
+          "name": "weighting"
+        },
+        {
+          "type": "number",
+          "name": "tenantId"
+        },
+        {
+          "type": "number",
+          "name": "rotaId"
+        },
+        {
+          "type": "number",
+          "name": "location"
+        },
+        {
+          "type": "number",
+          "name": "venue"
+        },
+        {
+          "type": "boolean",
+          "name": "published"
+        },
+        {
+          "type": "number",
+          "name": "volArrival"
+        },
+        {
+          "type": "date",
+          "name": "publishDate"
+        },
+        {
+          "type": "text",
+          "name": "venueDesc"
+        }
+      ],
+      "outputType": "array"
+    },
+    "repeat2": {
+      "meta": null,
+      "outputType": "text"
+    }
   }
 });
