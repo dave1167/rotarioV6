@@ -789,6 +789,32 @@ dmx.config({
     "repeat2": {
       "meta": null,
       "outputType": "text"
+    },
+    "flowSaveChanges": {
+      "meta": [
+        {
+          "name": "repeat",
+          "type": "array"
+        }
+      ],
+      "local": [
+        {
+          "sub": [
+            {
+              "type": "text",
+              "metaData": {
+                "alertMessage": {
+                  "meta": null,
+                  "outputType": "text"
+                }
+              }
+            }
+          ],
+          "name": "repeat",
+          "type": "array",
+          "metaData": {}
+        }
+      ]
     }
   }
 });
