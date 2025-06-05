@@ -50,7 +50,7 @@
 
                                                 <td dmx-text="evVolId"></td>
                                                 <td>
-                                                    <div is="dmx-radio-group" class="radio-group" id="radioGroupStatus">
+                                                    <div is="dmx-radio-group" class="radio-group">
                                                         <label>
                                                             <input type="radio" name="option{{$index}}" value="1" id="option" dmx-bind:checked="selected_option == 'A'" dmx-on:change="selected_option = $event.target.value" dmx-bind:name="scEvVols.data.repeat[$index].evVolId" dmx-bind:id="'\'status_\'+$index'"> A
                                                         </label>
@@ -117,7 +117,7 @@
                     <p class="card-text">Number of Volunteers: {{numvols}}</p>
                 </div>
                 <div class="card-footer pt-0 pb-0 ps-0 pe-0">
-                    <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="modEditIndEvent.show();modEditIndEvent.data_detail1.select(eventId)">Edit</button>
+                    <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="modEditIndEvent.show();modEditIndEvent.data_detail1.select(eventId);scEvVols.load({eventid: eventId})">Edit</button>
                 </div>
             </div>
         </div>

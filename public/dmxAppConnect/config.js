@@ -815,6 +815,121 @@ dmx.config({
           "metaData": {}
         }
       ]
+    },
+    "flow1": {
+      "meta": [
+        {
+          "sub": [
+            {
+              "name": "eventId",
+              "type": "number"
+            },
+            {
+              "name": "userId",
+              "type": "number"
+            },
+            {
+              "name": "fName",
+              "type": "text"
+            },
+            {
+              "name": "lName",
+              "type": "text"
+            },
+            {
+              "name": "status",
+              "type": "text"
+            },
+            {
+              "name": "key",
+              "type": "text"
+            },
+            {
+              "name": "desc",
+              "type": "text"
+            },
+            {
+              "name": "registeredDate",
+              "type": "date"
+            },
+            {
+              "name": "imageName",
+              "type": "text"
+            },
+            {
+              "name": "evVolId",
+              "type": "number"
+            }
+          ],
+          "name": "repeat",
+          "type": "array"
+        }
+      ],
+      "local": [
+        {
+          "sub": [
+            {
+              "name": "",
+              "type": "object",
+              "metaData": {
+                "alertMessage": {
+                  "meta": null,
+                  "outputType": "number"
+                }
+              }
+            }
+          ],
+          "name": "repeat",
+          "type": "array",
+          "metaData": {
+            "repeatExpression": {
+              "meta": [
+                {
+                  "type": "number",
+                  "name": "eventId"
+                },
+                {
+                  "type": "number",
+                  "name": "userId"
+                },
+                {
+                  "type": "text",
+                  "name": "fName"
+                },
+                {
+                  "type": "text",
+                  "name": "lName"
+                },
+                {
+                  "type": "text",
+                  "name": "status"
+                },
+                {
+                  "type": "text",
+                  "name": "key"
+                },
+                {
+                  "type": "text",
+                  "name": "desc"
+                },
+                {
+                  "type": "date",
+                  "name": "registeredDate"
+                },
+                {
+                  "type": "text",
+                  "name": "imageName"
+                },
+                {
+                  "type": "number",
+                  "name": "evVolId"
+                }
+              ],
+              "outputType": "array"
+            }
+          }
+        }
+      ]
     }
   }
 });
