@@ -2,7 +2,7 @@
 <dmx-array id="arr1" dmx-on:updated=""></dmx-array>
 <dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid="2"></dmx-serverconnect>
+<dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
 <div class="modal" id="modEditIndEvent" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog modal-xl" role="document">
@@ -50,7 +50,7 @@
 
                                                 <td dmx-text="evVolId"></td>
                                                 <td>
-                                                    <div is="dmx-radio-group" class="radio-group">
+                                                    <div is="dmx-radio-group" class="radio-group" id="radioGroupStatus">
                                                         <label>
                                                             <input type="radio" name="option{{$index}}" value="1" id="option" dmx-bind:checked="selected_option == 'A'" dmx-on:change="selected_option = $event.target.value" dmx-bind:name="scEvVols.data.repeat[$index].evVolId" dmx-bind:id="'\'status_\'+$index'"> A
                                                         </label>
