@@ -869,12 +869,11 @@ dmx.config({
         {
           "sub": [
             {
-              "name": "",
               "type": "object",
               "metaData": {
                 "alertMessage": {
                   "meta": null,
-                  "outputType": "number"
+                  "outputType": "text"
                 }
               }
             }
@@ -930,6 +929,10 @@ dmx.config({
           }
         }
       ]
+    },
+    "selectedOptions": {
+      "meta": null,
+      "outputType": "array"
     }
   }
 });

@@ -1,9 +1,27 @@
 <!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxFormatter:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{}}" -->
+<dmx-value id="selectedOptions" dmx-on:updated="" dmx-bind:value="arr1.items"></dmx-value>
 <dmx-array id="arr1" dmx-on:updated=""></dmx-array>
 <dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
+<script is="dmx-flow" id="flow1" type="text/dmx-flow">{
+  repeat: {
+    name: "repeat",
+    output: true,
+    outputType: "array",
+    repeat: "{{scEvVols.data.query}}",
+    outputFields: [],
+    exec: {
+      steps: {
+        bootbox.alert: {
+          outputType: "object",
+          message: "{{'Volunteer ID: '+scEvVols.data.query[0].eventId+'— Selected Status: '+modEditIndEvent.form1.tableRepeat1[0].rgStatus.value+' '+modEditIndEvent.form1.tableRepeat1[0].rgStatus.value[0].$value}}"
+        }
+      }
+    }
+  }
+}</script>
 <div class="modal" id="modEditIndEvent" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -50,20 +68,21 @@
 
                                                 <td dmx-text="evVolId"></td>
                                                 <td>
-                                                    <div is="dmx-radio-group" class="radio-group">
+                                                    <div is="dmx-radio-group" class="radio-group" id="rgStatus">
                                                         <label>
-                                                            <input type="radio" name="option{{$index}}" value="1" id="option" dmx-bind:checked="selected_option == 'A'" dmx-on:change="selected_option = $event.target.value" dmx-bind:name="scEvVols.data.repeat[$index].evVolId" dmx-bind:id="'\'status_\'+$index'"> A
+                                                            <input type="radio" value="1" dmx-bind:name="'option' + $index" dmx-bind:id="'status_' + $index + '_1'" dmx-bind:checked="status == '1'" dmx-on:change="status = $event.target.value"> A
                                                         </label>
                                                         <label>
-                                                            <input type="radio" name="option{{$index}}" value="2" id="option" dmx-bind:checked="selected_option == 'B'" dmx-on:change="selected_option = $event.target.value" dmx-bind:id="'\'status_\'+$index'" dmx-bind:name="scEvVols.data.repeat[$index].evVolId"> B
+                                                            <input type="radio" value="2" dmx-bind:name="'option' + $index" dmx-bind:id="'status_' + $index + '_2'" dmx-bind:checked="status == '2'" dmx-on:change="status = $event.target.value"> B
                                                         </label>
                                                         <label>
-                                                            <input type="radio" name="option{{$index}}" value="3" id="option" dmx-bind:checked="selected_option == 'C'" dmx-on:change="selected_option = $event.target.value" dmx-bind:id="'\'status_\'+$index'" dmx-bind:name="scEvVols.data.repeat[$index].evVolId"> C
+                                                            <input type="radio" value="3" dmx-bind:name="'option' + $index" dmx-bind:id="'status_' + $index + '_3'" dmx-bind:checked="status == '3'" dmx-on:change="status = $event.target.value"> C
                                                         </label>
                                                         <label>
-                                                            <input type="radio" name="option{{$index}}" value="4" id="option" dmx-bind:checked="selected_option == 'D'" dmx-on:change="selected_option = $event.target.value" dmx-bind:id="'\'status_\'+$index'" dmx-bind:name="scEvVols.data.repeat[$index].evVolId"> D
+                                                            <input type="radio" value="4" dmx-bind:name="'option' + $index" dmx-bind:id="'status_' + $index + '_4'" dmx-bind:checked="status == '4'" dmx-on:change="status = $event.target.value"> D
                                                         </label>
                                                     </div>
+
 
 
 
@@ -85,7 +104,7 @@
             </div>
 
             <div class="row">
-                <div class="col"><button type="button" class="btn btn-primary">Save changes</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
+                <div class="col"><button type="button" class="btn btn-primary" dmx-on:click="flow1.run()">Save changes</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
             </div>
             <div class="modal-footer">
 
