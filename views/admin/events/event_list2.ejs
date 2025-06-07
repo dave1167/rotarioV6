@@ -16,7 +16,7 @@
       steps: {
         bootbox.alert: {
           outputType: "object",
-          message: "{{'Volunteer ID: '+scEvVols.data.query[0].eventId+'— Selected Status: '+modEditIndEvent.form1.tableRepeat1[0].rgStatus.value+' '+modEditIndEvent.form1.tableRepeat1[0].rgStatus.value[0].$value}}"
+          message: "{{'Volunteer ID: '+scEvVols.data.query[0].eventId+'— Selected Status:  '+modEditIndEvent.selectedStatus.items}}"
         }
       }
     }
@@ -33,8 +33,12 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventStatus2" dmx-on:success="run([{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scEvVols.data.repeat`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`arr1.add(tableRepeat1[$index].radiogroup.value)`}}}}},{'bootbox.alert':{message:`arr1.items+\'  array\'`}}])">
+                            <!-- Declare the array to hold selected statuses -->
+                            <dmx-array id="selectedStatus" dmx-bind:value="scEvVols.data.query.map(e => e.status)"></dmx-array>
 
+                            <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventStatus2" dmx-on:success="
+  // You can handle submission success here
+">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover table-sm">
                                         <thead>
@@ -47,56 +51,53 @@
                                                 <th>Status</th>
                                                 <th>Desc</th>
                                                 <th>Registered date</th>
-
                                                 <th>Ev vol</th>
                                                 <th scope="row">Header</th>
                                             </tr>
                                         </thead>
-                                        <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="scEvVols.data.query" id="tableRepeat1">
+                                        <tbody is="dmx-repeat" dmx-bind:repeat="scEvVols.data.query" id="tableRepeat1">
                                             <tr>
                                                 <td dmx-text="eventId"></td>
                                                 <td>
-                                                    <img dmx-bind:src="'\\upload\\images\\profiles\\'+scEvVols.data.repeat[$index].varImage+'.jpg'" width="50" height="50">
+                                                    <img dmx-bind:src="'\\upload\\images\\profiles\\' + varImage + '.jpg'" width="50" height="50">
                                                 </td>
                                                 <td dmx-text="eventId"></td>
                                                 <td dmx-text="userId"></td>
-                                                <td dmx-text="scEvVols.data.repeat[0].decFname"></td>
-                                                <td dmx-text="scEvVols.data.repeat[0].decLname"></td>
+                                                <td dmx-text="decFname"></td>
+                                                <td dmx-text="decLname"></td>
                                                 <td dmx-text="status"></td>
                                                 <td dmx-text="desc"></td>
                                                 <td dmx-text="registeredDate"></td>
-
                                                 <td dmx-text="evVolId"></td>
                                                 <td>
-                                                    <div is="dmx-radio-group" class="radio-group" id="rgStatus">
+                                                    <div is="dmx-radio-group" class="radio-group" dmx-bind:id="'rgStatus_' + $index" dmx-bind:value="selectedStatus[$index]" dmx-bind:name="'option' + $index">
                                                         <label>
-                                                            <input type="radio" value="1" dmx-bind:name="'option' + $index" dmx-bind:id="'status_' + $index + '_1'" dmx-bind:checked="status == '1'" dmx-on:change="status = $event.target.value"> A
+                                                            <input type="radio" value="1" dmx-bind:name="'option' + $index" dmx-bind:checked="selectedStatus[$index] == '1'" dmx-on:change="selectedStatus[$index] = $event.target.value">
+                                                            A
                                                         </label>
                                                         <label>
-                                                            <input type="radio" value="2" dmx-bind:name="'option' + $index" dmx-bind:id="'status_' + $index + '_2'" dmx-bind:checked="status == '2'" dmx-on:change="status = $event.target.value"> B
+                                                            <input type="radio" value="2" dmx-bind:name="'option' + $index" dmx-bind:checked="selectedStatus[$index] == '2'" dmx-on:change="selectedStatus[$index] = $event.target.value">
+                                                            B
                                                         </label>
                                                         <label>
-                                                            <input type="radio" value="3" dmx-bind:name="'option' + $index" dmx-bind:id="'status_' + $index + '_3'" dmx-bind:checked="status == '3'" dmx-on:change="status = $event.target.value"> C
+                                                            <input type="radio" value="3" dmx-bind:name="'option' + $index" dmx-bind:checked="selectedStatus[$index] == '3'" dmx-on:change="selectedStatus[$index] = $event.target.value">
+                                                            C
                                                         </label>
                                                         <label>
-                                                            <input type="radio" value="4" dmx-bind:name="'option' + $index" dmx-bind:id="'status_' + $index + '_4'" dmx-bind:checked="status == '4'" dmx-on:change="status = $event.target.value"> D
+                                                            <input type="radio" value="4" dmx-bind:name="'option' + $index" dmx-bind:checked="selectedStatus[$index] == '4'" dmx-on:change="selectedStatus[$index] = $event.target.value">
+                                                            D
                                                         </label>
                                                     </div>
-
-
-
-
-
-
-                                                </td>
-                                                <td dmx-text="radiogroup.value">
                                                 </td>
                                             </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
+
+                                <button type="button" class="btn btn-primary" dmx-on:click="flow1.run()">Save changes</button>
+                                <button type="button" class="btn btn-secondary" dmx-on:click="bootbox.alert('Radio Group Value: ' + dmx.app.data['rgStatus_' + $index].value)">Debug rgStatus</button>
                             </form>
+
 
                         </div>
                     </div>
@@ -104,7 +105,7 @@
             </div>
 
             <div class="row">
-                <div class="col"><button type="button" class="btn btn-primary" dmx-on:click="flow1.run()">Save changes</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
+                <div class="col"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
             </div>
             <div class="modal-footer">
 

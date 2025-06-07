@@ -873,7 +873,7 @@ dmx.config({
               "metaData": {
                 "alertMessage": {
                   "meta": null,
-                  "outputType": "text"
+                  "outputType": "array"
                 }
               }
             }
