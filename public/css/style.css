@@ -52,3 +52,11 @@
   -webkit-box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
+.btn.selected {
+}
+
+.btn.selected:focus {
+  outline: none;
+  -webkit-box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.5);
+}

@@ -225,6 +225,14 @@
         "collapsed": true
       },
       {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {
+          "delay": 200
+        }
+      },
+      {
         "name": "repeat",
         "module": "core",
         "action": "repeat",
@@ -398,6 +406,11 @@
           },
           {
             "name": "evVolId",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "eventId",
             "type": "text",
             "sub": []
           }

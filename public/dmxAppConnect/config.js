@@ -867,17 +867,10 @@ dmx.config({
       ],
       "local": [
         {
-          "sub": [
-            {
-              "type": "object",
-              "metaData": {
-                "alertMessage": {
-                  "meta": null,
-                  "outputType": "array"
-                }
-              }
-            }
-          ],
+          "type": "text",
+          "metaData": {}
+        },
+        {
           "name": "repeat",
           "type": "array",
           "metaData": {
@@ -933,6 +926,16 @@ dmx.config({
     "selectedOptions": {
       "meta": null,
       "outputType": "array"
-    }
+    },
+    "localStorage": [
+      {
+        "type": "key_array",
+        "name": "stKeyArr"
+      },
+      {
+        "type": "array",
+        "name": "new"
+      }
+    ]
   }
 });

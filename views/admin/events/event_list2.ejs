@@ -1,28 +1,36 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxFormatter:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{}}" -->
-<dmx-value id="selectedOptions" dmx-on:updated="" dmx-bind:value="arr1.items"></dmx-value>
-<dmx-array id="arr1" dmx-on:updated=""></dmx-array>
-<dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
-<dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
-<script is="dmx-flow" id="flow1" type="text/dmx-flow">{
-  repeat: {
-    name: "repeat",
-    output: true,
-    outputType: "array",
-    repeat: "{{scEvVols.data.query}}",
-    outputFields: [],
-    exec: {
-      steps: {
-        bootbox.alert: {
-          outputType: "object",
-          message: "{{'Volunteer ID: '+scEvVols.data.query[0].eventId+'— Selected Status:  '+modEditIndEvent.selectedStatus.items}}"
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxBootstrap5Modal:{}}"="{dmxFormatter:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{},dmxStateManagement:{}}<link rel="stylesheet" href="/assets/css/custom.css">" -->
+<script is="dmx-flow" id="flow1" type="text/dmx-flow">[
+  {
+    run: {outputType: "text", disabled: true, action: "{{arr1.empty()}}"}
+  },
+  {
+    repeat: {
+      name: "repeat",
+      output: true,
+      outputType: "array",
+      disabled: true,
+      repeat: "{{scEvVols.data.query}}",
+      outputFields: [],
+      exec: {
+        steps: {
+          run: {
+            outputType: "text",
+            action: "{{arr1.insert(scEvVols.data.query[$index].evVolId,scEvVols.data.query[$index].status)}}"
+          }
         }
       }
     }
   }
-}</script>
-<div class="modal" id="modEditIndEvent" is="dmx-bs5-modal" tabindex="-1">
+]</script>
+<dmx-value id="selectedOptions" dmx-on:updated="" dmx-bind:value="arr1.items"></dmx-value>
+<dmx-array id="arrStatus" dmx-on:updated=""></dmx-array>
+<dmx-array id="arrEvVolId"></dmx-array>
+<dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
+<dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
+<dmx-serverconnect id="scupdateSts" url="/api/Events/updateEventStatus2" noload="true" dmx-param:eventid="scEvVols.data.query[0].eventId"></dmx-serverconnect>
+<div class="modal" id="modEditIndEvent" is="dmx-bs5-modal" tabindex="-1" dmx-on:shown-bs-modal="run([{wait:{delay:100}},{run:{outputType:'text',action:`arrEvVolId.empty()`}},{wait:{delay:500}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scEvVols.data.query`,outputFields:[],exec:{steps:[{wait:{delay:500}},{run:{outputType:'text',action:`arrEvVolId.add(scEvVols.data.query[$index].evVolId)`}},{wait:{delay:100}},{run:{outputType:'text',action:`arrStatus.add(scEvVols.data.query[$index].status)`}}]}}}])">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -33,12 +41,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <!-- Declare the array to hold selected statuses -->
-                            <dmx-array id="selectedStatus" dmx-bind:value="scEvVols.data.query.map(e => e.status)"></dmx-array>
+                            <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventStatus2" dmx-on:success="run([{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scEvVols.data.repeat`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`arr1.add(tableRepeat1[$index].radiogroup.value)`}}}}},{'bootbox.alert':{message:`arr1.items+\'  array\'`}}])">
 
-                            <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventStatus2" dmx-on:success="
-  // You can handle submission success here
-">
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered table-hover table-sm">
                                         <thead>
@@ -51,53 +55,59 @@
                                                 <th>Status</th>
                                                 <th>Desc</th>
                                                 <th>Registered date</th>
+
                                                 <th>Ev vol</th>
                                                 <th scope="row">Header</th>
                                             </tr>
                                         </thead>
-                                        <tbody is="dmx-repeat" dmx-bind:repeat="scEvVols.data.query" id="tableRepeat1">
+                                        <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="scEvVols.data.query" id="tableRepeat1">
                                             <tr>
                                                 <td dmx-text="eventId"></td>
                                                 <td>
-                                                    <img dmx-bind:src="'\\upload\\images\\profiles\\' + varImage + '.jpg'" width="50" height="50">
+                                                    <img dmx-bind:src="'\\upload\\images\\profiles\\'+scEvVols.data.repeat[$index].varImage+'.jpg'" width="50" height="50">
                                                 </td>
                                                 <td dmx-text="eventId"></td>
                                                 <td dmx-text="userId"></td>
-                                                <td dmx-text="decFname"></td>
-                                                <td dmx-text="decLname"></td>
+                                                <td dmx-text="scEvVols.data.repeat[$index].decFname"></td>
+                                                <td dmx-text="scEvVols.data.repeat[$index].decLname"></td>
                                                 <td dmx-text="status"></td>
                                                 <td dmx-text="desc"></td>
                                                 <td dmx-text="registeredDate"></td>
+
                                                 <td dmx-text="evVolId"></td>
+
                                                 <td>
-                                                    <div is="dmx-radio-group" class="radio-group" dmx-bind:id="'rgStatus_' + $index" dmx-bind:value="selectedStatus[$index]" dmx-bind:name="'option' + $index">
-                                                        <label>
-                                                            <input type="radio" value="1" dmx-bind:name="'option' + $index" dmx-bind:checked="selectedStatus[$index] == '1'" dmx-on:change="selectedStatus[$index] = $event.target.value">
+                                                    <div class="btn-group" role="group">
+                                                        <button class="btn" type="button" dmx-bind:class="arrStatus[$index] == 1 ? 'btn selected' : 'btn-outline-primary'" dmx-on:click="arrStatus.replaceAt($index, 1)">
                                                             A
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" value="2" dmx-bind:name="'option' + $index" dmx-bind:checked="selectedStatus[$index] == '2'" dmx-on:change="selectedStatus[$index] = $event.target.value">
+                                                        </button>
+                                                        <button class="btn" type="button" dmx-bind:class="arrStatus[$index] == 2 ? 'btn selected' : 'btn-outline-success'" dmx-on:click="arrStatus.replaceAt($index, 2)">
                                                             B
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" value="3" dmx-bind:name="'option' + $index" dmx-bind:checked="selectedStatus[$index] == '3'" dmx-on:change="selectedStatus[$index] = $event.target.value">
+                                                        </button>
+                                                        <button class="btn" type="button" dmx-bind:class="arrStatus[$index] == 3 ? 'btn selected' : 'btn-outline-warning'" dmx-on:click="arrStatus.replaceAt($index, 3)">
                                                             C
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" value="4" dmx-bind:name="'option' + $index" dmx-bind:checked="selectedStatus[$index] == '4'" dmx-on:change="selectedStatus[$index] = $event.target.value">
+                                                        </button>
+                                                        <button class="btn" type="button" dmx-bind:class="arrStatus[$index] == 4 ? 'btn selected' : 'btn-outline-danger'" dmx-on:click="arrStatus.replaceAt($index, 4)">
                                                             D
-                                                        </label>
+                                                        </button>
                                                     </div>
                                                 </td>
+
+
+
+
+
+
+
+                                                <td dmx-text="radiogroup.value">
+                                                </td>
                                             </tr>
+
                                         </tbody>
                                     </table>
-                                </div>
-
-                                <button type="button" class="btn btn-primary" dmx-on:click="flow1.run()">Save changes</button>
-                                <button type="button" class="btn btn-secondary" dmx-on:click="bootbox.alert('Radio Group Value: ' + dmx.app.data['rgStatus_' + $index].value)">Debug rgStatus</button>
+                                </div><input id="arrayEvId" name="arrayEvId" type="text" class="form-control" dmx-bind:value="arrEvVolId.items">
+                                <input id="arrayStatus" name="arrayStatus" type="text" class="form-control" dmx-bind:value="arrStatus.items">
                             </form>
-
 
                         </div>
                     </div>
@@ -105,7 +115,10 @@
             </div>
 
             <div class="row">
-                <div class="col"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button></div>
+                <div class="col"><button type="button" class="btn btn-primary" dmx-on:click="scupdateSts.load({voleventid: form1.tableRepeat1[0].evVolId})">save</button>
+                    <button type="button" class="btn btn-primary" dmx-on:click="run([{'bootbox.alert':{message:`arrStatus.items+\'satus:\'+arrStatus.items+\'\\n  evid:\'+arrEvVolId.items`}},{run:{outputType:'text',disabled:true,action:`scupdateSts.load({eventid: repeat1[$index].eventId})`}}])">Disp Arr</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+                </div>
             </div>
             <div class="modal-footer">
 
@@ -137,7 +150,7 @@
                     <p class="card-text">Number of Volunteers: {{numvols}}</p>
                 </div>
                 <div class="card-footer pt-0 pb-0 ps-0 pe-0">
-                    <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="modEditIndEvent.show();modEditIndEvent.data_detail1.select(eventId);scEvVols.load({eventid: eventId})">Edit</button>
+                    <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="modEditIndEvent.show();modEditIndEvent.data_detail1.select(eventId);arrStatus.empty();scEvVols.load({eventid: eventId})">Edit</button>
                 </div>
             </div>
         </div>
