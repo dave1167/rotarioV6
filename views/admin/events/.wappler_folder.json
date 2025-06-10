@@ -8,7 +8,7 @@
     "description": ""
   },
   "test.ejs": {
-    "layoutPage": "admin",
+    "layoutPage": "main",
     "description": ""
   },
   "event_list2.ejs": {

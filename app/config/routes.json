@@ -97,14 +97,14 @@
       "layout": "admin"
     },
     {
-      "path": "/admin/events/test",
-      "page": "admin/events/test",
-      "layout": "admin"
-    },
-    {
       "path": "/admin/events/event_list2",
       "page": "admin/events/event_list2",
       "layout": "admin"
+    },
+    {
+      "path": "/admin/events/test",
+      "page": "admin/events/test",
+      "layout": "main"
     }
   ]
 }
