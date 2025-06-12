@@ -1,4 +1,4 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxBootstrap5Modal:{},dmxFormatter:{}}"="{dmxBootstrap5Modal:{}}"="{dmxFormatter:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{},dmxStateManagement:{}}<link rel="stylesheet" href="/assets/css/custom.css">" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxBootstrap5Modal:{},dmxFormatter:{},dmxBootbox5:{}}"="{dmxBootstrap5Modal:{},dmxFormatter:{}}"="{dmxBootstrap5Modal:{}}"="{dmxFormatter:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{},dmxStateManagement:{}}<link rel="stylesheet" href="/assets/css/custom.css">" -->
 <script is="dmx-flow" id="flow1" type="text/dmx-flow">[
   {
     run: {outputType: "text", disabled: true, action: "{{arr1.empty()}}"}
@@ -29,7 +29,7 @@
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
-<dmx-serverconnect id="scupdateSts" url="/api/Events/updateEventStatus2" noload="true" dmx-param:eventid="scEvVols.data.query[0].eventId"></dmx-serverconnect>
+<dmx-serverconnect id="scupdateSts" url="/api/Events/updateEventStatus2" noload="true" dmx-param:eventid="scEvVols.data.query[0].eventId" dmx-param:voleventid="scEvVols.data.query[0].evVolId"></dmx-serverconnect>
 
 <div class="modal" id="modEditIndEvent" is="dmx-bs5-modal" tabindex="-1" dmx-on:shown-bs-modal="run([{wait:{delay:100}},{run:{outputType:'text',action:`arrEvVolId.empty()`}},{wait:{delay:500}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scEvVols.data.query`,outputFields:[],exec:{steps:[{wait:{delay:500}},{run:{outputType:'text',action:`arrEvVolId.add(scEvVols.data.query[$index].evVolId)`}},{wait:{delay:100}},{run:{outputType:'text',action:`arrStatus.add(scEvVols.data.query[$index].status)`}}]}}}])">
     <div class="modal-dialog modal-xl" role="document">
@@ -48,54 +48,48 @@
                                     <table class="table table-striped table-bordered table-hover table-sm">
                                         <thead>
                                             <tr>
-                                                <th>Image name</th>
-                                                <th>Event</th>
-                                                <th>User</th>
-                                                <th>F name</th>
-                                                <th>L name</th>
+                                                <th></th>
+                                                <th>Name</th>
                                                 <th>Status</th>
-                                                <th>Desc</th>
-                                                <th>Registered date</th>
+                                                <th>Shift Registered</th>
+                                                <th>Status</th>
 
-                                                <th>Ev vol</th>
-                                                <th scope="row">Header</th>
                                             </tr>
                                         </thead>
                                         <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="scEvVols.data.query" id="tableRepeat1">
                                             <tr>
-                                                <td dmx-text="eventId"></td>
-                                                <td>
-                                                    <img dmx-bind:src="'\\upload\\images\\profiles\\'+scEvVols.data.repeat[$index].varImage+'.jpg'" width="50" height="50">
+                                                <td class="align-middle">
+                                                    <img dmx-bind:src="'\\upload\\images\\profiles\\'+scEvVols.data.repeat[$index].varImage+'.jpg'" width="40" height="40">
                                                 </td>
-                                                <td dmx-text="eventId"></td>
-                                                <td dmx-text="userId"></td>
-                                                <td dmx-text="scEvVols.data.repeat[$index].decFname"></td>
-                                                <td dmx-text="scEvVols.data.repeat[$index].decLname"></td>
-                                                <td dmx-text="status"></td>
-                                                <td dmx-text="desc"></td>
-                                                <td dmx-text="registeredDate"></td>
+                                                <td dmx-text="eventId" dmx-hide="eventId" class="align-middle"></td>
+                                                <td dmx-text="scEvVols.data.repeat[$index].decFname+' '+scEvVols.data.repeat[$index].decLname" class="align-middle"></td>
+                                                <td class="align-middle">
+                                                    <p dmx-show="arrStatus.items[$index]==1" class="align-self-center pt-3">Pending</p>
+                                                    <p dmx-show="arrStatus.items[$index]==2" class="align-self-center">Selected</p>
+                                                    <p dmx-show="arrStatus.items[$index]==3" class="align-self-center">Wait List</p>
+                                                    <p dmx-show="arrStatus.items[$index]==4" class="align-self-center">Cancelled</p>
+                                                </td>
+                                                <td dmx-text="registeredDate.formatDate('dd-MM-yyyy')" class="align-middle"></td>
 
-                                                <td dmx-text="evVolId"></td>
 
 
-                                                <td dmx-text="arrStatus.items[$index]"></td>
-                                                <td>
+                                                <td dmx-text="arrStatus.items[$index]" dmx-hide="!eventId.isEmpty()" class="align-middle"></td>
+                                                <td class="align-middle">
                                                     <div class="btn-group" role="group">
-                                                        <button type="button" class="btn" dmx-on:click="arrStatus.replaceAt($index, 1)" dmx-bind:class="arrStatus.items[$index] == 1 ? 'btn-red' : 'btn-outline-primary'">
-                                                            A
+                                                        <button type="button" class="btn" dmx-on:click="arrStatus.replaceAt($index, 1)" dmx-bind:class="arrStatus.items[$index] == 1 ? 'btn-orange' : 'btn-outline-orange'" data-bs-toggle="tooltip" title="Pending">
+                                                            <i class="fas fa-question-circle fa-lg"></i>
+
+                                                        </button>
+                                                        <button type="button" class="btn ms-2" dmx-on:click="arrStatus.replaceAt($index, 2)" dmx-bind:class="arrStatus.items[$index] == 2 ? 'btn-green' : 'btn-outline-green'" data-bs-toggle="tooltip" title="Selected">
+                                                            <i class="fas fa-check-circle fa-lg"></i>
+                                                        </button>
+                                                        <button type="button" class="btn ms-2" dmx-on:click="arrStatus.replaceAt($index, 3)" dmx-bind:class="arrStatus.items[$index] == 3 ? 'btn-blue' : 'btn-outline-blue'" tooltip"="" title="Waiting List">
+                                                            <i class="fas fa-hourglass-half fa-lg"></i>
+                                                        </button>
+                                                        <button type="button" class="btn btn-lg ms-1 me-1" mx-on:click="arrStatus.replaceAt($index, 4)" dmx-bind:class="arrStatus.items[$index] == 4 ? 'btn-red': 'btn-outline-red'" dmx-on:click="arrStatus.replaceAt($index, 4)" data-bs-toggle="tooltip" title="Cancelled">
+                                                            <i class="fas fa-minus-circle fa-lg"></i>
                                                         </button>
                                                     </div>
-
-
-                                                    <button type="button" dmx-bind:class="arrStatus[$index] == 2 ? 'btn btn-success active' : 'btn btn-outline-success'" dmx-on:click="arrStatus.replaceAt($index, 2)">
-                                                        B
-                                                    </button>
-                                                    <button type="button" dmx-bind:class="arrStatus[$index] == 3 ? 'btn btn-warning active' : 'btn btn-outline-warning'" dmx-on:click="arrStatus.replaceAt($index, 3)">
-                                                        C
-                                                    </button>
-                                                    <button type="button" dmx-bind:class="arrStatus[$index] == 4 ? 'btn btn-danger active' : 'btn btn-outline-danger'" dmx-on:click="arrStatus.replaceAt($index, 4)">
-                                                        D
-                                                    </button>
                                 </div>
                                 </td>
 
@@ -115,11 +109,15 @@
 
         <div class="row">
             <div class="col"><button type="button" class="btn btn-primary" dmx-on:click="scupdateSts.load({voleventid: form1.tableRepeat1[0].evVolId})">save</button>
-                <button type="button" class="btn btn-primary" dmx-on:click="run([{'bootbox.alert':{message:`arrStatus.items+\'satus:\'+arrStatus.items+\'\n  evid:\'+arrEvVolId.items`}},{run:{outputType:'text',disabled:true,action:`scupdateSts.load({eventid: repeat1[$index].eventId})`}}])">Disp Arr</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" dmx-on:click="run([{'bootbox.alert':{message:`\'arr:\'+arrStatus.items`}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`arrStatus.items`,outputFields:[],exec:{steps:{'bootbox.alert':{message:`\'arr:\'+arrStatus.items[$index]+\' var:\'+arrEvVolId.items[$index]`}}}}}])">Disp Arr</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
             </div>
         </div>
+        <dmx-repeat id="repeatStatus" dmx-bind:repeat="arrStatus.item.split(',')">
+            <p>{{value}}</p>
+        </dmx-repeat>
         <div class="modal-footer">
+
 
 
         </div>
