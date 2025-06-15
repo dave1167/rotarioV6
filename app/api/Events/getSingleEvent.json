@@ -55,6 +55,18 @@
           {
             "table": "tbl_events",
             "column": "publishDate"
+          },
+          {
+            "table": "tbl_settings",
+            "column": "daysToPublish"
+          },
+          {
+            "table": "tbl_location",
+            "column": "locationId"
+          },
+          {
+            "table": "tbl_venue",
+            "column": "venueId"
           }
         ],
         "params": [
@@ -63,7 +75,7 @@
             "type": "expression",
             "name": ":P1",
             "value": "{{$_GET.eventid}}",
-            "test": "14"
+            "test": "2"
           }
         ],
         "table": {
@@ -114,6 +126,37 @@
               ]
             },
             "primary": "venueId"
+          },
+          {
+            "table": "tbl_settings",
+            "column": "*",
+            "type": "INNER",
+            "clauses": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "table": "tbl_settings",
+                  "column": "tenantId",
+                  "operator": "equal",
+                  "operation": "=",
+                  "value": {
+                    "table": "tbl_events",
+                    "column": "tenantId"
+                  }
+                },
+                {
+                  "table": "tbl_settings",
+                  "column": "rotaId",
+                  "operator": "equal",
+                  "operation": "=",
+                  "value": {
+                    "table": "tbl_events",
+                    "column": "rotaId"
+                  }
+                }
+              ]
+            },
+            "primary": "settingsId"
           }
         ],
         "wheres": {
@@ -143,7 +186,7 @@
           "conditional": null,
           "valid": true
         },
-        "query": "select `tbl_events`.`eventId`, `tbl_events`.`eventName`, `tbl_location`.`location`, `tbl_venue`.`venueDesc`, `tbl_events`.`eventDate`, `tbl_events`.`eventStrtTime`, `tbl_events`.`numvols`, `tbl_events`.`weighting`, `tbl_events`.`volArrival`, `tbl_events`.`venue`, `tbl_events`.`published`, `tbl_events`.`publishDate` from `tbl_events` inner join `tbl_location` on `tbl_location`.`locationId` = `tbl_events`.`location` inner join `tbl_venue` on `tbl_venue`.`venueId` = `tbl_events`.`venue` where `tbl_events`.`eventId` = ?"
+        "query": "select `tbl_events`.`eventId`, `tbl_events`.`eventName`, `tbl_location`.`location`, `tbl_venue`.`venueDesc`, `tbl_events`.`eventDate`, `tbl_events`.`eventStrtTime`, `tbl_events`.`numvols`, `tbl_events`.`weighting`, `tbl_events`.`volArrival`, `tbl_events`.`venue`, `tbl_events`.`published`, `tbl_events`.`publishDate`, `tbl_settings`.`daysToPublish`, `tbl_location`.`locationId`, `tbl_venue`.`venueId` from `tbl_events` inner join `tbl_location` on `tbl_location`.`locationId` = `tbl_events`.`location` inner join `tbl_venue` on `tbl_venue`.`venueId` = `tbl_events`.`venue` inner join `tbl_settings` on `tbl_settings`.`tenantId` = `tbl_events`.`tenantId` and `tbl_settings`.`rotaId` = `tbl_events`.`rotaId` where `tbl_events`.`eventId` = ?"
       }
     },
     "output": true,
@@ -195,6 +238,18 @@
       {
         "type": "date",
         "name": "publishDate"
+      },
+      {
+        "type": "number",
+        "name": "daysToPublish"
+      },
+      {
+        "type": "number",
+        "name": "locationId"
+      },
+      {
+        "type": "number",
+        "name": "venueId"
       }
     ],
     "outputType": "object",
