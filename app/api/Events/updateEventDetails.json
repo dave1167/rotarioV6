@@ -1,8 +1,8 @@
 {
   "meta": {
     "options": {
-      "linkedFile": "/views/admin/events/event_list_admin.ejs",
-      "linkedForm": "form2"
+      "linkedFile": "/views/admin/events/event_list2.ejs",
+      "linkedForm": "frmEvDets"
     },
     "$_GET": [
       {
@@ -15,127 +15,6 @@
       }
     ],
     "$_POST": [
-      {
-        "type": "number",
-        "fieldName": "inpEvIdEdit",
-        "name": "inpEvIdEdit"
-      },
-      {
-        "type": "text",
-        "fieldName": "input2",
-        "name": "input2"
-      },
-      {
-        "type": "date",
-        "fieldName": "inpEvDte",
-        "options": {
-          "rules": {
-            "core:date": {}
-          }
-        },
-        "name": "inpEvDte"
-      },
-      {
-        "type": "text",
-        "fieldName": "inpStrtTime",
-        "name": "inpStrtTime"
-      },
-      {
-        "type": "number",
-        "fieldName": "inpVols",
-        "options": {
-          "rules": {
-            "core:number": {}
-          }
-        },
-        "name": "inpVols"
-      },
-      {
-        "type": "text",
-        "fieldName": "selLocation",
-        "multiple": true,
-        "name": "selLocation"
-      },
-      {
-        "type": "text",
-        "fieldName": "selWeight",
-        "name": "selWeight"
-      },
-      {
-        "type": "text",
-        "fieldName": "selVolArrival",
-        "name": "selVolArrival"
-      },
-      {
-        "type": "number",
-        "name": "numvols"
-      },
-      {
-        "type": "number",
-        "name": "location"
-      },
-      {
-        "type": "number",
-        "name": "selVenue"
-      },
-      {
-        "type": "number",
-        "name": "volArrival"
-      },
-      {
-        "type": "date",
-        "name": "publishDate"
-      },
-      {
-        "type": "number",
-        "name": "weighting"
-      },
-      {
-        "type": "number",
-        "name": "tenantId"
-      },
-      {
-        "type": "boolean",
-        "name": "published"
-      },
-      {
-        "type": "time",
-        "name": "eventStrtTime"
-      },
-      {
-        "type": "number",
-        "name": "rotaId"
-      },
-      {
-        "type": "number",
-        "fieldName": "venueId",
-        "name": "venueId"
-      },
-      {
-        "type": "number",
-        "fieldName": "inpLoc",
-        "name": "inpLoc"
-      },
-      {
-        "type": "number",
-        "fieldName": "chkpublished",
-        "name": "chkpublished"
-      },
-      {
-        "type": "text",
-        "fieldName": "inpChkPub",
-        "name": "inpChkPub"
-      },
-      {
-        "type": "text",
-        "fieldName": "'choice_' + $index",
-        "name": "'choice_' + $index"
-      },
-      {
-        "type": "text",
-        "fieldName": "text1",
-        "name": "text1"
-      },
       {
         "type": "array",
         "name": "record",
@@ -158,12 +37,123 @@
         "type": "text",
         "fieldName": "inpStatusGrp",
         "name": "inpStatusGrp"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_EvId",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inp_EvId"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_EvName",
+        "name": "inp_EvName"
+      },
+      {
+        "type": "date",
+        "fieldName": "inpEvDte",
+        "options": {
+          "rules": {
+            "core:date": {}
+          }
+        },
+        "name": "inpEvDte"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpStrtTime",
+        "name": "inpStrtTime"
+      },
+      {
+        "type": "date",
+        "fieldName": "publishDate",
+        "options": {
+          "rules": {
+            "core:date": {}
+          }
+        },
+        "name": "publishDate"
+      },
+      {
+        "type": "number",
+        "fieldName": "volArrival",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "volArrival"
+      },
+      {
+        "type": "number",
+        "fieldName": "numvols",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "numvols"
+      },
+      {
+        "type": "text",
+        "fieldName": "selLocation",
+        "multiple": true,
+        "name": "selLocation"
+      },
+      {
+        "type": "text",
+        "fieldName": "selVenue",
+        "name": "selVenue"
+      },
+      {
+        "type": "number",
+        "name": "inpVols"
+      },
+      {
+        "type": "number",
+        "name": "inpLoc"
+      },
+      {
+        "type": "number",
+        "name": "venueId"
+      },
+      {
+        "type": "number",
+        "name": "selVolArrival"
+      },
+      {
+        "type": "number",
+        "name": "selWeight"
+      },
+      {
+        "type": "number",
+        "name": "tenantId"
+      },
+      {
+        "type": "number",
+        "name": "rotaId"
+      },
+      {
+        "type": "boolean",
+        "name": "chkpublished"
+      },
+      {
+        "type": "number",
+        "name": "inpEvIdEdit"
       }
     ],
     "$_SESSION": [
       {
         "type": "number",
         "name": "Ses_Ten_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_User_Id"
       }
     ]
   },
@@ -182,7 +172,7 @@
                 "table": "tbl_events",
                 "column": "eventName",
                 "type": "text",
-                "value": "{{$_POST.input2}}"
+                "value": "{{$_POST.inp_EvName}}"
               },
               {
                 "table": "tbl_events",
@@ -194,13 +184,13 @@
                 "table": "tbl_events",
                 "column": "numvols",
                 "type": "number",
-                "value": "{{$_POST.inpVols}}"
+                "value": "{{$_POST.numvols}}"
               },
               {
                 "table": "tbl_events",
                 "column": "location",
                 "type": "number",
-                "value": "{{$_POST.inpLoc}}"
+                "value": "{{$_POST.selLocation}}"
               },
               {
                 "table": "tbl_events",
@@ -224,7 +214,7 @@
                 "table": "tbl_events",
                 "column": "modifiedBy",
                 "type": "number",
-                "value": "{{$_SESSION.Ses_Ten_Id}}"
+                "value": "{{$_SESSION.Ses_User_Id}}"
               },
               {
                 "table": "tbl_events",
@@ -272,7 +262,7 @@
                   "field": "eventId",
                   "type": "double",
                   "operator": "equal",
-                  "value": "{{$_POST.inpEvIdEdit}}",
+                  "value": "{{$_POST.inp_EvId}}",
                   "data": {
                     "column": "eventId"
                   },
@@ -288,7 +278,7 @@
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{$_POST.input2}}",
+                "value": "{{$_POST.inp_EvName}}",
                 "test": ""
               },
               {
@@ -300,13 +290,13 @@
               {
                 "name": ":P3",
                 "type": "expression",
-                "value": "{{$_POST.inpVols}}",
+                "value": "{{$_POST.numvols}}",
                 "test": ""
               },
               {
                 "name": ":P4",
                 "type": "expression",
-                "value": "{{$_POST.inpLoc}}",
+                "value": "{{$_POST.selLocation}}",
                 "test": ""
               },
               {
@@ -330,7 +320,7 @@
               {
                 "name": ":P8",
                 "type": "expression",
-                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "value": "{{$_SESSION.Ses_User_Id}}",
                 "test": ""
               },
               {
@@ -373,7 +363,7 @@
                 "operator": "equal",
                 "type": "expression",
                 "name": ":P15",
-                "value": "{{$_POST.inpEvIdEdit}}",
+                "value": "{{$_POST.inp_EvId}}",
                 "test": ""
               }
             ]

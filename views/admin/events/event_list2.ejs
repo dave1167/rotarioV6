@@ -28,6 +28,7 @@
 <dmx-array id="arrStatus1" dmx-on:updated=""></dmx-array>
 <dmx-array id="arrEvVolId"></dmx-array>
 <dmx-serverconnect id="scGetLocations" url="/api/Events/getLocation"></dmx-serverconnect>
+<dmx-serverconnect id="scUpdateEvent" url="/api/Events/updateEventDetails" noload="true" dmx-param:eventid="modEditIndEvent.accordion1_collapseOne.frmEvDets.inp_EvId.value"></dmx-serverconnect>
 <dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value" noload="true"></dmx-serverconnect><dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
@@ -38,8 +39,8 @@
 <div class="modal" id="modEditIndEvent" is="dmx-bs5-modal" tabindex="-1" dmx-on:shown-bs-modal="run([{wait:{delay:100}},{run:{outputType:'text',action:`arrEvVolId.empty()`}},{wait:{delay:500}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scEvVols.data.query`,outputFields:[],exec:{steps:[{wait:{delay:500}},{run:{outputType:'text',action:`arrEvVolId.add(scEvVols.data.query[$index].evVolId)`}},{wait:{delay:100}},{run:{outputType:'text',action:`arrStatus.add(scEvVols.data.query[$index].status)`}}]}}}])">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Edit</h5>
+            <div class="modal-header bg-success">
+                <h3 class="modal-title text-light bg-success">{{scGetsingleEv.data.query.eventName}}</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -48,15 +49,15 @@
                         <div class="col">
                             <div class="accordion" id="accordion1">
                                 <div class="card">
-                                    <div class="card-header" id="accordion1_headingOne">
+                                    <div class="card-header bg-body-secondary" id="accordion1_headingOne">
                                         <h5 class="mb-0 bg-info">
-                                            <button id="accordion1_collapseOne_Btn" class="btn btn-info w-100" type="button" data-bs-toggle="collapse" data-bs-target="#accordion1_collapseOne" aria-expanded="true" aria-controls="collapseOne">Click Here to Edit {{scGetsingleEv.data.query.eventName}}</button>
+                                            <button id="accordion1_collapseOne_Btn" class="btn w-100 btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#accordion1_collapseOne" aria-expanded="true" aria-controls="collapseOne">Click Here to Edit Event Details</button>
                                         </h5>
                                     </div>
                                     <div id="accordion1_collapseOne" class="collapse" is="dmx-bs5-collapse" show="true" aria-labelledby="accordion1_headingOne" data-bs-parent="#accordion1">
                                         <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/updateEventDetails" dmx-generator="bootstrap5" dmx-form-type="vertical">
                                             <div class="form-group mb-3">
-                                                <input type="hidden" class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
+                                                <input type="number" class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" id="inp_EvName" name="inp_EvName" placeholder="Event Name" dmx-bind:value="scGetsingleEv.data.query.eventName">
@@ -103,8 +104,6 @@
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-floating mb-3">
-                                                        <select id="selLocation" class="form-select" name="selLocation" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetsingleEv.data.query.location" dmx-on:updated="scGetVenue.load({location: value})" aria-label="Location">
-                                                        </select>
                                                         <label for="selLocation">Location</label>
                                                     </div>
 
@@ -135,18 +134,25 @@
                                                 </div>
 
                                             </div>
-
-
-
-
-                                            <div class="form-group mb-3">
-                                                <button type="submit" class="btn btn-primary" dmx-bind:disabled="state.executing">Save <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <button id="btn2" class="btn" type="submit">Button</button>
+                                                </div>
                                             </div>
+
+
+
+
                                         </form>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventStatus2" dmx-on:success="run([{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scEvVols.data.repeat`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`arr1.add(tableRepeat1[$index].radiogroup.value)`}}}}},{'bootbox.alert':{message:`arr1.items+\'  array\'`}}])">
+                                        <div class="row">
+                                            <div class="col">
+                                                <p><b>Registered Volunteers</b></p>
+                                            </div>
+                                        </div>
 
                                         <div class="table-responsive">
                                             <table class="table table-striped table-bordered table-hover table-sm">
@@ -222,7 +228,7 @@
 
         <div class="row">
             <div class="col">
-                <button type="button" class="btn btn-primary ms-2" dmx-on:click="run([{'bootbox.alert':{message:`\'arr:\'+arrStatus.items`}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`arrStatus.items`,outputFields:[],exec:{steps:[{'bootbox.alert':{message:`\'arr:\'+arrStatus.items[$index]+\' var:\'+arrEvVolId.items[$index]`}},{run:{outputType:'text',action:`scupdateSts.load({voleventid: arrEvVolId.items[$index], statusv: arrStatus.items[$index]})`}}]}}}])">Update Event</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn ms-2 btn-warning" dmx-on:click="run([{run:{outputType:'text',action:`accordion1_collapseOne.frmEvDets.submit()`}},{wait:{delay:400}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`arrStatus.items`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`scupdateSts.load({voleventid: arrEvVolId.items[$index], statusv: arrStatus.items[$index]})`}}}}}])">Update Event</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Close</button>
 
             </div>
         </div>
