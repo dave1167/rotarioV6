@@ -28,7 +28,7 @@
 <dmx-array id="arrStatus1" dmx-on:updated=""></dmx-array>
 <dmx-array id="arrEvVolId"></dmx-array>
 <dmx-serverconnect id="scGetLocations" url="/api/Events/getLocation"></dmx-serverconnect>
-<dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value"></dmx-serverconnect><dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value" noload="true"></dmx-serverconnect><dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
@@ -111,7 +111,7 @@
                                     <div class="col-3">
                                         <div class="form-group mb-3">
                                             <label for="inp_location" class="form-label">Location</label>
-                                            <select id="selLocation" class="form-select" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-on:changed="scGetVenue.load()" dmx-bind:value="scGetsingleEv.data.query.location"></select>
+                                            <select id="selLocation" class="form-select" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetsingleEv.data.query.location" dmx-on:updated="scGetVenue.load({location: value})"></select></select>
                                         </div>
                                     </div>
                                     <div class="col-3">
