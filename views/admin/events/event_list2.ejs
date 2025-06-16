@@ -57,7 +57,7 @@
                                     <div id="accordion1_collapseOne" class="collapse" is="dmx-bs5-collapse" show="true" aria-labelledby="accordion1_headingOne" data-bs-parent="#accordion1">
                                         <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/updateEventDetails" dmx-generator="bootstrap5" dmx-form-type="vertical">
                                             <div class="form-group mb-3">
-                                                <input type="number" class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
+                                                <input type="hidden" class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
                                             </div>
                                             <div class="form-floating mb-3">
                                                 <input type="text" class="form-control" id="inp_EvName" name="inp_EvName" placeholder="Event Name" dmx-bind:value="scGetsingleEv.data.query.eventName">
@@ -92,19 +92,27 @@
                                                     <div class="form-floating mb-3">
                                                         <input type="number" class="form-control" id="inp_volArrival" name="volArrival" placeholder="Vol Arrival Before Show (Mins)" dmx-bind:value="scGetsingleEv.data.query.volArrival">
                                                         <label for="inp_volArrival">Vol Arrival Before Show (Mins)</label>
+
                                                     </div>
 
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-floating mb-3">
                                                         <input type="number" class="form-control" id="inp_numvols" name="numvols" placeholder="Numvols" dmx-bind:value="scGetsingleEv.data.query.numvols">
-                                                        <label for="inp_numvols">Number of vols</label>
+                                                        <label for="inp_numvols" class="col-form-label-sm">Number of vols</label>
+
                                                     </div>
 
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-floating mb-3">
-                                                        <label for="selLocation">Location</label>
+
+                                                        <div class="form-group mb-3">
+                                                            <label for="inp_numvols" class="col-form-label-sm">Published</label>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" value="" id="inpPub" name="inpPub">
+                                                            </div>
+                                                        </div>
                                                     </div>
 
 
