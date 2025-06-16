@@ -41,11 +41,6 @@
       {
         "type": "text",
         "fieldName": "inp_EvId",
-        "options": {
-          "rules": {
-            "core:number": {}
-          }
-        },
         "name": "inp_EvId"
       },
       {
@@ -101,7 +96,6 @@
       {
         "type": "text",
         "fieldName": "selLocation",
-        "multiple": true,
         "name": "selLocation"
       },
       {
@@ -144,6 +138,11 @@
       {
         "type": "number",
         "name": "inpEvIdEdit"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpPub",
+        "name": "inpPub"
       }
     ],
     "$_SESSION": [
@@ -196,7 +195,7 @@
                 "table": "tbl_events",
                 "column": "venue",
                 "type": "number",
-                "value": "{{$_POST.venueId}}"
+                "value": "{{$_POST.selVenue}}"
               },
               {
                 "table": "tbl_events",
@@ -250,7 +249,7 @@
                 "table": "tbl_events",
                 "column": "published",
                 "type": "boolean",
-                "value": "{{$_POST.chkpublished.default(0)}}"
+                "value": "{{$_POST.inpPub}}"
               }
             ],
             "table": "tbl_events",
@@ -302,7 +301,7 @@
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{$_POST.venueId}}",
+                "value": "{{$_POST.selVenue}}",
                 "test": ""
               },
               {
@@ -356,7 +355,7 @@
               {
                 "name": ":P14",
                 "type": "expression",
-                "value": "{{$_POST.chkpublished.default(0)}}",
+                "value": "{{$_POST.inpPub}}",
                 "test": ""
               },
               {
