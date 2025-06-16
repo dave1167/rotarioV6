@@ -103,14 +103,11 @@
                                                 </div>
                                                 <div class="col">
                                                     <div class="form-floating mb-3">
-                                                        <select id="selTier" class="form-select" name="selTier" aria-label="Show Weighting">
-                                                            <option value="" selected disabled>Select Tier</option>
-                                                            <option value="1">Tier 1</option>
-                                                            <option value="2">Tier 2</option>
-                                                            <option value="3">Tier 3</option>
+                                                        <select id="selLocation" class="form-select" name="selLocation" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetsingleEv.data.query.location" dmx-on:updated="scGetVenue.load({location: value})" aria-label="Location">
                                                         </select>
-                                                        <label for="selTier">Show Weighting</label>
+                                                        <label for="selLocation">Location</label>
                                                     </div>
+
 
                                                 </div>
                                             </div>
@@ -120,27 +117,30 @@
 
                                             <div class="row">
                                                 <div class="col-3">
-                                                    <div class="form-group mb-3">
-                                                        <label for="inp_location" class="form-label">Location</label> <select id="selLocation" class="form-select" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetsingleEv.data.query.location" dmx-on:updated="scGetVenue.load({location: value})"></select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-3">
-                                                    <div class="col-3">
-                                                        <div class="form-floating mb-3">
-                                                            <select id="selLocation" class="form-select" name="selLocation" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetsingleEv.data.query.location" dmx-on:updated="scGetVenue.load({location: value})" aria-label="Location">
-                                                            </select>
-                                                            <label for="selLocation">Location</label>
-                                                        </div>
+                                                    <div class="form-floating mb-3">
+                                                        <select id="selLocation" class="form-select" name="selLocation" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetsingleEv.data.query.location" dmx-on:updated="scGetVenue.load({location: value})" aria-label="Location">
+                                                        </select>
+                                                        <label for="selLocation">Location</label>
                                                     </div>
 
                                                 </div>
+
+
+                                                <div class="col-3">
+                                                    <div class="form-floating mb-3">
+                                                        <select id="selVenue" class="form-select" name="selVenue" dmx-bind:options="scGetVenue.data.query" optiontext="venueDesc" optionvalue="venueId" dmx-bind:value="scGetsingleEv.data.query.venue" aria-label="Venue">
+                                                        </select>
+                                                        <label for="selVenue">Venue</label>
+                                                    </div>
+                                                </div>
+
                                             </div>
 
 
 
 
                                             <div class="form-group mb-3">
-                                                !-- <button type="submit" class="btn btn-primary" dmx-bind:disabled="state.executing">Save <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
+                                                <button type="submit" class="btn btn-primary" dmx-bind:disabled="state.executing">Save <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
                                             </div>
                                         </form>
                                     </div>
@@ -222,7 +222,7 @@
 
         <div class="row">
             <div class="col">
-                <button type="button" class="btn btn-primary" dmx-on:click="run([{'bootbox.alert':{message:`\'arr:\'+arrStatus.items`}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`arrStatus.items`,outputFields:[],exec:{steps:[{'bootbox.alert':{message:`\'arr:\'+arrStatus.items[$index]+\' var:\'+arrEvVolId.items[$index]`}},{run:{outputType:'text',action:`scupdateSts.load({voleventid: arrEvVolId.items[$index], statusv: arrStatus.items[$index]})`}}]}}}])">Update Event</button><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary ms-2" dmx-on:click="run([{'bootbox.alert':{message:`\'arr:\'+arrStatus.items`}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`arrStatus.items`,outputFields:[],exec:{steps:[{'bootbox.alert':{message:`\'arr:\'+arrStatus.items[$index]+\' var:\'+arrEvVolId.items[$index]`}},{run:{outputType:'text',action:`scupdateSts.load({voleventid: arrEvVolId.items[$index], statusv: arrStatus.items[$index]})`}}]}}}])">Update Event</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Close</button>
 
             </div>
         </div>
