@@ -48,8 +48,7 @@
                         <div class="col">
                             <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/updateEventDetails" dmx-generator="bootstrap5" dmx-form-type="vertical">
                                 <div class="form-group mb-3">
-                                    <label for="inp_inpEvIdEdit" class="form-label">Inp ev id edit</label>
-                                    <input type="number" class="form-control" id="inp_inpEvIdEdit" name="inpEvIdEdit" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
+                                    <input type="hidden" class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
                                 </div>
                                 <div class="form-group mb-3">
                                     <label for="inp_EvName" class="form-label">Event Name</label>
@@ -78,6 +77,7 @@
                                     </div>
                                 </div>
                                 <div class=" row">
+
                                     <div class="col">
                                         <div class="form-group mb-3">
                                             <label for="inp_volArrival" class="form-label">Vol Arrival Before Show(Mins)</label>
@@ -90,21 +90,19 @@
                                             <input type="number" class="form-control" id="inp_numvols" name="numvols" aria-describedby="inp_numvols_help" placeholder="Enter Numvols" dmx-bind:value="scGetsingleEv.data.query.numvols">
                                         </div>
                                     </div>
+                                    <div class="col">
+                                        <div class="form-group mb-3">
+                                            <label for="selTier" class="form-label">Show Weighting</label>
+                                            <select id="selTier" class="form-select">
+                                                <option value="1">Tier 1</option>
+                                                <option value="2">Tier 2</option>
+                                                <option value="3">Tier 3</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
 
 
-                                <div class="form-group mb-3">
-                                    <label for="inp_inpVols" class="form-label">Inp vols</label>
-                                    <input type="number" class="form-control" id="inp_inpVols" name="inpVols" aria-describedby="inp_inpVols_help" placeholder="Enter Inp vols">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="inp_selLocation" class="form-label">Sel location</label>
-                                    <input type="text" class="form-control" id="inp_selLocation" name="selLocation" aria-describedby="inp_selLocation_help" placeholder="Enter Sel location">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="inp_selVolArrival" class="form-label">Sel vol arrival</label>
-                                    <input type="text" class="form-control" id="inp_selVolArrival" name="selVolArrival" aria-describedby="inp_selVolArrival_help" placeholder="Enter Sel vol arrival">
-                                </div>
 
 
                                 <div class="row">
@@ -124,33 +122,10 @@
 
 
 
-                                <div class="form-group mb-3">
-                                    <label for="selTier" class="form-label">Show Weighting</label>
-                                    <select id="selTier" class="form-select">
-                                        <option value="1">Tier 1</option>
-                                        <option value="2">Tier 2</option>
-                                        <option value="3">Tier 3</option>
-                                    </select>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <legend class="form-label">Published</legend>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="inp_published" name="published">
-                                        <label class="form-check-label" for="inp_published">Published</label>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label for="inp_eventStrtTime" class="form-label">Event strt time</label>
-                                    <input type="time" class="form-control" id="inp_eventStrtTime" name="eventStrtTime" aria-describedby="inp_eventStrtTime_help" placeholder="Enter Event strt time">
-                                </div>
+
                                 <div class="form-group mb-3">
                                     <label for="inp_rotaId" class="form-label">Rota</label>
                                     <input type="number" class="form-control" id="inp_rotaId" name="rotaId" aria-describedby="inp_rotaId_help" placeholder="Enter Rota">
-                                </div>
-                                <div class="form-group mb-3">
-                                    <select id="selLocation" class="form-select">
-                                    </select>
-                                    <label for="inp_inpLoc" class="form-label">Inp loc</label>
                                 </div>
                                 <div class="form-group mb-3">
                                     !-- <button type="submit" class="btn btn-primary" dmx-bind:disabled="state.executing">Save <span class="spinner-border spinner-border-sm" role="status" dmx-show="state.executing"></span></button>
