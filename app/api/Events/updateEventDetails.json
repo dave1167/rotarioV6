@@ -249,7 +249,7 @@
                 "table": "tbl_events",
                 "column": "published",
                 "type": "boolean",
-                "value": "{{$_POST.inpPub}}"
+                "value": "{{$_POST.inpPub.default(0)}}"
               }
             ],
             "table": "tbl_events",
@@ -355,7 +355,7 @@
               {
                 "name": ":P14",
                 "type": "expression",
-                "value": "{{$_POST.inpPub}}",
+                "value": "{{$_POST.inpPub.default(0)}}",
                 "test": ""
               },
               {
