@@ -73,7 +73,7 @@
 
                                                 <div class="col">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="inpStrtTime" name="inpStrtTime" placeholder="Start Time" dmx-bind:value="scGetsingleEv.data.query.eventStrtTime.formatDate('hh:mm a')">
+                                                        <input type="text" class="form-control" id="inpStrtTime" name="inpStrtTime" placeholder="Start Time" dmx-bind:value="scGetsingleEv.data.query.eventStrtTime.toDate().formatDate('h:mm A')">
                                                         <label for="inpStrtTime">Start Time</label>
                                                     </div>
                                                 </div>
@@ -267,7 +267,7 @@
 
                     <p class="card-text">Venue: {{venueDesc}}</p>
                     <p class="card-text">Date: {{eventDate.formatDate('dd-MM-yyyy')}}.</p>
-                    <p class="card-text">Time: {{eventStrtTime}}</p>
+                    <p class="card-text">Time: {{eventStrtTime.formatDate('hh:mm a')}}</p>
                     <p class="card-text">Number of Volunteers: {{numvols}}</p>
                 </div>
                 <div class="card-footer pt-0 pb-0 ps-0 pe-0">
