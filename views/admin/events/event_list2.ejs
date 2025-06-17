@@ -218,6 +218,10 @@
 
                                         </tbody>
                                         </table>
+                                        <div class="alert alert-info text-center mb-3" dmx-show="!scEvVols.data.query.hasItems()">
+                                            <i class="fas fa-info-circle fa-2x me-2 text-primary align-middle"></i>
+                                            <span>No volunteers have registered for this event yet.</span>
+                                        </div>
                                 </div><input id="arrayEvId" name="arrayEvId" type="hidden" class="form-control" dmx-bind:value="arrEvVolId.items">
                                 <input id="arrayStatus" name="arrayStatus" type="hidden" class="form-control" dmx-bind:value="arrStatus.items">
                                 </form>
