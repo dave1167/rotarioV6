@@ -109,3 +109,40 @@
   font-size: 1rem;
   padding: 0.55rem 0.55rem;
 }
+
+/* Custom styles for publish switch */
+.form-switch .form-check-input {
+  width: 2.5em !important;
+  height: 1.4em !important;
+  cursor: pointer;
+  border: 2px solid #adb5bd;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.form-switch .form-check-input:checked {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.form-switch .form-check-input:not(:checked) {
+  background-color: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.form-switch .form-check-label {
+  font-size: 1rem;
+  font-weight: 500;
+  padding-left: 0.5rem;
+  color: #495057;
+}
+
+/* Accordion chevron rotation */
+.fa-chevron-down {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+  display: inline-block;
+}
+
+.rotate-180 {
+  transform: rotate(180deg);
+}

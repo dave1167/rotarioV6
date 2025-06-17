@@ -105,6 +105,11 @@
       "path": "/admin/events/test",
       "page": "admin/events/test",
       "layout": "main"
+    },
+    {
+      "path": "/admin/events/create_event",
+      "page": "admin/events/create_event",
+      "layout": "admin"
     }
   ]
 }

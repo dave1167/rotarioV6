@@ -51,7 +51,10 @@
                                 <div class="card">
                                     <div class="card-header bg-body-secondary" id="accordion1_headingOne">
                                         <h5 class="mb-0 bg-info">
-                                            <button id="accordion1_collapseOne_Btn" class="btn w-100 btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#accordion1_collapseOne" aria-expanded="true" aria-controls="collapseOne">Click Here to Edit Event Details</button>
+                                            <button id="accordion1_collapseOne_Btn" class="btn w-100 btn-warning d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#accordion1_collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                                <span>Edit Event Details</span>
+                                                <i class="fas fa-chevron-down" dmx-class:rotate-180="$('#accordion1_collapseOne').hasClass('show')" style="transition: transform 0.3s ease"></i>
+                                            </button>
                                         </h5>
                                     </div>
                                     <div id="accordion1_collapseOne" class="collapse" is="dmx-bs5-collapse" show="true" aria-labelledby="accordion1_headingOne" data-bs-parent="#accordion1">
@@ -73,7 +76,7 @@
 
                                                 <div class="col">
                                                     <div class="form-floating mb-3">
-                                                        <input type="text" class="form-control" id="inpStrtTime" name="inpStrtTime" placeholder="Start Time" dmx-bind:value="scGetsingleEv.data.query.eventStrtTime.toDate().formatDate('h:mm A')">
+                                                        <input type="text" class="form-control" id="inpStrtTime" name="inpStrtTime" placeholder="Start Time" dmx-bind:value="scGetsingleEv.data.query.eventStrtTime.formatDate('hh:mm a')">
                                                         <label for="inpStrtTime">Start Time</label>
                                                     </div>
                                                 </div>
@@ -218,10 +221,6 @@
 
                                         </tbody>
                                         </table>
-                                        <div class="alert alert-info text-center mb-3" dmx-show="!scEvVols.data.query.hasItems()">
-                                            <i class="fas fa-info-circle fa-2x me-2 text-primary align-middle"></i>
-                                            <span>No volunteers have registered for this event yet.</span>
-                                        </div>
                                 </div><input id="arrayEvId" name="arrayEvId" type="hidden" class="form-control" dmx-bind:value="arrEvVolId.items">
                                 <input id="arrayStatus" name="arrayStatus" type="hidden" class="form-control" dmx-bind:value="arrStatus.items">
                                 </form>
@@ -271,7 +270,7 @@
 
                     <p class="card-text">Venue: {{venueDesc}}</p>
                     <p class="card-text">Date: {{eventDate.formatDate('dd-MM-yyyy')}}.</p>
-                    <p class="card-text">Time: {{eventStrtTime.formatDate('hh:mm a')}}</p>
+                    <p class="card-text">Time: {{eventStrtTime}}</p>
                     <p class="card-text">Number of Volunteers: {{numvols}}</p>
                 </div>
                 <div class="card-footer pt-0 pb-0 ps-0 pe-0">
