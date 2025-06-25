@@ -110,6 +110,16 @@
       "path": "/admin/events/create_event",
       "page": "admin/events/create_event",
       "layout": "admin"
+    },
+    {
+      "path": "/time-test",
+      "page": "test",
+      "layout": "main"
+    },
+    {
+      "path": "/testTime",
+      "page": "testTime",
+      "layout": "admin"
     }
   ]
 }

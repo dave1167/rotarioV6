@@ -1,0 +1,272 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/events/create_event.ejs",
+      "linkedForm": "frmEvDets"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inp_EvId",
+        "name": "inp_EvId"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_EvName",
+        "name": "inp_EvName"
+      },
+      {
+        "type": "date",
+        "fieldName": "inpEvDte",
+        "options": {
+          "rules": {
+            "core:date": {}
+          }
+        },
+        "name": "inpEvDte"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpStrtTime",
+        "name": "inpStrtTime"
+      },
+      {
+        "type": "date",
+        "fieldName": "publishDate",
+        "options": {
+          "rules": {
+            "core:date": {}
+          }
+        },
+        "name": "publishDate"
+      },
+      {
+        "type": "number",
+        "fieldName": "volArrival",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "volArrival"
+      },
+      {
+        "type": "number",
+        "fieldName": "numvols",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "numvols"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpPub",
+        "name": "inpPub"
+      },
+      {
+        "type": "text",
+        "fieldName": "selLocation",
+        "name": "selLocation"
+      },
+      {
+        "type": "text",
+        "fieldName": "selVenue",
+        "name": "selVenue"
+      },
+      {
+        "type": "number",
+        "name": "weighting"
+      },
+      {
+        "type": "number",
+        "name": "location"
+      },
+      {
+        "type": "number",
+        "name": "venue"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "number",
+        "name": "Ses_User_Id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "tbl_events",
+              "column": "eventName",
+              "type": "text",
+              "value": "{{$_POST.inp_EvName}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "eventDate",
+              "type": "date",
+              "value": "{{$_POST.inpEvDte}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "eventStrtTime",
+              "type": "time",
+              "value": "{{$_POST.inpStrtTime}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "modifiedBy",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_User_Id}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "modifiedDate",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "numvols",
+              "type": "number",
+              "value": "{{$_POST.numvols}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "weighting",
+              "type": "number",
+              "value": "{{$_POST.weighting}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "location",
+              "type": "number",
+              "value": "{{$_POST.location}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "venue",
+              "type": "number",
+              "value": "{{$_POST.venue}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "published",
+              "type": "boolean",
+              "value": "{{$_POST.inpPub}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "volArrival",
+              "type": "number",
+              "value": "{{$_POST.volArrival}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "publishDate",
+              "type": "date",
+              "value": "{{$_POST.publishDate}}"
+            }
+          ],
+          "table": "tbl_events",
+          "returning": "eventId",
+          "query": "insert into `tbl_events` (`eventDate`, `eventName`, `eventStrtTime`, `location`, `modifiedBy`, `modifiedDate`, `numvols`, `publishDate`, `published`, `venue`, `volArrival`, `weighting`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.inp_EvName}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.inpEvDte}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.inpStrtTime}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_SESSION.Ses_User_Id}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{NOW}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.numvols}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.weighting}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.location}}",
+              "test": ""
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.venue}}",
+              "test": ""
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.inpPub}}",
+              "test": ""
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.volArrival}}",
+              "test": ""
+            },
+            {
+              "name": ":P12",
+              "type": "expression",
+              "value": "{{$_POST.publishDate}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

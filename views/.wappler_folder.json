@@ -22,5 +22,9 @@
   "password_change.ejs": {
     "layoutPage": "main",
     "description": ""
+  },
+  "testTime.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

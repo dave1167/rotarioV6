@@ -1,0 +1,41 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "time"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "to24",
+        "module": "core",
+        "action": "moment",
+        "options": {
+          "format": "h:mm A",
+          "timestamp": "{{decoded}}",
+          "formatTo": "HH:mm:ss"
+        },
+        "output": true,
+        "outputType": "text"
+      },
+      {
+        "name": "decoded",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{decodeURIComponent($_GET.time)}}"
+        },
+        "outputType": "text",
+        "meta": []
+      }
+    ]
+  }
+}

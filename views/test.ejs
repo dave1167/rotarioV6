@@ -1,0 +1,107 @@
+<!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="test" appConnect="local" components="{dmxServerConnect:{}}" -->
+<meta name="ac:route" content="/time-test">
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>12-Hour Time Picker</title>
+    <script src="dmxAppConnect/dmxAppConnect.js"></script>
+    <script src="dmxAppConnect/dmxFormatter.js"></script>
+    <script src="dmxAppConnect/dmxServerConnect.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body is="dmx-app" id="app">
+
+    <!-- Server connect to get existing time -->
+    <dmx-serverconnect id="scGetSingleEv" url="api/getSingleEvent"></dmx-serverconnect>
+
+    <!-- Store selected time -->
+    <dmx-value id="selTime" value=""></dmx-value>
+
+    <div class="container mt-5">
+        <h3>12-Hour Time Picker (AM/PM)</h3>
+
+        <div class="row g-2 align-items-center">
+            <div class="col-auto">
+                <label for="selHour">Hour</label>
+                <select id="selHour" class="form-select">
+                    <option value="">--</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <label for="selMinute">Minute</label>
+                <select id="selMinute" class="form-select">
+                    <option value="">--</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <label for="selPeriod">AM/PM</label>
+                <select id="selPeriod" class="form-select">
+                    <option value="AM">AM</option>
+                    <option value="PM" selected>PM</option>
+                </select>
+            </div>
+        </div>
+
+        <p class="mt-3">Selected Time: <span dmx-text="selTime.value"></span></p>
+    </div>
+
+    <script>
+        const selHour = document.getElementById("selHour");
+    const selMinute = document.getElementById("selMinute");
+    const selPeriod = document.getElementById("selPeriod");
+
+    function updateSelectedTime() {
+      const hour = selHour.value;
+      const minute = selMinute.value;
+      const period = selPeriod.value;
+
+      if (hour && minute && period) {
+        const formatted = `${hour}:${minute} ${period}`;
+        dmx.parse(`selTime.setValue("${formatted}")`);
+      } else {
+        dmx.parse(`selTime.setValue("")`);
+      }
+    }
+
+    function populateDropdowns() {
+      for (let h = 1; h <= 12; h++) {
+        const hh = h.toString().padStart(2, '0');
+        selHour.innerHTML += `<option value="${hh}">${hh}</option>`;
+      }
+
+      for (let m = 0; m < 60; m += 10) {
+        const mm = m.toString().padStart(2, '0');
+        selMinute.innerHTML += `<option value="${mm}">${mm}</option>`;
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      populateDropdowns();
+
+      // Apply existing value from server
+      document.getElementById("scGetSingleEv").addEventListener("dmx:updated", function () {
+        const time = dmx.parse('scGetSingleEv.data.query.eventStrtTime'); // "02:30 PM"
+        if (time && time.match(/^\d{1,2}:\d{2} (AM|PM)$/)) {
+          const [hmm, ap] = time.split(" ");
+          const [hh, mm] = hmm.split(":");
+          selHour.value = hh.padStart(2, '0');
+          selMinute.value = mm.padStart(2, '0');
+          selPeriod.value = ap;
+          updateSelectedTime();
+        }
+      });
+
+      // Update when any select changes
+      [selHour, selMinute, selPeriod].forEach(el => {
+        el.addEventListener("change", updateSelectedTime);
+      });
+    });
+    </script>
+
+</body>
+
+</html>

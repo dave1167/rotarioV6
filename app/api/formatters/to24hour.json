@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "time"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "convertTime",
+      "module": "core",
+      "action": "try",
+      "options": {
+        "try": {
+          "steps": [
+            {
+              "name": "to24",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{$_GET.time.momentFormat('hh:mm a', 'HH:mm')}}"
+              },
+              "outputType": "text"
+            }
+          ]
+        },
+        "catch": {
+          "steps": [
+            {
+              "name": "to24",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{$_GET.time}}"
+              },
+              "outputType": "text"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

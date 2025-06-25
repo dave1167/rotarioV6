@@ -136,13 +136,64 @@
   padding-left: 0.5rem;
   color: #495057;
 }
-
-/* Just these two classes, nothing else */
 .rotate-180 {
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
 }
 
-.fa-chevron-down {
-  display: inline-block;
+.rotate-0 {
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: -webkit-transform 0.3s ease;
+  transition: -webkit-transform 0.3s ease;
+  transition: transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
+}
+.time-picker {
+  position: relative;
+  width: 200px;
+}
+
+.time-picker input {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.time-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background: white;
+  z-index: 999;
+  display: none;
+}
+
+.time-dropdown div {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.time-dropdown div:hover {
+  background-color: #eee;
 }
