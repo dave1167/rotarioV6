@@ -926,6 +926,77 @@
           "system_versioned": false
         }
       },
+      "tbl_event_vol": {
+        "columns": {
+          "evVolId": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "eventId": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "eventId",
+              "inTable": "tbl_events",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "userId": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "userId",
+              "inTable": "tbl_users",
+              "referenceType": "integer",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "modifiedDate": {
+            "db": {
+              "type": "datetime",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "modifiedBy": {
+            "db": {
+              "type": "integer",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "status": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "registeredDate": {
+            "db": {
+              "type": "date",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        },
+        "db": {
+          "engine": "InnoDB",
+          "schema": "rotario_v6",
+          "collation": "utf8mb4_0900_ai_ci",
+          "system_versioned": false
+        },
+        "parent": "tbl_events"
+      },
       "tbl_events": {
         "columns": {
           "eventId": {
@@ -1036,6 +1107,12 @@
               "type": "integer",
               "primary": false,
               "nullable": true
+            },
+            "db_edits": {
+              "default": "0"
+            },
+            "status": {
+              "modified": true
             }
           },
           "publishDate": {
@@ -1054,83 +1131,6 @@
         },
         "sub": {
           "tbl_event_vol": "eventId"
-        },
-        "status": {
-          "children_modified": true
-        }
-      },
-      "tbl_event_vol": {
-        "columns": {
-          "evVolId": {
-            "db": {
-              "type": "increments",
-              "primary": true,
-              "nullable": false
-            }
-          },
-          "eventId": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "eventId",
-              "inTable": "tbl_events",
-              "referenceType": "integer",
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION"
-            }
-          },
-          "userId": {
-            "db": {
-              "type": "reference",
-              "primary": false,
-              "nullable": true,
-              "references": "userId",
-              "inTable": "tbl_users",
-              "referenceType": "integer",
-              "onUpdate": "NO ACTION",
-              "onDelete": "NO ACTION"
-            }
-          },
-          "modifiedDate": {
-            "db": {
-              "type": "datetime",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "modifiedBy": {
-            "db": {
-              "type": "integer",
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "status": {
-            "db": {
-              "type": "string",
-              "maxLength": 255,
-              "primary": false,
-              "nullable": true
-            }
-          },
-          "registeredDate": {
-            "db": {
-              "type": "date",
-              "primary": false,
-              "nullable": true
-            }
-          }
-        },
-        "db": {
-          "engine": "InnoDB",
-          "schema": "rotario_v6",
-          "collation": "utf8mb4_0900_ai_ci",
-          "system_versioned": false
-        },
-        "parent": "tbl_events",
-        "status": {
-          "children_modified": true
         }
       }
     },

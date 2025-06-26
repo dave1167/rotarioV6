@@ -121,6 +121,7 @@
       },
       {
         "type": "number",
+        "fieldName": "selWeight",
         "name": "selWeight"
       },
       {
@@ -143,6 +144,24 @@
         "type": "text",
         "fieldName": "inpPub",
         "name": "inpPub"
+      },
+      {
+        "type": "number",
+        "name": "location"
+      },
+      {
+        "type": "number",
+        "name": "venue"
+      },
+      {
+        "type": "text",
+        "fieldName": "hidLocValue",
+        "name": "hidLocValue"
+      },
+      {
+        "type": "text",
+        "fieldName": "hidVenueLoc",
+        "name": "hidVenueLoc"
       }
     ],
     "$_SESSION": [
@@ -163,7 +182,7 @@
         "module": "core",
         "action": "setvalue",
         "options": {
-          "value": "{{$_POST.inpStrtTime.replace(' pm', ':00').replace(' am', ':00').replace(' PM', ':00').replace(' AM', ':00')}}"
+          "value": "{{$_POST.inpStrtTime.replace(' pm', ':00').replace(' am', ':00').replace(' PM', ':00').replace(' AM', ':00').replace('am', ':00')}}"
         },
         "outputType": "time",
         "output": true,
@@ -179,8 +198,7 @@
         "outputType": "time",
         "output": true,
         "meta": [],
-        "disabled": true,
-        "collapsed": true
+        "disabled": true
       },
       {
         "name": "updateEvDetails",
@@ -196,6 +214,72 @@
                 "column": "eventStrtTime",
                 "type": "time",
                 "value": "{{varStartTime}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "eventName",
+                "type": "text",
+                "value": "{{$_POST.inp_EvName}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "eventDate",
+                "type": "date",
+                "value": "{{$_POST.inpEvDte.formatDate('yyyy-MM-dd', false)}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "numvols",
+                "type": "number",
+                "value": "{{$_POST.numvols}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "published",
+                "type": "boolean",
+                "value": "{{$_POST.inpPub}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "weighting",
+                "type": "number",
+                "value": "{{$_POST.selWeight}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "modifiedDate",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "modifiedBy",
+                "type": "number",
+                "value": "{{$_SESSION.Ses_User_Id}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "publishDate",
+                "type": "date",
+                "value": "{{$_POST.publishDate}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "volArrival",
+                "type": "number",
+                "value": "{{$_POST.volArrival.default(0)}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "location",
+                "type": "number",
+                "value": "{{$_POST.hidLocValue}}"
+              },
+              {
+                "table": "tbl_events",
+                "column": "venue",
+                "type": "number",
+                "value": "{{$_POST.hidVenueLoc}}"
               }
             ],
             "table": "tbl_events",
@@ -216,7 +300,7 @@
               ]
             },
             "returning": "eventId",
-            "query": "update `tbl_events` set `eventStrtTime` = ? where `eventId` = ?",
+            "query": "update `tbl_events` set `eventStrtTime` = ?, `eventName` = ?, `eventDate` = ?, `numvols` = ?, `published` = ?, `weighting` = ?, `modifiedDate` = ?, `modifiedBy` = ?, `publishDate` = ?, `volArrival` = ?, `location` = ?, `venue` = ? where `eventId` = ?",
             "params": [
               {
                 "name": ":P1",
@@ -225,9 +309,75 @@
                 "test": ""
               },
               {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.inp_EvName}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.inpEvDte.formatDate('yyyy-MM-dd', false)}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.numvols}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.inpPub}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.selWeight}}",
+                "test": ""
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{$_SESSION.Ses_User_Id}}",
+                "test": ""
+              },
+              {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{$_POST.publishDate}}",
+                "test": ""
+              },
+              {
+                "name": ":P10",
+                "type": "expression",
+                "value": "{{$_POST.volArrival.default(0)}}",
+                "test": ""
+              },
+              {
+                "name": ":P11",
+                "type": "expression",
+                "value": "{{$_POST.hidLocValue}}",
+                "test": ""
+              },
+              {
+                "name": ":P12",
+                "type": "expression",
+                "value": "{{$_POST.hidVenueLoc}}",
+                "test": ""
+              },
+              {
                 "operator": "equal",
                 "type": "expression",
-                "name": ":P2",
+                "name": ":P13",
                 "value": "{{$_POST.inp_EvId}}",
                 "test": ""
               }
