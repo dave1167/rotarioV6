@@ -358,7 +358,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <button class="btn ms-2 btn-warning" dmx-on:click="frmEvDets.submit();form1.submit()">Update Event</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Close</button>
+                    <button class="btn ms-2 btn-warning" dmx-on:click="run([{run:{outputType:'text',action:`frmEvDets.submit()`}},{wait:{delay:400}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`arrStatus.items`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`scupdateSts.load({voleventid: arrEvVolId.items[$index], statusv: arrStatus.items[$index]})`}}}}}])">Update Event</button><button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Close</button>
 
                 </div>
             </div>
