@@ -1,0 +1,145 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/events/event_list2.ejs",
+      "linkedForm": "frmInsVol"
+    },
+    "$_POST": [
+      {
+        "type": "number",
+        "fieldName": "inpVolId",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inpVolId"
+      },
+      {
+        "type": "number",
+        "fieldName": "inpEvId",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "inpEvId"
+      },
+      {
+        "type": "text",
+        "fieldName": "selVolList",
+        "name": "selVolList"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "number",
+        "name": "Ses_User_Id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "insert",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "tbl_event_vol",
+              "column": "eventId",
+              "type": "number",
+              "value": "{{$_POST.inpEvId}}"
+            },
+            {
+              "table": "tbl_event_vol",
+              "column": "userId",
+              "type": "number",
+              "value": "{{$_POST.inpVolId}}"
+            },
+            {
+              "table": "tbl_event_vol",
+              "column": "modifiedDate",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "tbl_event_vol",
+              "column": "modifiedBy",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_User_Id}}"
+            },
+            {
+              "table": "tbl_event_vol",
+              "column": "status",
+              "type": "text",
+              "value": "{{1}}"
+            },
+            {
+              "table": "tbl_event_vol",
+              "column": "registeredDate",
+              "type": "date",
+              "value": "{{NOW}}"
+            }
+          ],
+          "table": "tbl_event_vol",
+          "returning": "evVolId",
+          "query": "insert into `tbl_event_vol` (`eventId`, `modifiedBy`, `modifiedDate`, `registeredDate`, `status`, `userId`) values (?, ?, ?, ?, ?, ?)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.inpEvId}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.inpVolId}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{NOW}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_SESSION.Ses_User_Id}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{1}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{NOW}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ],
+      "collapsed": true,
+      "output": true
+    }
+  }
+}

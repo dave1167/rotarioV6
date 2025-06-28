@@ -1,0 +1,529 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      },
+      {
+        "type": "text",
+        "name": "filter"
+      },
+      {
+        "type": "number",
+        "name": "actv"
+      },
+      {
+        "type": "number",
+        "name": "verif"
+      }
+    ],
+    "$_PARAM": [
+      {
+        "type": "number",
+        "name": "filterSwitch"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "",
+        "options": {
+          "comment": "fetches all users"
+        }
+      },
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "distinct": false,
+            "columns": [
+              {
+                "table": "tbl_users",
+                "column": "fName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "lName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "joinDate"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "key"
+              },
+              {
+                "table": "tbl_roles_type",
+                "column": "roleName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "imageName"
+              },
+              {
+                "table": "tbl_users",
+                "column": "email"
+              },
+              {
+                "table": "tbl_user_rota",
+                "column": "userId"
+              },
+              {
+                "table": "tbl_users",
+                "column": "verified"
+              },
+              {
+                "table": "tbl_users",
+                "column": "active"
+              }
+            ],
+            "table": {
+              "name": "tbl_user_rota"
+            },
+            "joins": [
+              {
+                "table": "tbl_users",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_users",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_user_rota",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "userId"
+              },
+              {
+                "table": "tbl_ek",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_ek",
+                      "column": "userId",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_user_rota",
+                        "column": "userId"
+                      }
+                    }
+                  ]
+                },
+                "primary": "ekId"
+              },
+              {
+                "table": "tbl_roles_type",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_roles_type",
+                      "column": "role",
+                      "operator": "equal",
+                      "operation": "=",
+                      "value": {
+                        "table": "tbl_user_rota",
+                        "column": "role"
+                      }
+                    }
+                  ]
+                },
+                "primary": "roleId"
+              }
+            ],
+            "orders": [],
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": "1"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_SESSION.Ses_Rota_Id}}",
+                "test": "1"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{1}}",
+                "test": "1"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P4",
+                "value": "{{$_GET.actv}}",
+                "test": "1"
+              }
+            ],
+            "primary": "rotaId",
+            "query": "select `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_users`.`joinDate`, `tbl_ek`.`key`, `tbl_roles_type`.`roleName`, `tbl_users`.`imageName`, `tbl_users`.`email`, `tbl_user_rota`.`userId`, `tbl_users`.`verified`, `tbl_users`.`active` from `tbl_user_rota` inner join `tbl_users` on `tbl_users`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_user_rota`.`userId` inner join `tbl_roles_type` on `tbl_roles_type`.`role` = `tbl_user_rota`.`role` where `tbl_user_rota`.`tenantId` = ? and `tbl_user_rota`.`rota` = ? and `tbl_users`.`verified` = ? and `tbl_users`.`active` = ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_user_rota.tenantId",
+                  "field": "tbl_user_rota.tenantId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "tenantId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_user_rota.rota",
+                  "field": "tbl_user_rota.rota",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Rota_Id}}",
+                  "data": {
+                    "table": "tbl_user_rota",
+                    "column": "rota",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "rota"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_users.verified",
+                  "field": "tbl_users.verified",
+                  "type": "boolean",
+                  "operator": "equal",
+                  "value": "{{1}}",
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "verified",
+                    "type": "boolean",
+                    "columnObj": {
+                      "type": "boolean",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "verified"
+                    }
+                  },
+                  "operation": "="
+                },
+                {
+                  "id": "tbl_users.active",
+                  "field": "tbl_users.active",
+                  "type": "boolean",
+                  "operator": "equal",
+                  "value": "{{$_GET.actv}}",
+                  "data": {
+                    "table": "tbl_users",
+                    "column": "active",
+                    "type": "boolean",
+                    "columnObj": {
+                      "type": "boolean",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "active"
+                    }
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "fName"
+          },
+          {
+            "type": "text",
+            "name": "lName"
+          },
+          {
+            "type": "date",
+            "name": "joinDate"
+          },
+          {
+            "type": "text",
+            "name": "key"
+          },
+          {
+            "type": "text",
+            "name": "roleName"
+          },
+          {
+            "type": "text",
+            "name": "imageName"
+          },
+          {
+            "type": "text",
+            "name": "email"
+          },
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "boolean",
+            "name": "verified"
+          },
+          {
+            "type": "boolean",
+            "name": "active"
+          }
+        ],
+        "outputType": "array",
+        "type": "dbconnector_select",
+        "collapsed": true
+      },
+      {
+        "name": "repeat",
+        "module": "core",
+        "action": "repeat",
+        "options": {
+          "repeat": "{{query}}",
+          "outputFields": [],
+          "exec": {
+            "steps": [
+              {
+                "name": "varId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{userId}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "varActive",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{query[$index].active}}"
+                },
+                "meta": [],
+                "outputType": "boolean",
+                "output": true,
+                "collapsed": true
+              },
+              {
+                "name": "varFName",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{fName.decrypt(key)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "varLName",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{lName.decrypt(key).sort('repeat[$index].varLName')}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "varEmail",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{email.decrypt(key)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "varJoinDate",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{query[$index].joinDate}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "varRole",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{query[$index].roleName}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "collapsed": true
+              },
+              {
+                "name": "varImage",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{query[$index].imageName}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "$index",
+            "type": "number"
+          },
+          {
+            "name": "$number",
+            "type": "number"
+          },
+          {
+            "name": "$name",
+            "type": "text"
+          },
+          {
+            "name": "$value",
+            "type": "object"
+          },
+          {
+            "name": "fName",
+            "type": "text"
+          },
+          {
+            "name": "lName",
+            "type": "text"
+          },
+          {
+            "name": "joinDate",
+            "type": "date"
+          },
+          {
+            "name": "key",
+            "type": "text"
+          },
+          {
+            "name": "roleName",
+            "type": "text"
+          },
+          {
+            "name": "imageName",
+            "type": "text"
+          },
+          {
+            "name": "email",
+            "type": "text"
+          },
+          {
+            "name": "userId",
+            "type": "number"
+          },
+          {
+            "name": "verified",
+            "type": "boolean"
+          },
+          {
+            "name": "active",
+            "type": "boolean"
+          },
+          {
+            "name": "varId",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "varActive",
+            "type": "boolean",
+            "sub": []
+          },
+          {
+            "name": "varFName",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "varLName",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "varEmail",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "varJoinDate",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "varRole",
+            "type": "text",
+            "sub": []
+          },
+          {
+            "name": "varImage",
+            "type": "text",
+            "sub": []
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}
