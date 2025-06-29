@@ -12,126 +12,81 @@
     ]
   },
   "exec": {
-    "steps": [
-      {
-        "name": "wait",
-        "module": "core",
-        "action": "wait",
-        "options": {
-          "delay": 500
-        },
-        "output": false,
-        "disabled": true
-      },
-      {
-        "name": "query",
-        "module": "dbconnector",
-        "action": "select",
-        "options": {
-          "connection": "db",
-          "sql": {
-            "type": "SELECT",
-            "columns": [
-              {
-                "table": "tbl_event_vol",
-                "column": "eventId",
-                "aggregate": "COUNT",
-                "alias": "volCount"
-              }
-            ],
-            "params": [
-              {
-                "operator": "equal",
-                "type": "expression",
-                "name": ":P1",
-                "value": "{{$_GET.eventid}}",
-                "test": "60"
-              }
-            ],
-            "table": {
-              "name": "tbl_event_vol"
-            },
-            "primary": "evVolId",
-            "joins": [
-              {
-                "table": "tbl_events",
-                "column": "*",
-                "type": "INNER",
-                "clauses": {
-                  "condition": "AND",
-                  "rules": [
-                    {
-                      "table": "tbl_events",
-                      "column": "eventId",
-                      "operator": "equal",
-                      "operation": "=",
-                      "value": {
-                        "table": "tbl_event_vol",
-                        "column": "eventId"
-                      }
-                    }
-                  ]
-                },
-                "primary": "eventId"
-              }
-            ],
-            "query": "select count(`tbl_event_vol`.`eventId`) as `volCount` from `tbl_event_vol` inner join `tbl_events` on `tbl_events`.`eventId` = `tbl_event_vol`.`eventId` where `tbl_event_vol`.`eventId` = ?",
-            "groupBy": [],
-            "wheres": {
-              "condition": "AND",
-              "rules": [
-                {
-                  "id": "tbl_event_vol.eventId",
-                  "field": "tbl_event_vol.eventId",
-                  "type": "double",
-                  "operator": "equal",
-                  "value": "{{$_GET.eventid}}",
-                  "data": {
-                    "table": "tbl_event_vol",
-                    "column": "eventId",
-                    "type": "number",
-                    "columnObj": {
-                      "type": "reference",
-                      "primary": false,
-                      "nullable": true,
-                      "references": "eventId",
-                      "inTable": "tbl_events",
-                      "referenceType": "integer",
-                      "onUpdate": "NO ACTION",
-                      "onDelete": "NO ACTION",
-                      "name": "eventId"
-                    }
-                  },
-                  "operation": "=",
-                  "table": "tbl_event_vol"
-                }
-              ],
-              "conditional": null,
-              "valid": true
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "tbl_event_vol",
+              "column": "eventId",
+              "aggregate": "COUNT",
+              "alias": "volCount"
             }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_GET.eventid}}",
+              "test": "60"
+            }
+          ],
+          "table": {
+            "name": "tbl_event_vol"
+          },
+          "primary": "evVolId",
+          "joins": [],
+          "query": "select count(`eventId`) as `volCount` from `tbl_event_vol` where `tbl_event_vol`.`eventId` = ?",
+          "groupBy": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "tbl_event_vol.eventId",
+                "field": "tbl_event_vol.eventId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_GET.eventid}}",
+                "data": {
+                  "table": "tbl_event_vol",
+                  "column": "eventId",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "reference",
+                    "primary": false,
+                    "nullable": true,
+                    "references": "eventId",
+                    "inTable": "tbl_events",
+                    "referenceType": "integer",
+                    "onUpdate": "NO ACTION",
+                    "onDelete": "NO ACTION",
+                    "name": "eventId"
+                  }
+                },
+                "operation": "=",
+                "table": "tbl_event_vol"
+              }
+            ],
+            "conditional": null,
+            "valid": true
           }
-        },
-        "meta": [
-          {
-            "type": "number",
-            "name": "volCount"
-          }
-        ],
-        "outputType": "array",
-        "collapsed": true
+        }
       },
-      {
-        "name": "varFName",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{query[$index].fName}}"
-        },
-        "meta": [],
-        "outputType": "text",
-        "output": true,
-        "disabled": true
-      }
-    ]
+      "meta": [
+        {
+          "type": "number",
+          "name": "volCount"
+        }
+      ],
+      "outputType": "array",
+      "collapsed": true,
+      "output": true
+    }
   }
 }
