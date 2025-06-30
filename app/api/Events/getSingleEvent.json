@@ -179,7 +179,8 @@
           "valid": true
         },
         "query": "select `tbl_events`.`eventId`, `tbl_events`.`eventName`, `tbl_venue`.`venueDesc`, `tbl_events`.`eventDate`, `tbl_events`.`eventStrtTime`, `tbl_events`.`numvols`, `tbl_events`.`weighting`, `tbl_events`.`volArrival`, `tbl_events`.`venue`, `tbl_events`.`published`, `tbl_events`.`publishDate`, `tbl_settings`.`daysToPublish`, `tbl_events`.`location` from `tbl_events` inner join `tbl_location` on `tbl_location`.`locationId` = `tbl_events`.`location` inner join `tbl_venue` on `tbl_venue`.`venueId` = `tbl_events`.`venue` inner join `tbl_settings` on `tbl_settings`.`tenantId` = `tbl_events`.`tenantId` and `tbl_settings`.`rotaId` = `tbl_events`.`rotaId` where `tbl_events`.`eventId` = ?"
-      }
+      },
+      "test": true
     },
     "output": true,
     "meta": [

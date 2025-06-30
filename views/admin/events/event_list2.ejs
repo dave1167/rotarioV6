@@ -31,7 +31,7 @@
 <dmx-serverconnect id="scVolCount" url="/api/Events/getCountVolsEvents"></dmx-serverconnect>
 <dmx-serverconnect id="scUpdateEvent" url="/api/Events/updateEventDetails" noload="true" dmx-param:eventid="modEditIndEvent.accordion1_collapseOne.frmEvDets.inp_EvId.value"></dmx-serverconnect>
 <dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value" noload="true"></dmx-serverconnect><dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent" noload="true" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
@@ -62,7 +62,7 @@
                         <p class="card-text">Number of Volunteers: {{numvols}}</p>
                     </div>
                     <div class="card-footer pt-0 pb-0 ps-0 pe-0">
-                        <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="scGetsingleEv.load({eventid: eventId});modEditIndEvent.show();modEditIndEvent.data_detail1.select(eventId);arrStatus.empty();scEvVols.load({eventid: eventId})">Edit</button>
+                        <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="scGetsingleEv.load({eventid: 2});modEditIndEvent.show();modEditIndEvent.data_detail1.select(eventId);arrStatus.empty();scEvVols.load({eventid: eventId})">Edit</button>
                     </div>
                 </div>
             </div>
@@ -145,7 +145,7 @@
                                         <div id="accordion1_collapseOne" class="collapse" is="dmx-bs5-collapse" show="true" aria-labelledby="accordion1_headingOne" data-bs-parent="#accordion1">
                                             <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/updateEventDetails" dmx-generator="bootstrap5" dmx-form-type="vertical">
                                                 <div class="form-group mb-3">
-                                                    <input class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId" type="hidden">
+                                                    <input class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
                                                 </div>
                                                 <div dmx-text="$('#accordion1_collapseOne').hasClass('show')"></div>
                                                 <div class="form-floating mb-3">
