@@ -162,6 +162,16 @@
         "type": "text",
         "fieldName": "hidVenueLoc",
         "name": "hidVenueLoc"
+      },
+      {
+        "type": "number",
+        "fieldName": "hidPub",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "hidPub"
       }
     ],
     "$_SESSION": [
@@ -237,7 +247,7 @@
                 "table": "tbl_events",
                 "column": "published",
                 "type": "boolean",
-                "value": "{{$_POST.inpPub}}"
+                "value": "{{$_POST.inpPub.default(0)}}"
               },
               {
                 "table": "tbl_events",
@@ -329,7 +339,7 @@
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{$_POST.inpPub}}",
+                "value": "{{$_POST.inpPub.default(0)}}",
                 "test": ""
               },
               {
