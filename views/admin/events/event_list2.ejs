@@ -1,4 +1,5 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxBootstrap5Modal:{},dmxFormatter:{},dmxBootbox5:{},dmxDatePicker:{},dmxValidator:{}}"="{dmxBootstrap5Modal:{},dmxFormatter:{},dmxBootbox5:{},dmxDatePicker:{}}"="{dmxBootstrap5Modal:{},dmxFormatter:{},dmxBootbox5:{}}"="{dmxBootstrap5Modal:{},dmxFormatter:{}}"="{dmxBootstrap5Modal:{}}"="{dmxFormatter:{},dmxBootstrap5Modal:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxBootbox5:{},dmxStateManagement:{}}<link rel="stylesheet" href="/assets/css/custom.css">" jquery_slim_35="cdn" moment_2="cdn" jquery_slim_35="cdn" moment_2="cdn" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxBootstrap5Modal:{},dmxFormatter:{},dmxBootbox5:{},dmxDatePicker:{},dmxValidator:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxStateManagement:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
+<link rel="stylesheet" href="/assets/css/custom.css">
 
 <script is="dmx-flow" id="flow1" type="text/dmx-flow">[
   {
@@ -35,9 +36,27 @@
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
+<dmx-serverconnect id="serverconnect1" url="/api/Events/getSingleEvent2" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scupdateSts" url="/api/Events/updateEventStatus2" noload="true" dmx-param:eventid="scEvVols.data.query[0].eventId" dmx-param:voleventid="scEvVols.data.query[0].evVolId"></dmx-serverconnect>
 
 <div class="container">
+    <div class="modal" id="modal2" is="dmx-bs5-modal" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="text2" name="text2" type="text" class="form-control" dmx-bind:value="scGetsingleEv.data.query.eventName">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="row">
         <div class="col">
@@ -62,8 +81,9 @@
                         <p class="card-text">Number of Volunteers: {{numvols}}</p>
                     </div>
                     <div class="card-footer pt-0 pb-0 ps-0 pe-0">
-                        <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="scGetsingleEv.load({eventid: 2});modEditIndEvent.show();modEditIndEvent.data_detail1.select(eventId);arrStatus.empty();scEvVols.load({eventid: eventId})">Edit</button>
+                        <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="run([{'bootbox.alert':{message:`eventName+\'  event id  \'+eventId`}},{run:{outputType:'text',action:`scGetsingleEv.load({eventid2: 2})`}},{'bootbox.alert':{message:`scGetsingleEv.data.query.eventName+\' EV\'`}},{run:{outputType:'text',action:`modEditIndEvent.show()`}},{run:{outputType:'text',disabled:true,action:`modEditIndEvent.data_detail1.select(eventId)`}},{run:{outputType:'text',disabled:true,action:`arrStatus.empty()`}},{run:{outputType:'text',disabled:true,action:`scEvVols.load({eventid: eventId})`}}])">Edit</button>
                     </div>
+                    <button id="btn2" class="btn" dmx-on:click="modal2.show()">Button</button>
                 </div>
             </div>
         </div>
@@ -120,6 +140,19 @@
             </div>
         </div>
     </div>
+    <div class="modEditEvent 2" id="modal1" is="dmx-bs5-modal" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <input id="text1" name="text1" type="text" class="form-control" dmx-bind:value="scGetsingleEv.data.query.eventId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal" id="modEditIndEvent" is="dmx-bs5-modal" tabindex="-1" dmx-on:shown-bs-modal="run([{wait:{delay:100}},{run:{outputType:'text',action:`arrEvVolId.empty()`}},{wait:{delay:500}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scEvVols.data.query`,outputFields:[],exec:{steps:[{wait:{delay:500}},{run:{outputType:'text',action:`arrEvVolId.add(scEvVols.data.query[$index].evVolId)`}},{wait:{delay:100}},{run:{outputType:'text',action:`arrStatus.add(scEvVols.data.query[$index].status)`}}]}}}])">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -145,7 +178,7 @@
                                         <div id="accordion1_collapseOne" class="collapse" is="dmx-bs5-collapse" show="true" aria-labelledby="accordion1_headingOne" data-bs-parent="#accordion1">
                                             <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/updateEventDetails" dmx-generator="bootstrap5" dmx-form-type="vertical">
                                                 <div class="form-group mb-3">
-                                                    <input class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
+                                                    <input class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="value">
                                                 </div>
                                                 <div dmx-text="$('#accordion1_collapseOne').hasClass('show')"></div>
                                                 <div class="form-floating mb-3">
