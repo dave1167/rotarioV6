@@ -32,31 +32,14 @@
 <dmx-serverconnect id="scVolCount" url="/api/Events/getCountVolsEvents"></dmx-serverconnect>
 <dmx-serverconnect id="scUpdateEvent" url="/api/Events/updateEventDetails" noload="true" dmx-param:eventid="modEditIndEvent.accordion1_collapseOne.frmEvDets.inp_EvId.value"></dmx-serverconnect>
 <dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value" noload="true"></dmx-serverconnect><dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent" noload="true" dmx-param:eventid=""></dmx-serverconnect>
+<dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent1" noload="true" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
 <dmx-serverconnect id="serverconnect1" url="/api/Events/getSingleEvent2" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scupdateSts" url="/api/Events/updateEventStatus2" noload="true" dmx-param:eventid="scEvVols.data.query[0].eventId" dmx-param:voleventid="scEvVols.data.query[0].evVolId"></dmx-serverconnect>
+<dmx-serverconnect id="scupdateSts" url="/api/Events/updateEventStatus2" noload="true" dmx-param:eventid="scEvVols.data.query[$index].eventId" dmx-param:voleventid="scEvVols.data.query[$index].evVolId"></dmx-serverconnect>
 
 <div class="container">
-    <div class="modal" id="modal2" is="dmx-bs5-modal" tabindex="-1">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input id="text2" name="text2" type="text" class="form-control" dmx-bind:value="scGetsingleEv.data.query.eventName">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col">
@@ -81,9 +64,8 @@
                         <p class="card-text">Number of Volunteers: {{numvols}}</p>
                     </div>
                     <div class="card-footer pt-0 pb-0 ps-0 pe-0">
-                        <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="run([{'bootbox.alert':{message:`eventName+\'  event id  \'+eventId`}},{run:{outputType:'text',action:`scGetsingleEv.load({eventid2: 2})`}},{'bootbox.alert':{message:`scGetsingleEv.data.query.eventName+\' EV\'`}},{run:{outputType:'text',action:`modEditIndEvent.show()`}},{run:{outputType:'text',disabled:true,action:`modEditIndEvent.data_detail1.select(eventId)`}},{run:{outputType:'text',disabled:true,action:`arrStatus.empty()`}},{run:{outputType:'text',disabled:true,action:`scEvVols.load({eventid: eventId})`}}])">Edit</button>
+                        <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="run([{'bootbox.alert':{disabled:true,message:`eventName+\'  event id  \'+eventId`}},{run:{outputType:'text',action:`scGetsingleEv.load({eventid: eventId})`}},{'bootbox.alert':{disabled:true,message:`scGetsingleEv.data.query.eventName+\' EV\'`}},{run:{outputType:'text',action:`modEditIndEvent.show()`}},{run:{outputType:'text',action:`modEditIndEvent.data_detail1.select(eventId)`}},{run:{outputType:'text',action:`arrStatus.empty()`}},{run:{outputType:'text',action:`scEvVols.load({eventid: eventId})`}}])">Edit</button>
                     </div>
-                    <button id="btn2" class="btn" dmx-on:click="modal2.show()">Button</button>
                 </div>
             </div>
         </div>
@@ -123,11 +105,11 @@
                                 </div>
 
                                 <!-- Hidden input to submit combined time -->
-                                <input class="form-control" id="modStrtTime" name="inpStrtTime"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <input class="form-control" id="modStrtTime" name="inpStrtTime">
                             </div>
                             <div class="row">
                                 <div class="col">
-                                    <button id="btn4" class="btn" dmx-on:click="modEditIndEvent.show();modEditIndEvent.accordion1_collapseOne.frmEvDets.inpStrtTime.setValue(modStrtTime.value);modTimePicker.hide()">Apply</button>
+                                    <button id="btn4" class="btn btn-secondary" dmx-on:click="modEditIndEvent.show();modEditIndEvent.accordion1_collapseOne.frmEvDets.inpStrtTime.setValue(modStrtTime.value);modTimePicker.hide()">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -135,7 +117,6 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
             </div>
         </div>
@@ -178,7 +159,7 @@
                                         <div id="accordion1_collapseOne" class="collapse" is="dmx-bs5-collapse" show="true" aria-labelledby="accordion1_headingOne" data-bs-parent="#accordion1">
                                             <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/updateEventDetails" dmx-generator="bootstrap5" dmx-form-type="vertical">
                                                 <div class="form-group mb-3">
-                                                    <input class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="value">
+                                                    <input class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
                                                 </div>
                                                 <div dmx-text="$('#accordion1_collapseOne').hasClass('show')"></div>
                                                 <div class="form-floating mb-3">
@@ -255,12 +236,13 @@
                                                         </select>
                                                     </div>
                                                     <div class="col">
+                                                        <input id="hidPub" name="hidPub" type="hidden" class="form-control" dmx-bind:value="scGetsingleEv.data.query.published">
                                                         <div class="form-floating mb-3">
 
                                                             <div class="form-group mb-3">
                                                                 <label for="inp_numvols" class="col-form-label-sm">Published</label>
                                                                 <div class="form-check form-switch">
-                                                                    <input class="form-check-input" type="checkbox" value="1" id="inpPub" name="inpPub" dmx-bind:value="scGetsingleEv.data.query.published">
+                                                                    <input class="form-check-input" type="checkbox" value="1" id="checkPub" name="checkPub" dmx-bind:checked="hidPub.value==1">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -291,10 +273,10 @@
                                                         </div>
                                                     </div>
                                                     <div class="col">
-                                                        <input id="hidLocValue" name="hidLocValue" class="form-control" dmx-bind:value="selLocation.value">
+                                                        <input id="hidLocValue" name="hidLocValue" class="form-control" dmx-bind:value="selLocation.value" type="hidden">
                                                     </div>
                                                     <div class="col">
-                                                        <input id="hidVenueLoc" name="hidVenueLoc" class="form-control" dmx-bind:value="selVenue.selectedValue">
+                                                        <input id="hidVenueLoc" name="hidVenueLoc" class="form-control" dmx-bind:value="selVenue.selectedValue" type="hidden">
                                                     </div>
 
                                                 </div>

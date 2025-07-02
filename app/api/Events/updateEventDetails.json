@@ -133,17 +133,8 @@
         "name": "rotaId"
       },
       {
-        "type": "boolean",
-        "name": "chkpublished"
-      },
-      {
         "type": "number",
         "name": "inpEvIdEdit"
-      },
-      {
-        "type": "text",
-        "fieldName": "inpPub",
-        "name": "inpPub"
       },
       {
         "type": "number",
@@ -172,6 +163,11 @@
           }
         },
         "name": "hidPub"
+      },
+      {
+        "type": "text",
+        "fieldName": "checkPub",
+        "name": "checkPub"
       }
     ],
     "$_SESSION": [
@@ -188,27 +184,65 @@
   "exec": {
     "steps": [
       {
-        "name": "varStartTime",
+        "name": "",
         "module": "core",
-        "action": "setvalue",
+        "action": "condition",
         "options": {
-          "value": "{{$_POST.inpStrtTime.replace(' pm', ':00').replace(' am', ':00').replace(' PM', ':00').replace(' AM', ':00').replace('am', ':00')}}"
+          "if": "{{$_POST.inpStrtTime.contains('PM')}}",
+          "then": {
+            "steps": [
+              {
+                "name": "varStartTime",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{$_POST.inpStrtTime.replace(' pm', ':00').replace(' am', ':00').replace(' PM', ':00').replace(' AM', ':00').replace('am', ':00')}}"
+                },
+                "outputType": "time",
+                "output": true,
+                "meta": [],
+                "collapsed": true
+              },
+              {
+                "name": "varStartTime",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{varStartTime.split(':')}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "varStartTime",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{varStartTime.dateAdd('hours', 12)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "disabled": true
+              }
+            ]
+          },
+          "else": {
+            "steps": {
+              "name": "varStartTime",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": "{{$_POST.inpStrtTime.replace(' pm', ':00').replace(' am', ':00').replace(' PM', ':00').replace(' AM', ':00').replace('am', ':00')}}"
+              },
+              "outputType": "time",
+              "output": true,
+              "meta": []
+            }
+          }
         },
-        "outputType": "time",
-        "output": true,
-        "meta": []
-      },
-      {
-        "name": "varStartTime_copy",
-        "module": "core",
-        "action": "setvalue",
-        "options": {
-          "value": "{{$_POST.inpStrtTime}}"
-        },
-        "outputType": "time",
-        "output": true,
-        "meta": [],
-        "disabled": true
+        "outputType": "boolean"
       },
       {
         "name": "updateEvDetails",
@@ -247,7 +281,7 @@
                 "table": "tbl_events",
                 "column": "published",
                 "type": "boolean",
-                "value": "{{$_POST.inpPub.default(0)}}"
+                "value": "{{$_POST.checkPub.default(0)}}"
               },
               {
                 "table": "tbl_events",
@@ -339,7 +373,7 @@
               {
                 "name": ":P5",
                 "type": "expression",
-                "value": "{{$_POST.inpPub.default(0)}}",
+                "value": "{{$_POST.checkPub.default(0)}}",
                 "test": ""
               },
               {
