@@ -242,7 +242,8 @@
             }
           }
         },
-        "outputType": "boolean"
+        "outputType": "boolean",
+        "disabled": true
       },
       {
         "name": "updateEvDetails",
