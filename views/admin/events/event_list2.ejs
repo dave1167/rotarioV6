@@ -32,7 +32,7 @@
 <dmx-serverconnect id="scVolCount" url="/api/Events/getCountVolsEvents"></dmx-serverconnect>
 <dmx-serverconnect id="scUpdateEvent" url="/api/Events/updateEventDetails" noload="true" dmx-param:eventid="modEditIndEvent.accordion1_collapseOne.frmEvDets.inp_EvId.value"></dmx-serverconnect>
 <dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value" noload="true"></dmx-serverconnect><dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent1" noload="true" dmx-param:eventid=""></dmx-serverconnect>
+<dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent1" noload="true" dmx-param:eventid="" dmx-on:success="scGetVenue.load({location: scGetsingleEv.data.query.location})"></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>

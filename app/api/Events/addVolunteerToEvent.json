@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {
+              "message": "Event ID is required"
+            },
+            "core:number": {}
+          }
+        },
+        "name": "eventId"
+      },
+      {
+        "type": "text",
+        "options": {
+          "rules": {
+            "core:required": {
+              "message": "User ID is required"
+            },
+            "core:number": {}
+          }
+        },
+        "name": "userId"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "insertVolunteer",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "table": "tbl_event_vol",
+            "values": {
+              "eventId": "{{$_GET.eventId}}",
+              "userId": "{{$_GET.userId}}",
+              "status": "1",
+              "registeredDate": "{{NOW|date('Y-m-d')}}",
+              "modifiedDate": "{{NOW}}"
+            }
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "response",
+        "module": "core",
+        "action": "trycatch",
+        "options": {
+          "try": {
+            "steps": {
+              "name": "success",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": {
+                  "status": "success",
+                  "message": "Volunteer successfully registered for event",
+                  "data": {
+                    "eventId": "{{$_GET.eventId}}",
+                    "userId": "{{$_GET.userId}}",
+                    "affected": "{{insertVolunteer.affected}}"
+                  }
+                }
+              },
+              "meta": [],
+              "output": true,
+              "outputType": "text"
+            }
+          },
+          "catch": {
+            "steps": {
+              "name": "error",
+              "module": "core",
+              "action": "setvalue",
+              "options": {
+                "value": {
+                  "status": "error",
+                  "message": "Failed to register volunteer: {{$_ERROR.message}}",
+                  "error": "{{$_ERROR}}"
+                }
+              },
+              "meta": [],
+              "output": true,
+              "outputType": "text"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

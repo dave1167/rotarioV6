@@ -1,0 +1,340 @@
+[
+  {
+    "name": "query",
+    "module": "dbconnector",
+    "action": "select",
+    "options": {
+      "connection": "db",
+      "sql": {
+        "type": "SELECT",
+        "columns": [
+          {
+            "table": "tbl_users",
+            "column": "userId"
+          },
+          {
+            "table": "tbl_users",
+            "column": "userName"
+          },
+          {
+            "table": "tbl_users",
+            "column": "fName"
+          },
+          {
+            "table": "tbl_users",
+            "column": "lName"
+          },
+          {
+            "table": "tbl_ek",
+            "column": "key"
+          }
+        ],
+        "table": {
+          "name": "tbl_users"
+        },
+        "wheres": {
+          "condition": "AND",
+          "rules": [
+            {
+              "id": "tbl_users.active",
+              "field": "tbl_users.active",
+              "type": "integer",
+              "operator": "equal",
+              "value": 1,
+              "data": {
+                "table": "tbl_users",
+                "column": "active"
+              },
+              "operation": "="
+            },
+            {
+              "id": "tbl_users.verified",
+              "field": "tbl_users.verified",
+              "type": "integer",
+              "operator": "equal",
+              "value": 1,
+              "data": {
+                "table": "tbl_users",
+                "column": "verified"
+              },
+              "operation": "="
+            }
+          ]
+        },
+        "orders": [
+          {
+            "table": "tbl_users",
+            "column": "fName",
+            "direction": "ASC",
+            "recid": 1
+          },
+          {
+            "table": "tbl_users",
+            "column": "lName",
+            "direction": "ASC",
+            "recid": 2
+          }
+        ],
+        "params": [],
+        "primary": "userId",
+        "joins": [
+          {
+            "table": "tbl_ek",
+            "column": "*",
+            "type": "INNER",
+            "clauses": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "table": "tbl_ek",
+                  "column": "userId",
+                  "operator": "equal",
+                  "operation": "=",
+                  "value": {
+                    "table": "tbl_users",
+                    "column": "userId"
+                  }
+                }
+              ]
+            },
+            "primary": "ekId"
+          }
+        ],
+        "sub": {
+          "dets": {
+            "table": {
+              "name": "tbl_user_dets",
+              "alias": "dets"
+            },
+            "key": "userId"
+          }
+        },
+        "query": "select `tbl_users`.`userId`, `tbl_users`.`userName`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_ek`.`key` from `tbl_users` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` where `tbl_users`.`active` = ? and `tbl_users`.`verified` = ? order by `tbl_users`.`fName` ASC, `tbl_users`.`lName` ASC"
+      }
+    },
+    "meta": [
+      {
+        "type": "number",
+        "name": "userId"
+      },
+      {
+        "type": "text",
+        "name": "userName"
+      },
+      {
+        "type": "text",
+        "name": "fName"
+      },
+      {
+        "type": "text",
+        "name": "lName"
+      },
+      {
+        "type": "text",
+        "name": "key"
+      },
+      {
+        "name": "dets",
+        "type": "array",
+        "sub": [
+          {
+            "type": "number",
+            "name": "usrDetsId"
+          },
+          {
+            "type": "text",
+            "name": "add1"
+          },
+          {
+            "type": "text",
+            "name": "add2"
+          },
+          {
+            "type": "text",
+            "name": "town1"
+          },
+          {
+            "type": "text",
+            "name": "town2"
+          },
+          {
+            "type": "text",
+            "name": "county"
+          },
+          {
+            "type": "text",
+            "name": "postcode"
+          },
+          {
+            "type": "text",
+            "name": "mobile"
+          },
+          {
+            "type": "text",
+            "name": "tel"
+          },
+          {
+            "type": "number",
+            "name": "userId"
+          },
+          {
+            "type": "number",
+            "name": "modifiedBy"
+          },
+          {
+            "type": "datetime",
+            "name": "dateModified"
+          },
+          {
+            "type": "text",
+            "name": "emgcyCntctNme"
+          },
+          {
+            "type": "text",
+            "name": "emgcyCntctTel"
+          }
+        ]
+      }
+    ],
+    "output": true,
+    "outputType": "array",
+    "collapsed": true
+  },
+  {
+    "name": "repeat",
+    "module": "core",
+    "action": "repeat",
+    "options": {
+      "repeat": "{{query}}",
+      "outputFields": [],
+      "exec": {
+        "steps": [
+          {
+            "name": "varFName",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "{{fName.decrypt(key)}}"
+            },
+            "meta": [],
+            "outputType": "text",
+            "output": true
+          },
+          {
+            "name": "varLName",
+            "module": "core",
+            "action": "setvalue",
+            "options": {
+              "value": "{{lName.decrypt(key)}}"
+            },
+            "meta": [],
+            "outputType": "text",
+            "output": true
+          }
+        ]
+      }
+    },
+    "output": true,
+    "meta": [
+      {
+        "name": "$index",
+        "type": "number"
+      },
+      {
+        "name": "$number",
+        "type": "number"
+      },
+      {
+        "name": "$name",
+        "type": "text"
+      },
+      {
+        "name": "$value",
+        "type": "object"
+      },
+      {
+        "name": "userId",
+        "type": "number"
+      },
+      {
+        "name": "userName",
+        "type": "text"
+      },
+      {
+        "name": "fName",
+        "type": "text"
+      },
+      {
+        "name": "lName",
+        "type": "text"
+      },
+      {
+        "name": "key",
+        "type": "text"
+      },
+      {
+        "name": "dets",
+        "type": "array",
+        "sub": [
+          {
+            "name": "usrDetsId",
+            "type": "number"
+          },
+          {
+            "name": "add1",
+            "type": "text"
+          },
+          {
+            "name": "add2",
+            "type": "text"
+          },
+          {
+            "name": "town1",
+            "type": "text"
+          },
+          {
+            "name": "town2",
+            "type": "text"
+          },
+          {
+            "name": "county",
+            "type": "text"
+          },
+          {
+            "name": "postcode",
+            "type": "text"
+          },
+          {
+            "name": "mobile",
+            "type": "text"
+          },
+          {
+            "name": "tel",
+            "type": "text"
+          },
+          {
+            "name": "userId",
+            "type": "number"
+          },
+          {
+            "name": "modifiedBy",
+            "type": "number"
+          },
+          {
+            "name": "dateModified",
+            "type": "datetime"
+          },
+          {
+            "name": "emgcyCntctNme",
+            "type": "text"
+          },
+          {
+            "name": "emgcyCntctTel",
+            "type": "text"
+          }
+        ]
+      }
+    ],
+    "outputType": "array"
+  }
+]
