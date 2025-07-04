@@ -175,12 +175,13 @@
                                                     </div>
 
                                                     <div class="align-self-center col-5">
+
                                                         <div class="form-floating mb-3">
                                                             <input type="text" class="form-control" id="inpStrtTime" name="inpStrtTime" placeholder="Start Time" dmx-bind:value="scGetsingleEv.data.query.eventStrtTime.formatDate('hh:mm a')">
 
 
                                                             <label for="inpFmtTime">Start Time</label><button id="btn3" class="btn btn-light" dmx-on:click="modTimePicker.show();modEditIndEvent.hide()"><i class="fas fa-clock" dmx-on:click="modTimePicker.show()"></i></button>
-                                                        </div>
+                                                        </div><input id="hidStrtTime" name="hidStrtTime" type="text" class="form-control">
                                                     </div>
 
                                                     <div class="text-start col-1">
@@ -388,30 +389,111 @@
     <meta name="ac:route" content="/admin/events/event_list2">
     <script>
         const selHour = document.getElementById("selHour");
-  const selMinute = document.getElementById("selMinute");
-  const selPeriod = document.getElementById("selPeriod");
-  const inpStrtTime = document.getElementById("inpStrtTime");
+        const selMinute = document.getElementById("selMinute");
+        const selPeriod = document.getElementById("selPeriod");
+        const inpStrtTime = document.getElementById("modStrtTime");
+        const hidStrtTime = document.getElementById("hidStrtTime");
 
-  function updateTimeInput() {
-    const hh = selHour.value;
-    const mm = selMinute.value;
-    const ap = selPeriod.value;
-    if (hh && mm && ap) {
-      inpStrtTime.value = `${hh}:${mm} ${ap}`;
-    } else {
-      inpStrtTime.value = '';
-    }
-  }
+        function updateTimeInput() {
+            const hh = selHour.value;
+            const mm = selMinute.value;
+            const ap = selPeriod.value;
+            
+            if (hh && mm && ap) {
+                // Update the visible input with 12-hour format
+                inpStrtTime.value = `${hh}:${mm} ${ap}`;
+                
+                // Convert to 24-hour format for hidden input
+                let hour24 = parseInt(hh, 10);
+                
+                // Adjust hours based on AM/PM
+                if (ap === 'PM' && hour24 !== 12) {
+                    hour24 += 12;
+                } else if (ap === 'AM' && hour24 === 12) {
+                    hour24 = 0;
+                }
+                
+                // Format as 24-hour time with seconds
+                const time24 = `${hour24.toString().padStart(2, '0')}:${mm}:00`;
+                hidStrtTime.value = time24;
+            } else {
+                inpStrtTime.value = '';
+                hidStrtTime.value = '';
+            }
+        }
 
-  function populateDropdowns() {
-    for (let h = 1; h <= 12; h++) {
-      const val = h.toString().padStart(2, '0');
-      selHour.innerHTML += `<option value="${val}">${val}</option>`;
-    }
+        function populateDropdowns() {
+            // Clear existing options
+            selHour.innerHTML = '<option value="">HH</option>';
+            selMinute.innerHTML = '<option value="">MM</option>';
+            
+            // Populate hours (1-12)
+            for (let h = 1; h <= 12; h++) {
+                const val = h.toString().padStart(2, '0');
+                selHour.innerHTML += `<option value="${val}">${val}</option>`;
+            }
 
-    for (let m = 0; m < 60; m += 5) {
-      const val = m.toString().padStart(2, '0');
-      selMinute.innerHTML += `<option value="${val}">${val}</option>`;
+            // Populate minutes (00-55 in 5-minute increments)
+            for (let m = 0; m < 60; m += 5) {
+                const val = m.toString().padStart(2, '0');
+                selMinute.innerHTML += `<option value="${val}">${val}</option>`;
+            }
+        }
+
+        function convert24hrTo12hr(timeStr) {
+            // Expects "HH:mm" or "HH:mm:ss"
+            const parts = timeStr.trim().split(':');
+            if (parts.length < 2) return null;
+            
+            let hour = parseInt(parts[0], 10);
+            const minute = parts[1].padStart(2, '0');
+            const period = hour >= 12 ? 'PM' : 'AM';
+            
+            // Convert hour to 12-hour format
+            if (hour === 0) {
+                hour = 12;
+            } else if (hour > 12) {
+                hour -= 12;
+            }
+            
+            const hourStr = hour.toString().padStart(2, '0');
+            return { hour: hourStr, minute, period };
+        }
+
+        function loadInitialTime() {
+            const rawTime = dmx.parse('scGetsingleEv.data.query.eventStrtTime');
+            
+            if (!rawTime) return;
+
+            let h, m, ap;
+            if (rawTime.match(/^\d{1,2}:\d{2} ?(AM|PM)$/i)) {
+                // Already in 12-hour format
+                const [timePart, periodPart] = rawTime.toUpperCase().split(' ');
+                [h, m] = timePart.split(':');
+                ap = periodPart;
+            } else {
+                // Assume 24-hour, convert to 12-hour
+                const result = convert24hrTo12hr(rawTime);
+                if (result) {
+                    h = result.hour;
+                    m = result.minute;
+                    ap = result.period;
+                }
+            }
+
+            if (h && m && ap) {
+                selHour.value = h;
+                selMinute.value = m;
+                selPeriod.value = ap;
+                updateTimeInput();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            populateDropdowns();
+            document.getElementById("scGetsingleEv").addEventListener("dmx:updated", loadInitialTime);
+            [selHour, selMinute, selPeriod].forEach(el => el.addEventListener("change", updateTimeInput));
+        });
     }
   }
 
@@ -465,4 +547,31 @@
       el.addEventListener("change", updateTimeInput)
     );
   });
+  function updateTimeInput() {
+    const hh = selHour.value;
+    const mm = selMinute.value;
+    const ap = selPeriod.value;
+    
+    if (hh && mm && ap) {
+        // Update the visible input with 12-hour format
+        inpStrtTime.value = `${hh}:${mm} ${ap}`;
+        
+        // Convert to 24-hour format for hidden input
+        let hour24 = parseInt(hh, 10);
+        
+        // Adjust hours based on AM/PM
+        if (ap === 'PM' && hour24 !== 12) {
+            hour24 += 12;
+        } else if (ap === 'AM' && hour24 === 12) {
+            hour24 = 0;
+        }
+        
+        // Format as 24-hour time with seconds
+        const time24 = `${hour24.toString().padStart(2, '0')}:${mm}:00`;
+        document.getElementById('hidStrtTime').value = time24;
+    } else {
+        inpStrtTime.value = '';
+        document.getElementById('hidStrtTime').value = '';
+    }
+}
     </script>

@@ -157,17 +157,17 @@
       {
         "type": "number",
         "fieldName": "hidPub",
-        "options": {
-          "rules": {
-            "core:number": {}
-          }
-        },
         "name": "hidPub"
       },
       {
         "type": "text",
         "fieldName": "checkPub",
         "name": "checkPub"
+      },
+      {
+        "type": "text",
+        "fieldName": "hidStrtTime",
+        "name": "hidStrtTime"
       }
     ],
     "$_SESSION": [
@@ -257,7 +257,7 @@
                 "table": "tbl_events",
                 "column": "eventStrtTime",
                 "type": "time",
-                "value": "{{varStartTime}}"
+                "value": "{{$_POST.hidStrtTime}}"
               },
               {
                 "table": "tbl_events",
@@ -349,7 +349,7 @@
               {
                 "name": ":P1",
                 "type": "expression",
-                "value": "{{varStartTime}}",
+                "value": "{{$_POST.hidStrtTime}}",
                 "test": ""
               },
               {
