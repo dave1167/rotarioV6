@@ -25,17 +25,42 @@
     }
   }
 ]</script>
+<script is="dmx-flow" id="flow2" type="text/dmx-flow">[
+  {
+    run: {outputType: "text", disabled: true, action: "{{arr1.empty()}}"}
+  },
+  {
+    repeat: {
+      name: "repeat",
+      output: true,
+      outputType: "array",
+      disabled: true,
+      repeat: "{{scEvVols.data.query}}",
+      outputFields: [],
+      exec: {
+        steps: {
+          run: {
+            outputType: "text",
+            action: "{{arr1.insert(scEvVols.data.query[$index].evVolId,scEvVols.data.query[$index].status)}}"
+          }
+        }
+      }
+    }
+  }
+]</script>
 <dmx-value id="selectedOptions" dmx-on:updated="" dmx-bind:value="arr1.items"></dmx-value>
 <dmx-array id="arrStatus" dmx-on:updated=""></dmx-array>
 <dmx-array id="arrStatus1" dmx-on:updated=""></dmx-array>
 <dmx-array id="arrEvVolId"></dmx-array>
-<dmx-serverconnect id="scGetLocations" url="/api/Events/getLocation"></dmx-serverconnect>
-<dmx-serverconnect id="getActiveUsersFor" url="/api/Volunteers/getActiveUsersFor" dmx-param:status="1" dmx-on:success="selVolunteer.setValue('')" dmx-on:load="true" noload="true"></dmx-serverconnect><dmx-serverconnect id="scVolCount" url="/api/Events/getCountVolsEvents"></dmx-serverconnect>
+<dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
+<dmx-serverconnect id="scAddVol" url="/api/Events/addVolunteer" noload="true"></dmx-serverconnect><dmx-serverconnect id="scGetLocations" url="/api/Events/getLocation"></dmx-serverconnect>
+<dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scGetActiveUserForVol" url="/api/Users/getActiveUsersForVolunteers"></dmx-serverconnect><dmx-serverconnect id="scVolCount" url="/api/Events/getCountVolsEvents"></dmx-serverconnect>
 <dmx-serverconnect id="scUpdateEvent" url="/api/Events/updateEventDetails" noload="true" dmx-param:eventid="modEditIndEvent.accordion1_collapseOne.frmEvDets.inp_EvId.value"></dmx-serverconnect>
-<dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value" noload="true"></dmx-serverconnect><dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
+<dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent1" noload="true" dmx-param:eventid="" dmx-on:success="scGetVenue.load({location: scGetsingleEv.data.query.location})"></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
+
 <dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
 <dmx-serverconnect id="serverconnect1" url="/api/Events/getSingleEvent2" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scupdateSts" url="/api/Events/updateEventStatus2" noload="true" dmx-param:eventid="scEvVols.data.query[$index].eventId" dmx-param:voleventid="scEvVols.data.query[$index].evVolId"></dmx-serverconnect>
@@ -83,7 +108,7 @@
                 <!-- Load volunteer data when component is ready -->
 
 
-                <form is="dmx-serverconnect-form" id="frmAddVolunteer" method="post" action="/api/Events/addEventVolunteer">
+                <form is="dmx-serverconnect-form" id="frmAddVolunteer" method="post" action="/api/Events/addVolunteer">
                     <input type="hidden" id="eventId" name="eventId" dmx-bind:value="scGetsingleEv.data.query.eventId || ''">
                     <input type="hidden" id="status" name="status" value="1">
 
@@ -92,82 +117,86 @@
                             <span class="spinner-border spinner-border-sm text-secondary" dmx-show="getActiveUsersFor.state.executing"></span>
                         </label>
                         <!-- Fixed dropdown by ensuring data loads immediately and using proper binding -->
-                        <select id="selVolunteer" name="volunteer_id" class="form-select" required dmx-bind:options="getActiveUsersFor.data.query" optiontext="varFName + ' ' + varLName" optionvalue="id">
+                        <select id="selVolunteer" name="volunteer_id" class="form-select" required="" optiontext="varFName+' '+varLName" optionvalue="varUserId" dmx-bind:options="scGetActiveUserForVol.data.repeat">
                             <option value="" selected disabled>
                                 {{getActiveUsersFor.state.executing ? 'Loading volunteers...' : 'Please select a volunteer'}}
                             </option>
                         </select>
-                    </div>
+                        <input id="inpUserId" name="inpUserId" type="text" class="form-control mt-3" dmx-bind:value="selVolunteer.value">
+                        <input id="inpEvId" name="inpEvId" type="text" class="form-control" dmx-bind:value="scGetsingleEv.data.query.eventId">
+                    </div><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button><button type="button" class="btn btn-primary" dmx-on:click="frmAddVolunteer.submit(); modAddVol.hide(); scEvVols.load({eventid: scGetsingleEv.data.query.eventId});modEditIndEvent.show();notifies1.success('Volunteer Added')">Add Volunteer</button>
                 </form>
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" dmx-on:click="frmAddVolunteer.submit(); modAddVol.hide(); scEvVols.load({eventid: scGetsingleEv.data.query.eventId})">Add Volunteer</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal" id="modTimePicker" is="dmx-bs5-modal" tabindex="-1">
-    <div class="modal-dialog modal-sm" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-light-emphasis">
-                <h5 class="modal-title">Select Event Start Time</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col">
-                        <div class="row mb-3">
-                            <label for="modStrtTime" class="form-label">Start Time</label>
-
-                            <div class="col-auto">
-                                <select id="selHour" class="form-select" aria-label="Hour">
-                                    <option value="">HH</option>
-                                    <!-- JS will populate -->
-                                </select>
-                            </div>
-
-                            <div class="col-auto">
-                                <select id="selMinute" class="form-select" aria-label="Minute">
-                                    <option value="">MM</option>
-                                    <!-- JS will populate -->
-                                </select>
-                            </div>
-
-                            <div class="col-auto">
-                                <select id="selPeriod" class="form-select" aria-label="AM/PM">
-                                    <option value="AM">AM</option>
-                                    <option value="PM" selected>PM</option>
-                                </select>
-                            </div>
-
-                            <!-- Hidden input to submit combined time -->
-                            <input class="form-control" id="modStrtTime" name="inpStrtTime">
+            <div class="modal" id="modTimePicker" is="dmx-bs5-modal" tabindex="-1">
+                <div class="modal-dialog modal-sm" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header bg-warning text-light-emphasis">
+                            <h5 class="modal-title">Select Event Start Time</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <button id="btn4" class="btn btn-secondary" dmx-on:click="modEditIndEvent.show();modEditIndEvent.accordion1_collapseOne.frmEvDets.inpStrtTime.setValue(modStrtTime.value);modTimePicker.hide()">Update</button>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row mb-3">
+                                        <label for="modStrtTime" class="form-label">Start Time</label>
+
+                                        <div class="col-auto">
+                                            <select id="selHour" class="form-select" aria-label="Hour">
+                                                <option value="">HH</option>
+                                                <!-- JS will populate -->
+                                            </select>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <select id="selMinute" class="form-select" aria-label="Minute">
+                                                <option value="">MM</option>
+                                                <!-- JS will populate -->
+                                            </select>
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <select id="selPeriod" class="form-select" aria-label="AM/PM">
+                                                <option value="AM">AM</option>
+                                                <option value="PM" selected>PM</option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Hidden input to submit combined time -->
+                                        <input class="form-control" id="modStrtTime" name="inpStrtTime">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <button id="btn4" class="btn btn-secondary" dmx-on:click="modEditIndEvent.show();modEditIndEvent.accordion1_collapseOne.frmEvDets.inpStrtTime.setValue(modStrtTime.value);modTimePicker.hide()">Update</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                        <div class="modal-footer">
+
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="modal-body">
+
+            </div>
             <div class="modal-footer">
+
 
             </div>
         </div>
     </div>
 </div>
+
 <div class="modEditEvent 2" id="modal1" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-body">
-                <input id="text1" name="text1" type="text" class="form-control" dmx-bind:value="scGetsingleEv.data.query.eventId">
-            </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -372,7 +401,7 @@
             <div class="row">
                 <div class="col">
                     <!-- First load data, then show modal in sequence -->
-                    <button class="btn ms-2 btn-primary" dmx-on:click="getActiveUsersFor.load({status: 1});                                                                          modEditIndEvent.hide();modAddVol.show()"><i class="fas fa-user-plus"></i> Add Volunteer</button>
+                    <button class="btn ms-2 btn-primary" dmx-on:click="run([{run:{outputType:'text',disabled:true,action:`getActiveUsersFor.load({})`}},{run:{outputType:'text',action:`                                                                          modEditIndEvent.hide()`}},{run:{outputType:'text',action:`modAddVol.show()`}}])"><i class="fas fa-user-plus"></i> Add Volunteer</button>
                     <button class="btn ms-2 btn-warning" dmx-on:click="run([{run:{outputType:'text',action:`frmEvDets.submit()`}},{wait:{delay:400}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`arrStatus.items`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`scupdateSts.load({voleventid: arrEvVolId.items[$index], statusv: arrStatus.items[$index]})`}}}}},{run:{outputType:'text',action:`accordion1_collapseOne.frmEvDets.reset(true);modEditIndEvent.hide()`}}])">Update Event</button>
                     <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Close</button>
                 </div>

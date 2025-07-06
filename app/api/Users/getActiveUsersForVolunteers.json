@@ -79,15 +79,8 @@
             "orders": [
               {
                 "table": "tbl_users",
-                "column": "fName",
-                "direction": "ASC",
-                "recid": 1
-              },
-              {
-                "table": "tbl_users",
                 "column": "lName",
-                "direction": "ASC",
-                "recid": 2
+                "direction": "ASC"
               }
             ],
             "params": [],
@@ -124,7 +117,7 @@
                 "key": "userId"
               }
             },
-            "query": "select `tbl_users`.`userId`, `tbl_users`.`userName`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_ek`.`key` from `tbl_users` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` where `tbl_users`.`active` = ? and `tbl_users`.`verified` = ? order by `tbl_users`.`fName` ASC, `tbl_users`.`lName` ASC"
+            "query": "select `tbl_users`.`userId`, `tbl_users`.`userName`, `tbl_users`.`fName`, `tbl_users`.`lName`, `tbl_ek`.`key` from `tbl_users` inner join `tbl_ek` on `tbl_ek`.`userId` = `tbl_users`.`userId` where `tbl_users`.`active` = ? and `tbl_users`.`verified` = ? order by `tbl_users`.`lName` ASC"
           }
         },
         "meta": [
@@ -249,6 +242,17 @@
                 "action": "setvalue",
                 "options": {
                   "value": "{{lName.decrypt(key)}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true
+              },
+              {
+                "name": "varUserId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{query[$index].userId}}"
                 },
                 "meta": [],
                 "outputType": "text",

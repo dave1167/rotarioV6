@@ -2,7 +2,7 @@
   "meta": {
     "options": {
       "linkedFile": "/views/admin/events/event_list2.ejs",
-      "linkedForm": "frmInsVol"
+      "linkedForm": "frmAddVolunteer"
     },
     "$_POST": [
       {
@@ -18,17 +18,39 @@
       {
         "type": "number",
         "fieldName": "inpEvId",
-        "options": {
-          "rules": {
-            "core:number": {}
-          }
-        },
         "name": "inpEvId"
       },
       {
         "type": "text",
         "fieldName": "selVolList",
         "name": "selVolList"
+      },
+      {
+        "type": "text",
+        "fieldName": "eventId",
+        "name": "eventId"
+      },
+      {
+        "type": "text",
+        "fieldName": "status",
+        "name": "status"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpUserId",
+        "name": "inpUserId"
+      },
+      {
+        "type": "text",
+        "fieldName": "volunteer_id",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "volunteer_id"
       }
     ],
     "$_SESSION": [
@@ -58,7 +80,7 @@
               "table": "tbl_event_vol",
               "column": "userId",
               "type": "number",
-              "value": "{{$_POST.inpVolId}}"
+              "value": "{{$_POST.inpUserId}}"
             },
             {
               "table": "tbl_event_vol",
@@ -98,7 +120,7 @@
             {
               "name": ":P2",
               "type": "expression",
-              "value": "{{$_POST.inpVolId}}",
+              "value": "{{$_POST.inpUserId}}",
               "test": ""
             },
             {
