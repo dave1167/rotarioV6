@@ -940,6 +940,42 @@ dmx.config({
         "type": "array",
         "name": "new"
       }
+    ],
+    "event_filter_mode": [
+      {
+        "name": "value",
+        "type": "text"
+      }
+    ],
+    "filtered_events": [
+      {
+        "name": "eventId",
+        "type": "text"
+      },
+      {
+        "name": "eventName",
+        "type": "text"
+      },
+      {
+        "name": "eventDate",
+        "type": "text"
+      },
+      {
+        "name": "venueDesc",
+        "type": "text"
+      },
+      {
+        "name": "eventStrtTime",
+        "type": "text"
+      },
+      {
+        "name": "numvols",
+        "type": "number"
+      },
+      {
+        "name": "published",
+        "type": "number"
+      }
     ]
   }
 });

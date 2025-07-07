@@ -2,6 +2,21 @@
 
 <link rel="stylesheet" href="/assets/css/custom.css">
 
+<!-- Event Filter Mode: radio group for future/past -->
+<div class="d-flex align-items-center gap-2 mb-3 mt-1">
+    <input type="text" id="event_search" class="form-control w-auto me-3" placeholder="Search events by title...">
+    <div is="dmx-radio-group" id="event_filter_mode" class="btn-group" value="future">
+        <input type="radio" class="btn-check" name="event_mode" id="radio_future" value="future">
+        <label class="btn btn-outline-primary" for="radio_future">Future Events</label>
+        <input type="radio" class="btn-check" name="event_mode" id="radio_past" value="past">
+        <label class="btn btn-outline-primary" for="radio_past">Past Events</label>
+    </div>
+</div>
+
+<!-- Data view for filtered event list -->
+<dmx-data-view id="filtered_events" dmx-bind:data="scEventVolData.data.qryGetAllEvents" filter="event_filter_mode.value == 'future' ? eventDate.toDate() &gt;= 'now'.toDate().formatDate('yyyy-MM-dd') : eventDate.toDate() &lt; 'now'.toDate().formatDate('yyyy-MM-dd')">
+</dmx-data-view>
+
 <!-- Holds array of volunteer counts by event from scVolCount -->
 <dmx-value id="volcounts" dmx-bind:value="scVolCount.data"></dmx-value>
 
@@ -72,45 +87,44 @@
 
     <div class="row">
         <div class="col">
-
-            <h2>Events</h2><input id="event_search" type="text" class="form-control" placeholder="Search events by title...">
+            <h2>Events</h2>
         </div>
+    </div>
+
+    <div class="row mt-2 gx-1 gy-1 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-4 justify-content-start" is="dmx-repeat" id="repeat1" dmx-bind:repeat="filtered_events.data">
+        <div class="col">
+            <div class="card align-self-start h-100 border-1 border rounded-top rounded-3 shadow border-info">
+                <div class="card-header bg-success text-light text-lg-center fw-bolder h-100">
+                    <h5 class="card-title align-self-lg-center fw-bolder" dmx-text="scEventVolData.data.qryGetAllEvents[$index].eventName">Card title</h5>
+                </div>
+                <div class="card-body text-lg-center" dmx-class:published="published == 1" dmx-class:not-published="published == 0">
 
 
-        <div class="row mt-2 gx-1 gy-1 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xxl-4 row-cols-xl-4 row-cols-lg-4 justify-content-start" is="dmx-repeat" id="repeat1" dmx-bind:repeat="scEventVolData.data.qryGetAllEvents">
-            <div class="col">
-                <div class="card align-self-start h-100 border-1 border rounded-top rounded-3 shadow border-info">
-                    <div class="card-header bg-success text-light text-lg-center fw-bolder h-100">
-                        <h5 class="card-title align-self-lg-center fw-bolder" dmx-text="scEventVolData.data.qryGetAllEvents[$index].eventName">Card title</h5>
-                    </div>
-                    <div class="card-body text-lg-center" dmx-class:published="published == 1" dmx-class:not-published="published == 0">
+                    <div class="row">
+                        <div class="col">
+                            <h5>
+                                <span class="badge ms-2" dmx-text="volcounts.value.query.where('eventId', eventId).first() ? volcounts.value.query.where('eventId', eventId).first().volCount + ' Volunteers Registered' : '0 Volunteers Registered'" dmx-class:bg-danger="!volcounts.value.query.where('eventId', eventId).first() || (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.4" dmx-class:bg-warning="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.4 && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.7" dmx-class:bg-success="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.7" id="Ev$index">
+                                </span>
 
-
-                        <div class="row">
-                            <div class="col">
-                                <h5>
-                                    <span class="badge ms-2" dmx-text="volcounts.value.query.where('eventId', eventId).first() ? volcounts.value.query.where('eventId', eventId).first().volCount + ' Volunteers Registered' : '0 Volunteers Registered'" dmx-class:bg-danger="!volcounts.value.query.where('eventId', eventId).first() || (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.4" dmx-class:bg-warning="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.4 && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.7" dmx-class:bg-success="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.7" id="Ev$index">
-                                    </span>
-
-                                </h5>
-                                <small class="text-muted">
-                                    {{ (volcounts.value.query.where('eventId', eventId).first() ? (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber() * 100 ).toFixed(1) : 0) + '%' }}
-                                </small>
-                            </div>
+                            </h5>
+                            <small class="text-muted">
+                                {{ (volcounts.value.query.where('eventId', eventId).first() ? (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber() * 100 ).toFixed(1) : 0) + '%' }}
+                            </small>
                         </div>
+                    </div>
 
-                        <p class="card-text">Venue: {{venueDesc}}</p>
-                        <p class="card-text">Date: {{eventDate.formatDate('dd-MM-yyyy')}}.</p>
-                        <p class="card-text">Start Time: {{eventStrtTime.formatDate('h:mm A')}}</p>
-                        <p class="card-text">Number of Volunteers: {{numvols}}</p>
-                    </div>
-                    <div class="card-footer pt-0 pb-0 ps-0 pe-0">
-                        <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="run([{'bootbox.alert':{disabled:true,message:`eventName+\'  event id  \'+eventId`}},{run:{outputType:'text',action:`scGetsingleEv.load({eventid: eventId})`}},{'bootbox.alert':{disabled:true,message:`scGetsingleEv.data.query.eventName+\' EV\'`}},{run:{outputType:'text',action:`modEditIndEvent.show()`}},{run:{outputType:'text',action:`modEditIndEvent.data_detail1.select(eventId)`}},{run:{outputType:'text',action:`arrStatus.empty()`}},{run:{outputType:'text',action:`scEvVols.load({eventid: eventId})`}}])">Edit</button>
-                    </div>
+                    <p class="card-text">Venue: {{venueDesc}}</p>
+                    <p class="card-text">Date: {{eventDate.formatDate('dd-MM-yyyy')}}.</p>
+                    <p class="card-text">Start Time: {{eventStrtTime.formatDate('h:mm A')}}</p>
+                    <p class="card-text">Number of Volunteers: {{numvols}}</p>
+                </div>
+                <div class="card-footer pt-0 pb-0 ps-0 pe-0">
+                    <button id="btn1" class="btn w-100 btn-success text-bg-success text-light" dmx-on:click="run([{'bootbox.alert':{disabled:true,message:`eventName+\'  event id  \'+eventId`}},{run:{outputType:'text',action:`scGetsingleEv.load({eventid: eventId})`}},{'bootbox.alert':{disabled:true,message:`scGetsingleEv.data.query.eventName+\' EV\'`}},{run:{outputType:'text',action:`modEditIndEvent.show()`}},{run:{outputType:'text',action:`modEditIndEvent.data_detail1.select(eventId)`}},{run:{outputType:'text',action:`arrStatus.empty()`}},{run:{outputType:'text',action:`scEvVols.load({eventid: eventId})`}}])">Edit</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 </div>
 <div class="modal" id="modTimePicker" is="dmx-bs5-modal" tabindex="-1">
