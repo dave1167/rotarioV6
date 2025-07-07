@@ -382,6 +382,10 @@ dmx.config({
         }
       ],
       "outputType": "object"
+    },
+    "var1": {
+      "meta": null,
+      "outputType": "number"
     }
   },
   "test": {

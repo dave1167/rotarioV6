@@ -1,0 +1,115 @@
+{
+  "name": "query",
+  "module": "dbconnector",
+  "action": "single",
+  "options": {
+    "connection": "db",
+    "sql": {
+      "type": "SELECT",
+      "columns": [
+        {
+          "table": "tbl_events",
+          "column": "published",
+          "alias": "pubEvents",
+          "aggregate": "COUNT"
+        }
+      ],
+      "params": [
+        {
+          "operator": "equal",
+          "type": "expression",
+          "name": ":P1",
+          "value": "{{$_SESSION.Ses_Ten_Id}}",
+          "test": "1"
+        },
+        {
+          "operator": "equal",
+          "type": "expression",
+          "name": ":P2",
+          "value": "{{$_SESSION.Ses_Rota_Id}}",
+          "test": "1"
+        }
+      ],
+      "table": {
+        "name": "tbl_events"
+      },
+      "primary": "eventId",
+      "joins": [],
+      "groupBy": [],
+      "wheres": {
+        "condition": "AND",
+        "rules": [
+          {
+            "id": "tbl_events.published",
+            "field": "tbl_events.published",
+            "type": "boolean",
+            "operator": "equal",
+            "value": true,
+            "data": {
+              "table": "tbl_events",
+              "column": "published",
+              "type": "boolean",
+              "columnObj": {
+                "type": "boolean",
+                "primary": false,
+                "nullable": true,
+                "name": "published"
+              }
+            },
+            "operation": "="
+          },
+          {
+            "id": "tbl_events.tenantId",
+            "field": "tbl_events.tenantId",
+            "type": "double",
+            "operator": "equal",
+            "value": "{{$_SESSION.Ses_Ten_Id}}",
+            "data": {
+              "table": "tbl_events",
+              "column": "tenantId",
+              "type": "number",
+              "columnObj": {
+                "type": "integer",
+                "primary": false,
+                "nullable": true,
+                "name": "tenantId"
+              }
+            },
+            "operation": "="
+          },
+          {
+            "id": "tbl_events.rotaId",
+            "field": "tbl_events.rotaId",
+            "type": "double",
+            "operator": "equal",
+            "value": "{{$_SESSION.Ses_Rota_Id}}",
+            "data": {
+              "table": "tbl_events",
+              "column": "rotaId",
+              "type": "number",
+              "columnObj": {
+                "type": "integer",
+                "primary": false,
+                "nullable": true,
+                "name": "rotaId"
+              }
+            },
+            "operation": "="
+          }
+        ],
+        "conditional": null,
+        "valid": true
+      },
+      "query": "select count(`published`) as `pubEvents` from `tbl_events` where `tbl_events`.`published` = ? and `tbl_events`.`tenantId` = ? and `tbl_events`.`rotaId` = ?"
+    }
+  },
+  "output": true,
+  "meta": [
+    {
+      "type": "boolean",
+      "name": "pubEvents"
+    }
+  ],
+  "outputType": "object",
+  "collapsed": true
+}

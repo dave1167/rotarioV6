@@ -1,0 +1,102 @@
+{
+  "name": "totalCount",
+  "module": "dbconnector",
+  "action": "single",
+  "options": {
+    "connection": "db",
+    "sql": {
+      "type": "SELECT",
+      "columns": [
+        {
+          "table": "tbl_event_vol",
+          "column": "evVolId",
+          "aggregate": "count",
+          "alias": "count"
+        }
+      ],
+      "table": {
+        "name": "tbl_event_vol"
+      },
+      "joins": [
+        {
+          "table": "tbl_events",
+          "column": "*",
+          "type": "INNER",
+          "clauses": {
+            "condition": "AND",
+            "rules": [
+              {
+                "table": "tbl_events",
+                "column": "eventId",
+                "operator": "equal",
+                "operation": "=",
+                "value": {
+                  "table": "tbl_event_vol",
+                  "column": "eventId"
+                }
+              }
+            ]
+          },
+          "primary": "eventId"
+        }
+      ],
+      "wheres": {
+        "condition": "AND",
+        "rules": [
+          {
+            "id": "tbl_events.rotaId",
+            "field": "tbl_events.rotaId",
+            "type": "double",
+            "operator": "equal",
+            "value": "{{$_SESSION.Ses_Rota_Id}}",
+            "data": {
+              "table": "tbl_events",
+              "column": "rotaId"
+            },
+            "operation": "="
+          },
+          {
+            "id": "tbl_events.tenantId",
+            "field": "tbl_events.tenantId",
+            "type": "double",
+            "operator": "equal",
+            "value": "{{$_SESSION.Ses_Ten_Id}}",
+            "data": {
+              "table": "tbl_events",
+              "column": "tenantId"
+            },
+            "operation": "="
+          }
+        ]
+      },
+      "groupBy": [],
+      "params": [
+        {
+          "operator": "equal",
+          "type": "expression",
+          "name": ":P1",
+          "value": "{{$_SESSION.Ses_Rota_Id}}",
+          "test": "1"
+        },
+        {
+          "operator": "equal",
+          "type": "expression",
+          "name": ":P2",
+          "value": "{{$_SESSION.Ses_Ten_Id}}",
+          "test": "1"
+        }
+      ],
+      "primary": "evVolId",
+      "query": "select count(`tbl_event_vol`.`evVolId`) as `count` from `tbl_event_vol` inner join `tbl_events` on `tbl_events`.`eventId` = `tbl_event_vol`.`eventId` where `tbl_events`.`rotaId` = ? and `tbl_events`.`tenantId` = ?"
+    }
+  },
+  "output": true,
+  "meta": [
+    {
+      "type": "number",
+      "name": "count"
+    }
+  ],
+  "outputType": "object",
+  "collapsed": true
+}

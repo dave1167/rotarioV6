@@ -1,0 +1,96 @@
+{
+  "name": "query",
+  "module": "dbconnector",
+  "action": "single",
+  "options": {
+    "connection": "db",
+    "sql": {
+      "type": "SELECT",
+      "columns": [
+        {
+          "table": "tbl_events",
+          "column": "numvols",
+          "alias": "totalShifts",
+          "aggregate": "COUNT"
+        }
+      ],
+      "params": [
+        {
+          "operator": "equal",
+          "type": "expression",
+          "name": ":P1",
+          "value": "{{$_SESSION.Ses_Ten_Id}}",
+          "test": "1"
+        },
+        {
+          "operator": "equal",
+          "type": "expression",
+          "name": ":P2",
+          "value": "{{$_SESSION.Ses_Rota_Id}}",
+          "test": "1"
+        }
+      ],
+      "table": {
+        "name": "tbl_events"
+      },
+      "primary": "eventId",
+      "joins": [],
+      "groupBy": [],
+      "wheres": {
+        "condition": "AND",
+        "rules": [
+          {
+            "id": "tbl_events.tenantId",
+            "field": "tbl_events.tenantId",
+            "type": "double",
+            "operator": "equal",
+            "value": "{{$_SESSION.Ses_Ten_Id}}",
+            "data": {
+              "table": "tbl_events",
+              "column": "tenantId",
+              "type": "number",
+              "columnObj": {
+                "type": "integer",
+                "primary": false,
+                "nullable": true,
+                "name": "tenantId"
+              }
+            },
+            "operation": "="
+          },
+          {
+            "id": "tbl_events.rotaId",
+            "field": "tbl_events.rotaId",
+            "type": "double",
+            "operator": "equal",
+            "value": "{{$_SESSION.Ses_Rota_Id}}",
+            "data": {
+              "table": "tbl_events",
+              "column": "rotaId",
+              "type": "number",
+              "columnObj": {
+                "type": "integer",
+                "primary": false,
+                "nullable": true,
+                "name": "rotaId"
+              }
+            },
+            "operation": "="
+          }
+        ],
+        "conditional": null,
+        "valid": true
+      },
+      "query": "select count(`numvols`) as `totalShifts` from `tbl_events` where `tbl_events`.`tenantId` = ? and `tbl_events`.`rotaId` = ?"
+    }
+  },
+  "output": true,
+  "meta": [
+    {
+      "type": "number",
+      "name": "totalShifts"
+    }
+  ],
+  "outputType": "object",
+  "collapsed": true
+}
