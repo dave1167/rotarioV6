@@ -14,79 +14,34 @@
   "exec": {
     "steps": {
       "name": "query",
-      "module": "dbconnector",
-      "action": "select",
+      "module": "dbupdater",
+      "action": "custom",
       "options": {
         "connection": "db",
         "sql": {
-          "type": "SELECT",
-          "columns": [
-            {
-              "table": "tbl_event_vol",
-              "column": "eventId",
-              "aggregate": "COUNT",
-              "alias": "volCount"
-            }
-          ],
+          "query": "SELECT eventId, COUNT(eventId) as volCount\nFROM tbl_event_vol\nGROUP BY eventId",
           "params": [
             {
-              "operator": "equal",
-              "type": "expression",
               "name": ":P1",
               "value": "{{$_GET.eventid}}",
               "test": "60"
             }
-          ],
-          "table": {
-            "name": "tbl_event_vol"
-          },
-          "primary": "evVolId",
-          "joins": [],
-          "query": "select count(`eventId`) as `volCount` from `tbl_event_vol` where `tbl_event_vol`.`eventId` = ?",
-          "groupBy": [],
-          "wheres": {
-            "condition": "AND",
-            "rules": [
-              {
-                "id": "tbl_event_vol.eventId",
-                "field": "tbl_event_vol.eventId",
-                "type": "double",
-                "operator": "equal",
-                "value": "{{$_GET.eventid}}",
-                "data": {
-                  "table": "tbl_event_vol",
-                  "column": "eventId",
-                  "type": "number",
-                  "columnObj": {
-                    "type": "reference",
-                    "primary": false,
-                    "nullable": true,
-                    "references": "eventId",
-                    "inTable": "tbl_events",
-                    "referenceType": "integer",
-                    "onUpdate": "NO ACTION",
-                    "onDelete": "NO ACTION",
-                    "name": "eventId"
-                  }
-                },
-                "operation": "=",
-                "table": "tbl_event_vol"
-              }
-            ],
-            "conditional": null,
-            "valid": true
-          }
+          ]
         }
       },
       "meta": [
         {
-          "type": "number",
-          "name": "volCount"
+          "name": "eventId",
+          "type": "number"
+        },
+        {
+          "name": "volCount",
+          "type": "text"
         }
       ],
-      "outputType": "array",
       "collapsed": true,
-      "output": true
+      "output": true,
+      "type": "dbcustom_query"
     }
   }
 }
