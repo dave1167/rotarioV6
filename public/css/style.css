@@ -148,6 +148,9 @@
   transition:
     transform 0.3s ease,
     -webkit-transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
 }
 
 .rotate-0 {
@@ -156,6 +159,9 @@
   -webkit-transition: -webkit-transform 0.3s ease;
   transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
   transition:
     transform 0.3s ease,
     -webkit-transform 0.3s ease;
@@ -196,4 +202,16 @@
 
 .time-dropdown div:hover {
   background-color: #eee;
+}
+.badge.bg-warning {
+  background-color: #ffc107 !important; /* Bootstrap 5 yellow */
+  color: #212529 !important;
+}
+.badge.bg-success {
+  background-color: #198754 !important; /* Bootstrap 5 green */
+  color: #fff !important;
+}
+.badge.bg-danger {
+  background-color: #dc3545 !important; /* Bootstrap 5 red */
+  color: #fff !important;
 }

@@ -84,8 +84,13 @@
                             <div class="row">
                                 <div class="col">
                                     <h5>
-                                        <span class="badge bg-info ms-2" dmx-text="volcounts.value.query.where('eventId', eventId).first() ? volcounts.value.query.where('eventId', eventId).first().volCount + ' vols reg' : '0 vols reg'" id="Ev$index"></span>
+                                        <span class="badge ms-2" dmx-text="volcounts.value.query.where('eventId', eventId).first() ? volcounts.value.query.where('eventId', eventId).first().volCount + ' vols reg' : '0 vols reg'" dmx-class:bg-danger="!volcounts.value.query.where('eventId', eventId).first() || (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.4" dmx-class:bg-warning="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.4 && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.7" dmx-class:bg-success="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.7" id="Ev$index">
+                                        </span>
+
                                     </h5>
+                                    <small class="text-muted">
+                                        {{ (volcounts.value.query.where('eventId', eventId).first() ? (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber() * 100 ).toFixed(1) : 0) + '%' }}
+                                    </small>
                                 </div>
                             </div>
 
