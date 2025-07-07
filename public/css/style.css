@@ -151,6 +151,9 @@
   transition:
     transform 0.3s ease,
     -webkit-transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
 }
 
 .rotate-0 {
@@ -159,6 +162,9 @@
   -webkit-transition: -webkit-transform 0.3s ease;
   transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
   transition:
     transform 0.3s ease,
     -webkit-transform 0.3s ease;
@@ -214,4 +220,11 @@
 .badge.bg-danger {
   background-color: #dc3545 !important; /* Bootstrap 5 red */
   color: #fff !important;
+}
+.card-body.published {
+  background-color: #7fffa9 !important; /* very light green */
+}
+
+.card-body.not-published {
+  background-color: #f1d883 !important; /* very light yellow */
 }
