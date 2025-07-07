@@ -257,6 +257,18 @@
                 "meta": [],
                 "outputType": "text",
                 "output": true
+              },
+              {
+                "name": "varEvId",
+                "module": "core",
+                "action": "setvalue",
+                "options": {
+                  "value": "{{query[$index].userId}}"
+                },
+                "meta": [],
+                "outputType": "text",
+                "output": true,
+                "collapsed": true
               }
             ]
           }

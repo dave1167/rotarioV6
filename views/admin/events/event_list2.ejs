@@ -53,9 +53,9 @@
 <dmx-array id="arrStatus1" dmx-on:updated=""></dmx-array>
 <dmx-array id="arrEvVolId"></dmx-array>
 <dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect><dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
-<dmx-serverconnect id="scAddVol" url="/api/Events/addVolunteer" noload="true"></dmx-serverconnect><dmx-serverconnect id="scGetLocations" url="/api/Events/getLocation"></dmx-serverconnect>
+<dmx-serverconnect id="scVolCount" url="/api/Events/getCountVolsEvents" dmx-param:eventid="repeat1[$index].eventId"></dmx-serverconnect><dmx-serverconnect id="scAddVol" url="/api/Events/addVolunteer" noload="true"></dmx-serverconnect><dmx-serverconnect id="scGetLocations" url="/api/Events/getLocation"></dmx-serverconnect>
 <dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scGetActiveUserForVol" url="/api/Users/getActiveUsersForVolunteers"></dmx-serverconnect><dmx-serverconnect id="scVolCount" url="/api/Events/getCountVolsEvents"></dmx-serverconnect>
+<dmx-serverconnect id="scGetActiveUserForVol" url="/api/Users/getActiveUsersForVolunteers"></dmx-serverconnect>
 <dmx-serverconnect id="scUpdateEvent" url="/api/Events/updateEventDetails" noload="true" dmx-param:eventid="modEditIndEvent.accordion1_collapseOne.frmEvDets.inp_EvId.value"></dmx-serverconnect>
 <dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent1" noload="true" dmx-param:eventid="" dmx-on:success="scGetVenue.load({location: scGetsingleEv.data.query.location})"></dmx-serverconnect>
@@ -81,13 +81,19 @@
                 <div class="card-body text-lg-center">
                     <div class="row">
                         <div class="col">
-                            <h5><span class="badge bg-secondary">New</span></h5>
+                            <dmx-serverconnect id="scVolCount" url="/api/Events/getCountVolsEvents" dmx-param:eventid="eventId"></dmx-serverconnect>
+                            <h5>
+                                <span class="badge bg-secondary">New</span>
+                                <span class="badge bg-info ms-2" dmx-text="scVolCount.data.query[$index].volCount+' vols reg'" id="Ev$index">
+                                    <!-- volunteer count will show here -->
+                                </span>
+                            </h5>
                         </div>
                     </div>
 
                     <p class="card-text">Venue: {{venueDesc}}</p>
                     <p class="card-text">Date: {{eventDate.formatDate('dd-MM-yyyy')}}.</p>
-                    <p class="card-text">Time: {{eventStrtTime}}</p>
+                    <p class="card-text">Start Time: {{eventStrtTime.formatDate('h:mm A')}}</p>
                     <p class="card-text">Number of Volunteers: {{numvols}}</p>
                 </div>
                 <div class="card-footer pt-0 pb-0 ps-0 pe-0">
