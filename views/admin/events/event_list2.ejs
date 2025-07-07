@@ -52,7 +52,7 @@
 <dmx-array id="arrStatus" dmx-on:updated=""></dmx-array>
 <dmx-array id="arrStatus1" dmx-on:updated=""></dmx-array>
 <dmx-array id="arrEvVolId"></dmx-array>
-<dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
+<dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect><dmx-serverconnect id="scEvVols" url="/api/Events/getVolsEvents2" dmx-param:eventid=""></dmx-serverconnect>
 <dmx-serverconnect id="scAddVol" url="/api/Events/addVolunteer" noload="true"></dmx-serverconnect><dmx-serverconnect id="scGetLocations" url="/api/Events/getLocation"></dmx-serverconnect>
 <dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" dmx-param:location="selLocation.value" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scGetActiveUserForVol" url="/api/Users/getActiveUsersForVolunteers"></dmx-serverconnect><dmx-serverconnect id="scVolCount" url="/api/Events/getCountVolsEvents"></dmx-serverconnect>
@@ -61,7 +61,7 @@
 <dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent1" noload="true" dmx-param:eventid="" dmx-on:success="scGetVenue.load({location: scGetsingleEv.data.query.location})"></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
 
-<dmx-serverconnect id="scEventVolData" url="/api/Events/eventVolEdit"></dmx-serverconnect>
+
 <dmx-serverconnect id="serverconnect1" url="/api/Events/getSingleEvent2" noload="true"></dmx-serverconnect>
 <dmx-serverconnect id="scupdateSts" url="/api/Events/updateEventStatus2" noload="true" dmx-param:eventid="scEvVols.data.query[$index].eventId" dmx-param:voleventid="scEvVols.data.query[$index].evVolId"></dmx-serverconnect>
 
@@ -97,6 +97,57 @@
         </div>
     </div>
 </div>
+<div class="modal" id="modTimePicker" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-light-emphasis">
+                <h5 class="modal-title">Select Event Start Time</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="row mb-3">
+                            <label for="modStrtTime" class="form-label">Start Time</label>
+
+                            <div class="col-auto">
+                                <select id="selHour" class="form-select" aria-label="Hour">
+                                    <option value="">HH</option>
+                                    <!-- JS will populate -->
+                                </select>
+                            </div>
+
+                            <div class="col-auto">
+                                <select id="selMinute" class="form-select" aria-label="Minute">
+                                    <option value="">MM</option>
+                                    <!-- JS will populate -->
+                                </select>
+                            </div>
+
+                            <div class="col-auto">
+                                <select id="selPeriod" class="form-select" aria-label="AM/PM">
+                                    <option value="AM">AM</option>
+                                    <option value="PM" selected>PM</option>
+                                </select>
+                            </div>
+
+                            <!-- Hidden input to submit combined time -->
+                            <input class="form-control" id="modStrtTime" name="inpStrtTime">
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button id="btn4" class="btn btn-secondary" dmx-on:click="modEditIndEvent.show();modEditIndEvent.accordion1_collapseOne.frmEvDets.inpStrtTime.setValue(modStrtTime.value);modTimePicker.hide()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal" id="modAddVol" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
@@ -128,57 +179,7 @@
                 </form>
 
             </div>
-            <div class="modal" id="modTimePicker" is="dmx-bs5-modal" tabindex="-1">
-                <div class="modal-dialog modal-sm" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header bg-warning text-light-emphasis">
-                            <h5 class="modal-title">Select Event Start Time</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="row mb-3">
-                                        <label for="modStrtTime" class="form-label">Start Time</label>
 
-                                        <div class="col-auto">
-                                            <select id="selHour" class="form-select" aria-label="Hour">
-                                                <option value="">HH</option>
-                                                <!-- JS will populate -->
-                                            </select>
-                                        </div>
-
-                                        <div class="col-auto">
-                                            <select id="selMinute" class="form-select" aria-label="Minute">
-                                                <option value="">MM</option>
-                                                <!-- JS will populate -->
-                                            </select>
-                                        </div>
-
-                                        <div class="col-auto">
-                                            <select id="selPeriod" class="form-select" aria-label="AM/PM">
-                                                <option value="AM">AM</option>
-                                                <option value="PM" selected>PM</option>
-                                            </select>
-                                        </div>
-
-                                        <!-- Hidden input to submit combined time -->
-                                        <input class="form-control" id="modStrtTime" name="inpStrtTime">
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <button id="btn4" class="btn btn-secondary" dmx-on:click="modEditIndEvent.show();modEditIndEvent.accordion1_collapseOne.frmEvDets.inpStrtTime.setValue(modStrtTime.value);modTimePicker.hide()">Update</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="modal-body">
 
             </div>
@@ -244,7 +245,7 @@
                                                 <div class="col-5">
                                                     <div class="form-floating input-group mb-3">
                                                         <input type="text" class="form-control" id="inpStrtTime" name="inpStrtTime" placeholder="Start Time" dmx-bind:value="scGetsingleEv.data.query.eventStrtTime.formatDate('hh:mm a')">
-                                                        <button id="btn3" class="btn btn-light border" type="button" dmx-on:click="modTimePicker.show();modEditIndEvent.hide()">
+                                                        <button id="btn3" class="btn btn-light border" type="button" dmx-on:click="modEditIndEvent.hide();modTimePicker.show()">
                                                             <i class="fas fa-clock"></i>
                                                         </button>
                                                         <label for="inpStrtTime">Start Time</label>
@@ -402,7 +403,7 @@
                 <div class="col">
                     <!-- First load data, then show modal in sequence -->
                     <button class="btn ms-2 btn-primary" dmx-on:click="run([{run:{outputType:'text',disabled:true,action:`getActiveUsersFor.load({})`}},{run:{outputType:'text',action:`                                                                          modEditIndEvent.hide()`}},{run:{outputType:'text',action:`modAddVol.show()`}}])"><i class="fas fa-user-plus"></i> Add Volunteer</button>
-                    <button class="btn ms-2 btn-warning" dmx-on:click="run([{run:{outputType:'text',action:`frmEvDets.submit()`}},{wait:{delay:400}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`arrStatus.items`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`scupdateSts.load({voleventid: arrEvVolId.items[$index], statusv: arrStatus.items[$index]})`}}}}},{run:{outputType:'text',action:`accordion1_collapseOne.frmEvDets.reset(true);modEditIndEvent.hide()`}}])">Update Event</button>
+                    <button class="btn ms-2 btn-warning" dmx-on:click="run([{run:{outputType:'text',action:`frmEvDets.submit()`}},{wait:{delay:400}},{repeat:{name:'repeat',output:true,outputType:'array',repeat:`arrStatus.items`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`scupdateSts.load({voleventid: arrEvVolId.items[$index], statusv: arrStatus.items[$index]})`}}}}},{run:{outputType:'text',action:`accordion1_collapseOne.frmEvDets.reset(true);modEditIndEvent.hide()`}},{run:{outputType:'text',action:`scEventVolData.load({})`}}])">Update Event</button>
                     <button type="button" class="btn btn-secondary ms-2" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
