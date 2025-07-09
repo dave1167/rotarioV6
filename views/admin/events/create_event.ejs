@@ -1,4 +1,9 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="create_event" appConnect="local" components="{dmxBootstrap5Modal:{},dmxFormatter:{}}" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="create_event" appConnect="local" components="{dmxBootstrap5Modal:{},dmxFormatter:{},dmxDatetime:{},dmxCore:{},dmxValue:{}}" -->
+<!-- Store pub ternary value: 1 if publishedDate after today, 0 if before -->
+<dmx-value id="hidPub" dmx-bind:value="inpEvDte.value.toDate() > var1.datetime ? 1 : 0"></dmx-value>
+<!-- Store publish date value (event date minus daysToPublish) -->
+<dmx-value id="publishDateCalc" dmx-bind:value="inpEvDte.value ? inpEvDte.value.toDate().addDays('-'+scGetSettings.data.query[0].daysToPublish).formatDate('yyyy-MM-dd') : ''"></dmx-value>
+<dmx-datetime id="var1" interval="days"></dmx-datetime>
 <dmx-serverconnect id="scGetSettings" url="/api/Events/getSettings"></dmx-serverconnect>
 <dmx-serverconnect id="scGetLocation" url="/api/Events/getLocation"></dmx-serverconnect>
 <dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" noload dmx-param:location="selLocation.value"></dmx-serverconnect>
@@ -47,7 +52,7 @@
                             <!-- Event Date -->
                             <div class="col-md-4">
                                 <div class="form-floating">
-                                    <input type="date" class="form-control" id="inpEvDte" name="inpEvDte" placeholder="Event Date" dmx-bind:value="scGetsingleEv.data.query.eventDate" dmx-on:updated="">
+                                    <input type="date" class="form-control" id="inpEvDte" name="inpEvDte" placeholder="Event Date" dmx-bind:value="scGetsingleEv.data.query.eventDate" dmx-on:changed="">
                                     <label for="inpEvDte">Date</label>
                                 </div>
                             </div>
@@ -66,8 +71,8 @@
                             <!-- Publish Date -->
                             <div class="col-md-4">
                                 <div class="form-floating">
-                                    <input type="date" class="form-control" id="inp_publishDate" name="publishDate" placeholder="Publish date" dmx-bind:value="inpEvDte.value &amp;&amp; daystopublish.value ? inpEvDte.value.addDays(daystopublish.value.toNumber()).formatDate('yyyy-MM-dd') : ''">
-                                    <label for="inp_publishDate">Publish date</label>
+                                    <input type="date" class="form-control" id="inpPub" name="inpPub" placeholder="Published Date" dmx-bind:value="inpEvDte.value ? inpEvDte.value.toDate().addDays('-'+scGetSettings.data.query[0].daysToPublish).formatDate('yyyy-MM-dd') : ''">
+                                    <label for="inpPub">Published Date</label>
                                 </div>
                             </div>
                         </div>
@@ -92,6 +97,7 @@
 
                             </div>
                             <div class="col">
+                                <input type="text" id="hidPub" name="hidPub" dmx-bind:value="hidPub.value">
                                 <div class="form-floating mb-3">
 
                                     <div class="form-group mb-3">

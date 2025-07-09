@@ -977,5 +977,13 @@ dmx.config({
         "type": "number"
       }
     ]
+  },
+  "create_event": {
+    "hidPub": [
+      {
+        "name": "value",
+        "type": "number"
+      }
+    ]
   }
 });
