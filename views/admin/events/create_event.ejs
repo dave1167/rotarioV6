@@ -257,8 +257,7 @@
         ampmSel.addEventListener('change',updateFieldsFromDropdowns);
         updateFieldsFromDropdowns();
     })();
-</script>
-<script>
+
     // Robust: waits for App Connect AND DOM, reattaches events to re-rendered inpPub if needed, validates both IDs always present, updates datePubStatus field live.
 (function() {
     function updatePubStatus() {
@@ -298,25 +297,7 @@
         });
     }
 })();
-</script>
-
-Just replace your script block at the end with this. If datePubStatus turns to "Error: input not found", your input is not id="inpPub" as expected. If value changes as you edit the date, it works as intended. This will diagnose the root cause quickly.
-
-no you do it
-
-The script has now been replaced with a robust diagnostic version. The visible debug field "datePubStatus" will show "1" or "0" as soon as you change the publish date. If the publish date input is not found, it will display "Error: input not found". This will make any DOM/id issue immediately clear and guarantee live feedback for your logic.
-
-what we are doing is not that hard so why can you not do it
-
-You're right—the task is not difficult! The only reason for persistent problems is likely mismatched IDs, unexpected rendering order, or interference from earlier scripts or bindings. The latest script I set up is bulletproof:
-
-If the debug box says "Error: input not found," then the date input is not id="inpPub".
-If it shows "1" or "0" but doesn't change, then another script or App Connect is interfering, or date input events are not firing properly.
-If you see correct "1"/"0" as you edit publish date, then it works!
-If you want absolute minimum code—no dependencies, guaranteed to run—this is all you need right before </body>:
-
-<script>
-    (function() {
+(function() {
     function updatePubStatus() {
         var inpPub = document.querySelector('input[type=\"date\"]#inpPub');
         var statusField = document.getElementById('datePubStatus');
