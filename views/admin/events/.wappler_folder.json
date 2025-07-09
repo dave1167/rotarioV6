@@ -18,5 +18,9 @@
   "create_event.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "addNewEvent.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

@@ -55,7 +55,7 @@
                     <div class="card-body h-25">
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
-                                <p>{{var1.value.totalCount.count*100}}</p>
+                                <p>{{var1.value.totalCount.count}}</p>
                                 <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                     Percent Utilisation
                                 </div>
@@ -87,7 +87,7 @@
                             <div class="text-xs font-weight-bold text-uppercase mb-1 text-danger">
                                 Shifts Free
                             </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" dmx-text="var1.value.totalCount.toNumber().formatNumber(2, '.', ',')">0</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" dmx-text="var1.value">0</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-user-minus fa-2x text-gray-300"></i>

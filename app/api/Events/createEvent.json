@@ -27,8 +27,24 @@
       },
       {
         "type": "text",
-        "fieldName": "inpStrtTime",
-        "name": "inpStrtTime"
+        "fieldName": "visibleStrtTime",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": "",
+              "message": "Please enter a start time"
+            }
+          }
+        },
+        "name": "visibleStrtTime"
+      },
+      {
+        "type": "text",
+        "fieldName": "eventStrtTime",
+        "options": {
+          "rules": {}
+        },
+        "name": "eventStrtTime"
       },
       {
         "type": "date",
@@ -76,22 +92,57 @@
         "name": "selVenue"
       },
       {
+        "type": "time",
+        "name": "inpStrtTime"
+      },
+      {
         "type": "number",
         "name": "weighting"
       },
       {
-        "type": "number",
-        "name": "location"
+        "type": "text",
+        "name": "eventName"
       },
       {
-        "type": "number",
-        "name": "venue"
+        "type": "text",
+        "fieldName": "hidLoc",
+        "name": "hidLoc"
+      },
+      {
+        "type": "boolean",
+        "name": "published"
+      },
+      {
+        "type": "text",
+        "fieldName": "hidVen",
+        "name": "hidVen"
+      },
+      {
+        "type": "text",
+        "fieldName": "selWeighting",
+        "name": "selWeighting"
+      },
+      {
+        "type": "text",
+        "fieldName": "hidStrtTime",
+        "options": {
+          "rules": {}
+        },
+        "name": "hidStrtTime"
       }
     ],
     "$_SESSION": [
       {
         "type": "number",
         "name": "Ses_User_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_Ten_Id"
+      },
+      {
+        "type": "number",
+        "name": "Ses_Rota_Id"
       }
     ]
   },
@@ -104,13 +155,8 @@
         "connection": "db",
         "sql": {
           "type": "insert",
+          "table": "tbl_events",
           "values": [
-            {
-              "table": "tbl_events",
-              "column": "eventName",
-              "type": "text",
-              "value": "{{$_POST.inp_EvName}}"
-            },
             {
               "table": "tbl_events",
               "column": "eventDate",
@@ -119,9 +165,9 @@
             },
             {
               "table": "tbl_events",
-              "column": "eventStrtTime",
-              "type": "time",
-              "value": "{{$_POST.inpStrtTime}}"
+              "column": "eventName",
+              "type": "text",
+              "value": "{{$_POST.inp_EvName}}"
             },
             {
               "table": "tbl_events",
@@ -139,119 +185,148 @@
               "table": "tbl_events",
               "column": "numvols",
               "type": "number",
-              "value": "{{$_POST.numvols}}"
+              "value": "{{$_POST.numvols.default(0)}}"
             },
             {
               "table": "tbl_events",
-              "column": "weighting",
+              "column": "tenantId",
               "type": "number",
-              "value": "{{$_POST.weighting}}"
+              "value": "{{$_SESSION.Ses_Ten_Id}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "rotaId",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_Rota_Id}}"
             },
             {
               "table": "tbl_events",
               "column": "location",
               "type": "number",
-              "value": "{{$_POST.location}}"
+              "value": "{{$_POST.hidLoc}}"
             },
             {
               "table": "tbl_events",
               "column": "venue",
               "type": "number",
-              "value": "{{$_POST.venue}}"
+              "value": "{{$_POST.selVenue}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "weighting",
+              "type": "number",
+              "value": "{{$_POST.selWeighting}}"
             },
             {
               "table": "tbl_events",
               "column": "published",
               "type": "boolean",
-              "value": "{{$_POST.inpPub}}"
-            },
-            {
-              "table": "tbl_events",
-              "column": "volArrival",
-              "type": "number",
-              "value": "{{$_POST.volArrival}}"
+              "value": "{{$_POST.inpPub.default(0)}}"
             },
             {
               "table": "tbl_events",
               "column": "publishDate",
               "type": "date",
               "value": "{{$_POST.publishDate}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "volArrival",
+              "type": "number",
+              "value": "{{$_POST.volArrival.default(0)}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "eventStrtTime",
+              "type": "time",
+              "value": "{{$_POST.hidStrtTime+':00'}}"
             }
           ],
-          "table": "tbl_events",
           "returning": "eventId",
-          "query": "insert into `tbl_events` (`eventDate`, `eventName`, `eventStrtTime`, `location`, `modifiedBy`, `modifiedDate`, `numvols`, `publishDate`, `published`, `venue`, `volArrival`, `weighting`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+          "query": "insert into `tbl_events` (`eventDate`, `eventName`, `eventStrtTime`, `location`, `modifiedBy`, `modifiedDate`, `numvols`, `publishDate`, `published`, `rotaId`, `tenantId`, `venue`, `volArrival`, `weighting`) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
           "params": [
             {
               "name": ":P1",
-              "type": "expression",
-              "value": "{{$_POST.inp_EvName}}",
-              "test": ""
-            },
-            {
-              "name": ":P2",
               "type": "expression",
               "value": "{{$_POST.inpEvDte}}",
               "test": ""
             },
             {
-              "name": ":P3",
+              "name": ":P2",
               "type": "expression",
-              "value": "{{$_POST.inpStrtTime}}",
+              "value": "{{$_POST.inp_EvName}}",
               "test": ""
             },
             {
-              "name": ":P4",
+              "name": ":P3",
               "type": "expression",
               "value": "{{$_SESSION.Ses_User_Id}}",
               "test": ""
             },
             {
-              "name": ":P5",
+              "name": ":P4",
               "type": "expression",
               "value": "{{NOW}}",
               "test": ""
             },
             {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{$_POST.numvols.default(0)}}",
+              "test": ""
+            },
+            {
               "name": ":P6",
               "type": "expression",
-              "value": "{{$_POST.numvols}}",
+              "value": "{{$_SESSION.Ses_Ten_Id}}",
               "test": ""
             },
             {
               "name": ":P7",
               "type": "expression",
-              "value": "{{$_POST.weighting}}",
+              "value": "{{$_SESSION.Ses_Rota_Id}}",
               "test": ""
             },
             {
               "name": ":P8",
               "type": "expression",
-              "value": "{{$_POST.location}}",
+              "value": "{{$_POST.hidLoc}}",
               "test": ""
             },
             {
               "name": ":P9",
               "type": "expression",
-              "value": "{{$_POST.venue}}",
+              "value": "{{$_POST.selVenue}}",
               "test": ""
             },
             {
               "name": ":P10",
               "type": "expression",
-              "value": "{{$_POST.inpPub}}",
+              "value": "{{$_POST.selWeighting}}",
               "test": ""
             },
             {
               "name": ":P11",
               "type": "expression",
-              "value": "{{$_POST.volArrival}}",
+              "value": "{{$_POST.inpPub.default(0)}}",
               "test": ""
             },
             {
               "name": ":P12",
               "type": "expression",
               "value": "{{$_POST.publishDate}}",
+              "test": ""
+            },
+            {
+              "name": ":P13",
+              "type": "expression",
+              "value": "{{$_POST.volArrival.default(0)}}",
+              "test": ""
+            },
+            {
+              "name": ":P14",
+              "type": "expression",
+              "value": "{{$_POST.hidStrtTime+':00'}}",
               "test": ""
             }
           ]
@@ -266,7 +341,9 @@
           "name": "affected",
           "type": "number"
         }
-      ]
+      ],
+      "output": true,
+      "collapsed": true
     }
   }
 }

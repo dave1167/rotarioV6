@@ -1,5 +1,31 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="create_event" appConnect="local" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="create_event" appConnect="local" components="{dmxBootstrap5Modal:{},dmxFormatter:{}}" -->
+<dmx-serverconnect id="scGetSettings" url="/api/Events/getSettings"></dmx-serverconnect>
+<dmx-serverconnect id="scGetLocation" url="/api/Events/getLocation"></dmx-serverconnect>
+<dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue" noload dmx-param:location="selLocation.value"></dmx-serverconnect>
+<div class="modal" id="modStrtTime" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center align-items-center gap-2">
+                    <select class="form-select w-auto" id="strtHour" aria-label="Hour" required></select>
+                    <span class="fs-4">:</span>
+                    <select class="form-select w-auto" id="strtMin" aria-label="Minute" required></select>
+                    <select class="form-select w-auto" id="strtAmPm" aria-label="AM/PM" required></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="btnSetStrtTime">Set Time</button>
+            </div>
+        </div>
+    </div>
+</div>
 <meta name="ac:route" content="/admin/events/create_event">
+
 <div class="container">
     <div class="row">
         <div class="col">
@@ -9,7 +35,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Event Details Form -->
-                    <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/updateEventDetails" dmx-generator="bootstrap5" dmx-form-type="vertical">
+                    <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/createEvent" dmx-generator="bootstrap5" dmx-form-type="vertical">
                         <div class="form-group mb-3">
                             <input type="hidden" class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId">
                         </div>
@@ -17,29 +43,36 @@
                             <input type="text" class="form-control" id="inp_EvName" name="inp_EvName" placeholder="Event Name" dmx-bind:value="scGetsingleEv.data.query.eventName">
                             <label for="inp_EvName">Event Name</label>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="inpEvDte" name="inpEvDte" placeholder="Event Date" dmx-bind:value="scGetsingleEv.data.query.eventDate">
+                        <div class="row g-3 align-items-end mb-3">
+                            <!-- Event Date -->
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" id="inpEvDte" name="inpEvDte" placeholder="Event Date" dmx-bind:value="scGetsingleEv.data.query.eventDate" dmx-on:updated="">
                                     <label for="inpEvDte">Date</label>
                                 </div>
                             </div>
-
-                            <div class="col">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="inpStrtTime" name="inpStrtTime" placeholder="Start Time" dmx-bind:value="scGetsingleEv.data.query.eventStrtTime.toDate().formatDate('h:mm A')">
-                                    <label for="inpStrtTime">Start Time</label>
+                            <!-- Start Time, floating label style -->
+                            <div class="col-md-4">
+                                <div class="form-floating input-group">
+                                    <input type="text" class="form-control" id="visibleStrtTime" name="visibleStrtTime" readonly="" tabindex="-1" aria-label="Start time" aria-describedby="btnOpenTimeModal" placeholder="Start Time">
+                                    <button class="btn btn-outline-secondary" type="button" id="btnOpenTimeModal" aria-label="Select time" dmx-on:click="modStrtTime.show()">
+                                        <i class="fas fa-clock" aria-hidden="true"></i><span class="visually-hidden">Select time</span>
+                                    </button>
+                                    <label for="visibleStrtTime">Start Time</label>
                                 </div>
+                                <input id="hidStrtTime" name="hidStrtTime">
+                                <div class="invalid-feedback">Please enter a start time</div>
                             </div>
-                            <div class="col">
-
-                                <div class="form-floating mb-3">
-                                    <input type="date" class="form-control" id="inp_publishDate" name="publishDate" placeholder="Publish date" dmx-bind:value="scGetsingleEv.data.query.eventDate.addDays(-scGetsingleEv.data.query.daysToPublish).formatDate('yyyy-MM-dd')">
+                            <!-- Publish Date -->
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control" id="inp_publishDate" name="publishDate" placeholder="Publish date" dmx-bind:value="inpEvDte.value &amp;&amp; daystopublish.value ? inpEvDte.value.addDays(daystopublish.value.toNumber()).formatDate('yyyy-MM-dd') : ''">
                                     <label for="inp_publishDate">Publish date</label>
                                 </div>
-
                             </div>
                         </div>
+                        <input id="daystopublish" name="daystopublish" dmx-bind:value="'-'+scGetSettings.data.query[0].daysToPublish">
+
                         <div class=" row">
 
                             <div class="col">
@@ -77,17 +110,30 @@
 
 
                         <div class="row">
-                            <div class="col-3">
+                            <div class="col d-flex">
                                 <div class="form-floating mb-3">
-                                    <select id="selLocation" class="form-select" name="selLocation" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetsingleEv.data.query.location" dmx-on:updated="scGetVenue.load({location: value})" aria-label="Location">
+                                    <select id="selWeighting" class="form-select" name="selWeighting" aria-label="Location" dmx-bind:value="value">
+                                        <option value="1">Tier 1</option>
+                                        <option value="2">Tier 2</option>
+                                        <option value="3">Tier 3</option>
+                                    </select>
+                                    <label for="selWeighting">Show Weighting</label>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                <input id="hidLoc" name="hidLoc" type="hidden" class="form-control" dmx-bind:value="selLocation.value">
+                                <div class="form-floating mb-3">
+                                    <select id="selLocation" class="form-select" name="selLocation" dmx-bind:options="scGetLocation.data.query" optiontext="location" optionvalue="locationId" dmx-on:changed="scGetVenue.load({location: value})" dmx-on:updated="scGetVenue.load({location: value})" aria-label="Location" dmx-bind:value="scGetLocation.data.query[0].locationId">
                                     </select>
                                     <label for="selLocation">Location</label>
                                 </div>
+
 
                             </div>
 
 
                             <div class="col-3">
+                                <input id="hidVen" name="hidVen" type="hidden" class="form-control" dmx-bind:value="selVenue.value">
                                 <div class="form-floating mb-3">
                                     <select id="selVenue" class="form-select" name="selVenue" dmx-bind:options="scGetVenue.data.query" optiontext="venueDesc" optionvalue="venueId" dmx-bind:value="scGetsingleEv.data.query.venue" aria-label="Venue">
                                     </select>
@@ -112,3 +158,91 @@
         </div>
     </div>
 </div>
+<script>
+    // Modal logic for Start Time selection
+    (function() {
+        // Setup modal and selectors
+        const hourSel = document.getElementById('strtHour');
+        const minSel = document.getElementById('strtMin');
+        const ampmSel = document.getElementById('strtAmPm');
+        const visibleStrt = document.getElementById('visibleStrtTime');
+        const hidStrt = document.getElementById('hidStrtTime');
+        const btnSet = document.getElementById('btnSetStrtTime');
+        const modal = document.getElementById('modStrtTime');
+
+        // Populate dropdowns only if empty
+        if(hourSel.options.length === 0){
+            for(let i=1; i<=12; i++) {
+                let opt = document.createElement('option');
+                opt.value = (i < 10 ? '0' : '') + i;
+                opt.innerText = (i < 10 ? '0' : '') + i;
+                hourSel.appendChild(opt);
+            }
+        }
+        if(minSel.options.length === 0){
+            for(let i=0; i<60; i+=5) {
+                let opt = document.createElement('option');
+                opt.value = (i < 10 ? '0' : '') + i;
+                opt.innerText = (i < 10 ? '0' : '') + i;
+                minSel.appendChild(opt);
+            }
+        }
+        if(ampmSel.options.length === 0){
+            ['AM','PM'].forEach(ampm=>{
+                let opt = document.createElement('option');
+                opt.value = ampm;
+                opt.innerText = ampm;
+                ampmSel.appendChild(opt);
+            });
+        }
+
+        // Set initial/default values
+        hourSel.value = '08';
+        minSel.value = '00';
+        ampmSel.value = 'AM';
+
+        // Helper: update visible/hidden time fields
+        function updateFieldsFromDropdowns() {
+            const h = hourSel.value, m = minSel.value, a = ampmSel.value;
+            if(h && m && a) {
+                let hour24 = parseInt(h,10);
+                if(a==='PM'&&hour24!==12) hour24+=12;
+                if(a==='AM'&&hour24===12) hour24=0;
+                const h24 = (hour24 < 10 ? '0' : '') + hour24;
+                hidStrt.value = h24 + ':' + m;
+                visibleStrt.value = h+':'+m+' '+a;
+            } else {
+                hidStrt.value = '';
+                visibleStrt.value = '';
+            }
+        }
+
+        // Modal update logic on open
+        modal.addEventListener('show.bs.modal', function() {
+            const val = visibleStrt.value;
+            if(val) {
+                const match = val.match(/(\d{2}):(\d{2})\s([AP]M)/);
+                if(match) {
+                    hourSel.value = match[1];
+                    minSel.value = match[2];
+                    ampmSel.value = match[3];
+                }
+            }
+        });
+
+        // Save button: update fields and close modal
+        btnSet.addEventListener('click', function() {
+            updateFieldsFromDropdowns();
+            // Hide modal
+            let modalObj = bootstrap.Modal.getInstance(modal);
+            if(modalObj) modalObj.hide();
+        });
+
+        hourSel.addEventListener('change',updateFieldsFromDropdowns);
+        minSel.addEventListener('change',updateFieldsFromDropdowns);
+        ampmSel.addEventListener('change',updateFieldsFromDropdowns);
+
+        // Initial values
+        updateFieldsFromDropdowns();
+    })();
+</script>

@@ -8,10 +8,6 @@
       {
         "type": "text",
         "name": "dir"
-      },
-      {
-        "type": "number",
-        "name": "location"
       }
     ]
   },
@@ -26,16 +22,8 @@
           "type": "SELECT",
           "columns": [
             {
-              "table": "tbl_venue",
-              "column": "location"
-            },
-            {
-              "table": "tbl_venue",
-              "column": "venueDesc"
-            },
-            {
-              "table": "tbl_venue",
-              "column": "venueId"
+              "table": "tbl_settings",
+              "column": "daysToPublish"
             }
           ],
           "params": [
@@ -50,26 +38,26 @@
               "operator": "equal",
               "type": "expression",
               "name": ":P2",
-              "value": "{{$_GET.location}}",
+              "value": "{{$_SESSION.Ses_Rota_Id}}",
               "test": "1"
             }
           ],
           "table": {
-            "name": "tbl_venue"
+            "name": "tbl_settings"
           },
-          "primary": "venueId",
+          "primary": "settingsId",
           "joins": [],
           "wheres": {
             "condition": "AND",
             "rules": [
               {
-                "id": "tbl_venue.tenantId",
-                "field": "tbl_venue.tenantId",
+                "id": "tbl_settings.tenantId",
+                "field": "tbl_settings.tenantId",
                 "type": "double",
                 "operator": "equal",
                 "value": "{{$_SESSION.Ses_Ten_Id}}",
                 "data": {
-                  "table": "tbl_venue",
+                  "table": "tbl_settings",
                   "column": "tenantId",
                   "type": "number",
                   "columnObj": {
@@ -82,20 +70,20 @@
                 "operation": "="
               },
               {
-                "id": "tbl_venue.location",
-                "field": "tbl_venue.location",
+                "id": "tbl_settings.rotaId",
+                "field": "tbl_settings.rotaId",
                 "type": "double",
                 "operator": "equal",
-                "value": "{{$_GET.location}}",
+                "value": "{{$_SESSION.Ses_Rota_Id}}",
                 "data": {
-                  "table": "tbl_venue",
-                  "column": "location",
+                  "table": "tbl_settings",
+                  "column": "rotaId",
                   "type": "number",
                   "columnObj": {
                     "type": "integer",
                     "primary": false,
                     "nullable": true,
-                    "name": "location"
+                    "name": "rotaId"
                   }
                 },
                 "operation": "="
@@ -104,26 +92,17 @@
             "conditional": null,
             "valid": true
           },
-          "query": "select `location`, `venueDesc`, `venueId` from `tbl_venue` where `tbl_venue`.`tenantId` = ? and `tbl_venue`.`location` = ?"
+          "query": "select `daysToPublish` from `tbl_settings` where `tbl_settings`.`tenantId` = ? and `tbl_settings`.`rotaId` = ?"
         }
       },
       "output": true,
       "meta": [
         {
           "type": "number",
-          "name": "location"
-        },
-        {
-          "type": "text",
-          "name": "venueDesc"
-        },
-        {
-          "type": "number",
-          "name": "venueId"
+          "name": "daysToPublish"
         }
       ],
-      "outputType": "array",
-      "collapsed": true
+      "outputType": "array"
     }
   }
 }
