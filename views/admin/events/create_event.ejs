@@ -104,7 +104,7 @@
                                     </button>
                                     <label for="visibleStrtTime">Start Time</label>
                                 </div>
-                                <input id="hidStrtTime" name="hidStrtTime">
+                                <input id="hidStrtTime" name="hidStrtTime" type="hidden">
                                 <div class="invalid-feedback">Please enter a start time</div>
                             </div>
                             <!-- Publish Date -->
@@ -115,7 +115,7 @@
                                 </div>
                             </div>
                         </div>
-                        <input id="daystopublish" name="daystopublish" dmx-bind:value="'-'+scGetSettings.data.query[0].daysToPublish">
+                        <input id="daystopublish" name="daystopublish" dmx-bind:value="'-'+scGetSettings.data.query[0].daysToPublish" type="hidden">
 
                         <div class=" row">
                             <div class="col">
@@ -132,13 +132,12 @@
                             </div>
                             <div class="col">
                                 <div class="mb-2">
-                                    <label for="datePubStatus" class="form-label">Publish Status (debug)</label>
-                                    <input id="datePubStatus" name="datePubStatus" class="form-control" dmx-bind:value="switch.checked ? 1 : 0">
+                                    <input id="datePubStatus" name="datePubStatus" class="form-control" dmx-bind:value="switch.checked ? 1 : 0" type="hidden">
                                 </div>
                                 <div class="form-floating mb-3">
                                     <div class="form-group mb-3">
                                         <div class="form-check form-switch">
-                                            <input type="checkbox" class="form-check-input" id="switch" name="switch" value="1" dmx-bind:checked="switch.checked">
+                                            <input type="checkbox" class="form-check-input" id="switch" name="switch" value="1" dmx-bind:checked="switch.checked" dmx-on:changed="datePubStatus.value.setValue(checked ? 1 : 0)">
 
                                             <label class="form-check-label" for="switch">Default switch</label>
                                         </div>
