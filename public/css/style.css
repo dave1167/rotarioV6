@@ -163,6 +163,9 @@
   transition:
     transform 0.3s ease,
     -webkit-transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
 }
 
 .rotate-0 {
@@ -171,6 +174,9 @@
   -webkit-transition: -webkit-transform 0.3s ease;
   transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    -webkit-transform 0.3s ease;
   transition:
     transform 0.3s ease,
     -webkit-transform 0.3s ease;
@@ -245,4 +251,16 @@
 
 .card-body.not-published {
   background-color: #ebdba8 !important; /* very light yellow */
+}
+
+/* Sidebar styles */
+.sidebar {
+  margin-top: 0;
+  padding-top: 0;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  border-right: 1px solid rgba(0, 0, 0, 0.125);
 }

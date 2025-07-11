@@ -116,6 +116,11 @@
       "path": "/testTime",
       "page": "testTime",
       "layout": "admin"
+    },
+    {
+      "path": "/admin/events/calendar",
+      "page": "admin/events/calendar",
+      "layout": "admin"
     }
   ]
 }

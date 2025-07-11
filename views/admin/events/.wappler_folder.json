@@ -22,5 +22,9 @@
   "addNewEvent.ejs": {
     "layoutPage": "admin",
     "description": ""
+  },
+  "calendar.ejs": {
+    "layoutPage": "admin",
+    "description": ""
   }
 }

@@ -1,0 +1,258 @@
+{
+  "settings": {
+    "options": {
+      "rule": "0 0 1 * * *"
+    }
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "select",
+            "distinct": false,
+            "columns": [
+              {
+                "table": "tbl_events",
+                "column": "published",
+                "field": "published"
+              },
+              {
+                "table": "tbl_events",
+                "column": "eventId"
+              }
+            ],
+            "table": {
+              "name": "tbl_events"
+            },
+            "joins": [],
+            "orders": [],
+            "params": [
+              {
+                "operator": "less",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{NOW}}",
+                "test": ""
+              }
+            ],
+            "primary": "eventId",
+            "query": "select `published`, `eventId` from `tbl_events` where `tbl_events`.`eventDate` < ?",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_events.eventDate",
+                  "field": "tbl_events.eventDate",
+                  "type": "date",
+                  "operator": "less",
+                  "value": "{{NOW}}",
+                  "data": {
+                    "table": "tbl_events",
+                    "column": "eventDate",
+                    "type": "date",
+                    "columnObj": {
+                      "type": "date",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "eventDate"
+                    }
+                  },
+                  "operation": "<",
+                  "table": "tbl_events"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "boolean",
+            "name": "published"
+          },
+          {
+            "type": "number",
+            "name": "eventId"
+          }
+        ],
+        "outputType": "array",
+        "type": "dbconnector_select",
+        "collapsed": true
+      },
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {}
+      },
+      {
+        "name": "insert",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "test",
+                "column": "test",
+                "type": "text",
+                "value": "test {{query[0].eventId}}"
+              },
+              {
+                "table": "test",
+                "column": "date",
+                "type": "text",
+                "value": "{{NOW}}"
+              }
+            ],
+            "table": "test",
+            "returning": "id",
+            "query": "insert into `test` (`date`, `test`) values (?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "test {{query[0].eventId}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{NOW}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ],
+        "disabled": true,
+        "collapsed": true
+      },
+      {
+        "name": "repeat",
+        "module": "core",
+        "action": "repeat",
+        "options": {
+          "repeat": "{{query}}",
+          "outputFields": [],
+          "exec": {
+            "steps": {
+              "name": "update",
+              "module": "dbupdater",
+              "action": "update",
+              "options": {
+                "connection": "db",
+                "sql": {
+                  "type": "update",
+                  "values": [
+                    {
+                      "table": "tbl_events",
+                      "column": "published",
+                      "type": "boolean",
+                      "value": "1"
+                    },
+                    {
+                      "table": "tbl_events",
+                      "column": "modifiedDate",
+                      "type": "datetime",
+                      "value": "{{NOW}}"
+                    }
+                  ],
+                  "table": "tbl_events",
+                  "wheres": {
+                    "condition": "AND",
+                    "rules": [
+                      {
+                        "id": "eventId",
+                        "field": "eventId",
+                        "type": "double",
+                        "operator": "equal",
+                        "value": "{{query[$index].eventId}}",
+                        "data": {
+                          "column": "eventId"
+                        },
+                        "operation": "="
+                      }
+                    ],
+                    "conditional": null,
+                    "valid": true
+                  },
+                  "returning": "eventId",
+                  "query": "update `tbl_events` set `published` = ?, `modifiedDate` = ? where `eventId` = ?",
+                  "params": [
+                    {
+                      "name": ":P1",
+                      "type": "expression",
+                      "value": "{{NOW}}",
+                      "test": ""
+                    },
+                    {
+                      "operator": "equal",
+                      "type": "expression",
+                      "name": ":P2",
+                      "value": "{{query[$index].eventId}}",
+                      "test": ""
+                    }
+                  ]
+                }
+              },
+              "meta": [
+                {
+                  "name": "affected",
+                  "type": "number"
+                }
+              ],
+              "collapsed": true
+            }
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "name": "$index",
+            "type": "number"
+          },
+          {
+            "name": "$number",
+            "type": "number"
+          },
+          {
+            "name": "$name",
+            "type": "text"
+          },
+          {
+            "name": "$value",
+            "type": "object"
+          },
+          {
+            "name": "published",
+            "type": "boolean"
+          },
+          {
+            "name": "eventId",
+            "type": "number"
+          }
+        ],
+        "outputType": "array"
+      }
+    ]
+  }
+}

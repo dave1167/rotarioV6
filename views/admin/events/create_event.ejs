@@ -16,14 +16,14 @@
         function setPubStatus() {
             var inpPubEl = document.getElementById('inpPub');
             var todayDate = dmx.app.find('todayDate');
-            var switchComp = dmx.app.find('switch');
-            if(todayDate && inpPubEl && switchComp) {
+            var hidPubtxt = dmx.app.find('hidPubtxt');
+            if(todayDate && inpPubEl && hidPubtxt) {
                 var pubVal = inpPubEl.value;
                 var todayVal = todayDate.data.value;
                 if(todayVal > pubVal) {
-                    switchComp.set('checked', true);
+                    hidPubtxt.set('value', '1');
                 } else {
-                    switchComp.set('checked', false);
+                    hidPubtxt.set('value', '0');
                 }
             }
         }
@@ -132,16 +132,7 @@
                             </div>
                             <div class="col">
                                 <div class="mb-2">
-                                    <input id="datePubStatus" name="datePubStatus" class="form-control" dmx-bind:value="switch.checked ? 1 : 0" type="hidden">
-                                </div>
-                                <div class="form-floating mb-3">
-                                    <div class="form-group mb-3">
-                                        <div class="form-check form-switch">
-                                            <input type="checkbox" class="form-check-input" id="switch" name="switch" value="1" dmx-bind:checked="switch.checked" dmx-on:changed="datePubStatus.value.setValue(checked ? 1 : 0)">
-
-                                            <label class="form-check-label" for="switch">Default switch</label>
-                                        </div>
-                                    </div>
+                                    <input type="hidden" id="datePubStatus" name="datePubStatus" class="form-control" dmx-on:changed="inpPubCheck.setValue(1)">
                                 </div>
                             </div>
                         </div>
@@ -263,8 +254,9 @@
 (function() {
     function updatePubStatus() {
         var inpPub = document.getElementById('inpPub');
-        var switchComp = dmx.app.find('switch');
-        if (!inpPub || !switchComp) {
+        var statusField = document.getElementById('datePubStatus');
+        if (!inpPub || !statusField) {
+            if (statusField) statusField.value = 'Error: input not found';
             return;
         }
         var today = new Date();
@@ -272,16 +264,13 @@
         var mm = (today.getMonth() + 1).toString().padStart(2, '0');
         var dd = today.getDate().toString().padStart(2, '0');
         var todayStr = yyyy + '-' + mm + '-' + dd;
-        if (inpPub.value && todayStr > inpPub.value) {
-            switchComp.set('checked', true);
-        } else {
-            switchComp.set('checked', false);
-        }
+        statusField.value = inpPub.value && todayStr > inpPub.value ? '1' : '0';
     }
+    // Attach event listeners, allow reattachment in case App Connect replaces inpPub
     function attachListeners() {
         var inpPub = document.getElementById('inpPub');
         if (inpPub) {
-            inpPub.removeEventListener('change', updatePubStatus);
+            inpPub.removeEventListener('change', updatePubStatus); // prevent double
             inpPub.removeEventListener('input', updatePubStatus);
             inpPub.addEventListener('change', updatePubStatus);
             inpPub.addEventListener('input', updatePubStatus);
@@ -291,7 +280,7 @@
     if (window.dmx && window.dmx.app) {
         window.dmx.app.ready(function() {
             attachListeners();
-            setInterval(attachListeners, 1000);
+            setInterval(attachListeners, 1000); // in case the field is replaced (reactivity)
         });
     } else {
         document.addEventListener('DOMContentLoaded', function(){
@@ -309,9 +298,10 @@
 <script>
     (function() {
     function updatePubStatus() {
-        var inpPub = document.querySelector('input[type="date"]#inpPub');
-        var switchComp = dmx.app.find('switch');
-        if (!inpPub || !switchComp) {
+        var inpPub = document.querySelector('input[type=\"date\"]#inpPub');
+        var statusField = document.getElementById('datePubStatus');
+        if (!inpPub || !statusField) {
+            if (statusField) statusField.value = 'Error: input not found';
             return;
         }
         var today = new Date();
@@ -319,14 +309,10 @@
         var mm = (today.getMonth() + 1).toString().padStart(2, '0');
         var dd = today.getDate().toString().padStart(2, '0');
         var todayStr = yyyy + '-' + mm + '-' + dd;
-        if (inpPub.value && todayStr > inpPub.value) {
-            switchComp.set('checked', true);
-        } else {
-            switchComp.set('checked', false);
-        }
+        statusField.value = inpPub.value && todayStr > inpPub.value ? '1' : '0';
     }
     window.addEventListener('DOMContentLoaded', function() {
-        var inpPub = document.querySelector('input[type="date"]#inpPub');
+        var inpPub = document.querySelector('input[type=\"date\"]#inpPub');
         if (inpPub) {
             inpPub.addEventListener('change', updatePubStatus);
             inpPub.addEventListener('input', updatePubStatus);

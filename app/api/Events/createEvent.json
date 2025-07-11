@@ -28,14 +28,6 @@
       {
         "type": "text",
         "fieldName": "visibleStrtTime",
-        "options": {
-          "rules": {
-            "core:required": {
-              "param": "",
-              "message": "Please enter a start time"
-            }
-          }
-        },
         "name": "visibleStrtTime"
       },
       {
@@ -79,6 +71,11 @@
       {
         "type": "text",
         "fieldName": "inpPub",
+        "options": {
+          "rules": {
+            "core:date": {}
+          }
+        },
         "name": "inpPub"
       },
       {
@@ -125,10 +122,22 @@
       {
         "type": "text",
         "fieldName": "hidStrtTime",
-        "options": {
-          "rules": {}
-        },
         "name": "hidStrtTime"
+      },
+      {
+        "type": "text",
+        "fieldName": "daystopublish",
+        "name": "daystopublish"
+      },
+      {
+        "type": "number",
+        "fieldName": "datePubStatus",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "datePubStatus"
       }
     ],
     "$_SESSION": [
@@ -221,13 +230,13 @@
               "table": "tbl_events",
               "column": "published",
               "type": "boolean",
-              "value": "{{$_POST.inpPub.default(0)}}"
+              "value": "{{$_POST.datePubStatus}}"
             },
             {
               "table": "tbl_events",
               "column": "publishDate",
               "type": "date",
-              "value": "{{$_POST.publishDate}}"
+              "value": "{{$_POST.inpPub}}"
             },
             {
               "table": "tbl_events",
@@ -308,13 +317,13 @@
             {
               "name": ":P11",
               "type": "expression",
-              "value": "{{$_POST.inpPub.default(0)}}",
+              "value": "{{$_POST.datePubStatus}}",
               "test": ""
             },
             {
               "name": ":P12",
               "type": "expression",
-              "value": "{{$_POST.publishDate}}",
+              "value": "{{$_POST.inpPub}}",
               "test": ""
             },
             {

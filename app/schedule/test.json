@@ -1,0 +1,50 @@
+{
+  "settings": {
+    "options": {
+      "rule": "0 0 0 1 1 *"
+    }
+  },
+  "exec": {
+    "steps": {
+      "name": "insert",
+      "module": "dbupdater",
+      "action": "insert",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "insert",
+          "values": [
+            {
+              "table": "test",
+              "column": "test",
+              "type": "text",
+              "value": "{{'test insert '+NOW}}"
+            }
+          ],
+          "table": "test",
+          "query": "insert into `test` (`test`) values (?)",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{'test insert '+NOW}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "identity",
+          "type": "text"
+        },
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ],
+      "collapsed": true,
+      "disabled": true
+    }
+  }
+}

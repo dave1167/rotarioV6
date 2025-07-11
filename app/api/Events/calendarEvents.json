@@ -1,0 +1,132 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "query",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "tbl_events",
+              "column": "eventName"
+            },
+            {
+              "table": "tbl_events",
+              "column": "eventDate"
+            },
+            {
+              "table": "tbl_events",
+              "column": "eventStrtTime"
+            },
+            {
+              "table": "tbl_events",
+              "column": "publishDate"
+            }
+          ],
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_SESSION.Ses_Ten_Id}}",
+              "test": "1"
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P2",
+              "value": "{{$_SESSION.Ses_Rota_Id}}",
+              "test": "1"
+            }
+          ],
+          "table": {
+            "name": "tbl_events"
+          },
+          "primary": "eventId",
+          "joins": [],
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "tbl_events.tenantId",
+                "field": "tbl_events.tenantId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "data": {
+                  "table": "tbl_events",
+                  "column": "tenantId",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "integer",
+                    "primary": false,
+                    "nullable": true,
+                    "name": "tenantId"
+                  }
+                },
+                "operation": "="
+              },
+              {
+                "id": "tbl_events.rotaId",
+                "field": "tbl_events.rotaId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_SESSION.Ses_Rota_Id}}",
+                "data": {
+                  "table": "tbl_events",
+                  "column": "rotaId",
+                  "type": "number",
+                  "columnObj": {
+                    "type": "integer",
+                    "primary": false,
+                    "nullable": true,
+                    "name": "rotaId"
+                  }
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "query": "select `eventName`, `eventDate`, `eventStrtTime`, `publishDate` from `tbl_events` where `tbl_events`.`tenantId` = ? and `tbl_events`.`rotaId` = ?"
+        }
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "text",
+          "name": "eventName"
+        },
+        {
+          "type": "date",
+          "name": "eventDate"
+        },
+        {
+          "type": "time",
+          "name": "eventStrtTime"
+        },
+        {
+          "type": "date",
+          "name": "publishDate"
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}

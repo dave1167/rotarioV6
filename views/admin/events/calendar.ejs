@@ -1,0 +1,142 @@
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="calendar" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{}}" -->
+<dmx-serverconnect id="scCalendar" url="/api/Events/calendarEvents"></dmx-serverconnect>
+<div class="modal" id="modEvEdite" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="accordion" id="accordion1">
+                    <div class="card">
+                        <div class="card-header" id="accordion1_headingOne">
+                            <h5 class="mb-0">
+                                <button id="accordion1_collapseOne_Btn" class="btn w-100 btn-warning d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#accordion1_collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <span>Edit Event Details</span>
+                                    <i class="fas fa-chevron-down" dmx-class:rotate-180="accordion1_collapseOne.class.contains('show')" dmx-class:rotate-0="!accordion1_collapseOne.class.contains('show')"></i>
+                                </button>
+
+                            </h5>
+                        </div>
+                        <div id="accordion1_collapseOne" class="collapse" is="dmx-bs5-collapse" show="true" aria-labelledby="accordion1_headingOne" data-bs-parent="#accordion1">
+                            <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/updateEventDetails" dmx-generator="bootstrap5" dmx-form-type="vertical">
+                                <div class="form-group mb-3">
+                                    <input class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetsingleEv.data.query.eventId" type="hidden">
+                                </div>
+                                <div dmx-text="$('#accordion1_collapseOne').hasClass('show')"></div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="inp_EvName" name="inp_EvName" placeholder="Event Name" dmx-bind:value="scGetsingleEv.data.query.eventName">
+                                    <label for="inp_EvName">Event Name</label>
+                                </div>
+                                <div class="row align-items-center">
+                                    <div class="col-4">
+                                        <div class="form-floating mb-3">
+                                            <input type="date" class="form-control" id="inpEvDte" name="inpEvDte" placeholder="Event Date" dmx-bind:value="scGetsingleEv.data.query.eventDate">
+                                            <label for="inpEvDte">Date</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-5">
+                                        <div class="form-floating input-group mb-3">
+                                            <input type="text" class="form-control" id="inpStrtTime" name="inpStrtTime" placeholder="Start Time" dmx-bind:value="scGetsingleEv.data.query.eventStrtTime.formatDate('hh:mm a')">
+                                            <button id="btn3" class="btn btn-light border" type="button" dmx-on:click="modEditIndEvent.hide();modTimePicker.show()">
+                                                <i class="fas fa-clock"></i>
+                                            </button>
+                                            <label for="inpStrtTime">Start Time</label>
+                                            <input id="hidStrtTime" name="hidStrtTime" type="hidden" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-2">
+                                    <div class="form-floating mb-3">
+                                        <input type="date" class="form-control" id="inp_publishDate" name="publishDate" placeholder="Publish date" dmx-bind:value="scGetsingleEv.data.query.eventDate.addDays(-scGetsingleEv.data.query.daysToPublish).formatDate('yyyy-MM-dd')">
+                                        <label for="inp_publishDate">Publish date</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 placeholder-glow w-100">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control" id="inp_volArrival" name="volArrival" placeholder="Vol Arrival Before Show (Mins)" dmx-bind:value="scGetsingleEv.data.query.volArrival">
+                                            <label for="inp_volArrival">Vol Arrival Before Show (Mins)</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-floating mb-3">
+                                            <input type="number" class="form-control" id="inp_numvols" name="numvols" placeholder="Numvols" dmx-bind:value="scGetsingleEv.data.query.numvols">
+                                            <label for="inp_numvols" class="col-form-label-sm">Number of vols</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-floating mb-3">
+                                        <label for="inp_numvols" class="col-form-label-sm">Event Weighting</label>
+                                        <select id="selWeight" class="form-select" name="selWeight">
+                                            <option value="1">Tier One</option>
+                                            <option value="2">Tier Two</option>
+                                            <option value="3">Tier Three</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <input id="hidPub" name="hidPub" class="form-control" dmx-bind:value="scGetsingleEv.data.query.published">
+                                        <div class="form-floating mb-3">
+                                            <div class="form-group mb-3">
+                                                <label for="inp_numvols" class="col-form-label-sm">Published</label>
+                                                <div class="form-check form-switch">
+                                                    <input class="form-check-input" type="checkbox" value="1" id="checkPub" name="checkPub" dmx-bind:checked="hidPub.value==1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-3">
+                                        <div class="form-floating mb-3">
+                                            <select id="selLocation" class="form-select" name="selLocation" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetsingleEv.data.query.location" dmx-on:updated="hidLocValue.setValue(value);scGetVenue.load({location: value})" aria-label="Location">
+                                            </select>
+                                            <label for="selLocation">Location</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <div class="form-floating mb-3">
+                                            <select id="selVenue" class="form-select" name="selVenue" dmx-bind:options="scGetVenue.data.query" optiontext="venueDesc" optionvalue="venueId" aria-label="Venue" dmx-bind:value="scGetsingleEv.data.query.venue">
+                                            </select>
+                                            <label for="selVenue">Venue</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <input id="hidLocValue" name="hidLocValue" class="form-control" dmx-bind:value="selLocation.value" type="hidden">
+                                    </div>
+                                    <div class="col">
+                                        <input id="hidVenueLoc" name="hidVenueLoc" class="form-control" dmx-bind:value="selVenue.selectedValue" type="hidden">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<meta name="ac:route" content="/admin/events/calendar">
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <dmx-calendar id="calendar1" views="dayGridMonth,dayGridWeek" view="dayGridMonth">
+                <dmx-calendar-source id="source1" background-color="#dff4f6" border-color="#5353f6" text-color="#4d82fd" editable="true" event-id="eventId" event-title="eventName" event-start="eventDate" event-end="eventDate" dmx-bind:events="scCalendar.data.query" overlap="true" dmx-on:eventclick="modEvEdite.show()">
+                </dmx-calendar-source>
+            </dmx-calendar>
+        </div>
+    </div>
+</div>

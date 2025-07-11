@@ -12,319 +12,332 @@
     ]
   },
   "exec": {
-    "steps": {
-      "name": "query",
-      "module": "dbconnector",
-      "action": "select",
-      "options": {
-        "connection": "db",
-        "sql": {
-          "type": "SELECT",
-          "columns": [
-            {
-              "table": "tbl_events",
-              "column": "eventId"
-            },
-            {
-              "table": "tbl_events",
-              "column": "eventName"
-            },
-            {
-              "table": "tbl_events",
-              "column": "eventDate"
-            },
-            {
-              "table": "tbl_events",
-              "column": "modifiedBy"
-            },
-            {
-              "table": "tbl_events",
-              "column": "numvols"
-            },
-            {
-              "table": "tbl_events",
-              "column": "weighting"
-            },
-            {
-              "table": "tbl_events",
-              "column": "tenantId"
-            },
-            {
-              "table": "tbl_events",
-              "column": "rotaId",
-              "aggregate": "SUM"
-            },
-            {
-              "table": "tbl_location",
-              "column": "location"
-            },
-            {
-              "table": "tbl_venue",
-              "column": "venueDesc"
-            },
-            {
-              "table": "tbl_events",
-              "column": "eventStrtTime"
-            },
-            {
-              "table": "tbl_events",
-              "column": "published"
-            }
-          ],
-          "params": [
-            {
-              "operator": "equal",
-              "type": "expression",
-              "name": ":P1",
-              "value": "{{$_SESSION.Ses_Ten_Id}}",
-              "test": ""
-            },
-            {
-              "operator": "equal",
-              "type": "expression",
-              "name": ":P2",
-              "value": "{{$_SESSION.Ses_Rota_Id}}",
-              "test": ""
-            },
-            {
-              "operator": "contains",
-              "type": "expression",
-              "name": ":P3",
-              "value": "{{$_GET.filter}}",
-              "test": ""
-            }
-          ],
-          "table": {
-            "name": "tbl_events"
-          },
-          "primary": "eventId",
-          "joins": [
-            {
-              "table": "tbl_location",
-              "column": "*",
-              "type": "INNER",
-              "clauses": {
-                "condition": "AND",
-                "rules": [
-                  {
-                    "table": "tbl_location",
-                    "column": "locationId",
-                    "operation": "=",
-                    "operator": "equal",
-                    "value": {
-                      "table": "tbl_events",
-                      "column": "location",
-                      "type": "number"
-                    }
-                  }
-                ]
-              },
-              "primary": "locationId"
-            },
-            {
-              "table": "tbl_venue",
-              "column": "*",
-              "type": "INNER",
-              "clauses": {
-                "condition": "AND",
-                "rules": [
-                  {
-                    "table": "tbl_venue",
-                    "column": "venueId",
-                    "operation": "=",
-                    "operator": "equal",
-                    "value": {
-                      "table": "tbl_events",
-                      "column": "venue",
-                      "type": "number"
-                    }
-                  }
-                ]
-              },
-              "primary": "venueId"
-            }
-          ],
-          "wheres": {
-            "condition": "AND",
-            "rules": [
+    "steps": [
+      {
+        "name": "query",
+        "module": "dbconnector",
+        "action": "select",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
               {
-                "id": "tbl_events.tenantId",
-                "field": "tbl_events.tenantId",
-                "type": "double",
-                "operator": "equal",
-                "value": "{{$_SESSION.Ses_Ten_Id}}",
-                "data": {
-                  "table": "tbl_events",
-                  "column": "tenantId",
-                  "type": "number",
-                  "columnObj": {
-                    "type": "integer",
-                    "primary": false,
-                    "nullable": true,
-                    "name": "tenantId"
-                  }
-                },
-                "operation": "="
+                "table": "tbl_events",
+                "column": "eventId"
               },
               {
-                "id": "tbl_events.rotaId",
-                "field": "tbl_events.rotaId",
-                "type": "double",
-                "operator": "equal",
-                "value": "{{$_SESSION.Ses_Rota_Id}}",
-                "data": {
-                  "table": "tbl_events",
-                  "column": "rotaId",
-                  "type": "number",
-                  "columnObj": {
-                    "type": "integer",
-                    "primary": false,
-                    "nullable": true,
-                    "name": "rotaId"
-                  }
-                },
-                "operation": "="
+                "table": "tbl_events",
+                "column": "eventName"
               },
               {
-                "condition": "OR",
-                "rules": [
-                  {
-                    "id": "tbl_events.eventName",
-                    "field": "tbl_events.eventName",
-                    "type": "string",
-                    "operator": "contains",
-                    "value": "{{$_GET.filter}}",
-                    "data": {
-                      "table": "tbl_events",
-                      "column": "eventName",
-                      "type": "text",
-                      "columnObj": {
-                        "type": "string",
-                        "maxLength": 255,
-                        "primary": false,
-                        "nullable": true,
-                        "name": "eventName"
-                      }
-                    },
-                    "operation": "LIKE"
-                  }
-                ],
-                "conditional": null
+                "table": "tbl_events",
+                "column": "eventDate"
+              },
+              {
+                "table": "tbl_events",
+                "column": "modifiedBy"
+              },
+              {
+                "table": "tbl_events",
+                "column": "numvols"
+              },
+              {
+                "table": "tbl_events",
+                "column": "weighting"
+              },
+              {
+                "table": "tbl_events",
+                "column": "tenantId"
+              },
+              {
+                "table": "tbl_events",
+                "column": "rotaId",
+                "aggregate": "SUM"
+              },
+              {
+                "table": "tbl_location",
+                "column": "location"
+              },
+              {
+                "table": "tbl_venue",
+                "column": "venueDesc"
+              },
+              {
+                "table": "tbl_events",
+                "column": "eventStrtTime"
+              },
+              {
+                "table": "tbl_events",
+                "column": "published"
               }
             ],
-            "conditional": null,
-            "valid": true
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_SESSION.Ses_Ten_Id}}",
+                "test": "1"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P2",
+                "value": "{{$_SESSION.Ses_Rota_Id}}",
+                "test": "1"
+              },
+              {
+                "operator": "contains",
+                "type": "expression",
+                "name": ":P3",
+                "value": "{{$_GET.filter}}",
+                "test": ""
+              }
+            ],
+            "table": {
+              "name": "tbl_events"
+            },
+            "primary": "eventId",
+            "joins": [
+              {
+                "table": "tbl_location",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_location",
+                      "column": "locationId",
+                      "operation": "=",
+                      "operator": "equal",
+                      "value": {
+                        "table": "tbl_events",
+                        "column": "location",
+                        "type": "number"
+                      }
+                    }
+                  ]
+                },
+                "primary": "locationId"
+              },
+              {
+                "table": "tbl_venue",
+                "column": "*",
+                "type": "INNER",
+                "clauses": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "table": "tbl_venue",
+                      "column": "venueId",
+                      "operation": "=",
+                      "operator": "equal",
+                      "value": {
+                        "table": "tbl_events",
+                        "column": "venue",
+                        "type": "number"
+                      }
+                    }
+                  ]
+                },
+                "primary": "venueId"
+              }
+            ],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "tbl_events.tenantId",
+                  "field": "tbl_events.tenantId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Ten_Id}}",
+                  "data": {
+                    "table": "tbl_events",
+                    "column": "tenantId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "tenantId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_events"
+                },
+                {
+                  "id": "tbl_events.rotaId",
+                  "field": "tbl_events.rotaId",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_SESSION.Ses_Rota_Id}}",
+                  "data": {
+                    "table": "tbl_events",
+                    "column": "rotaId",
+                    "type": "number",
+                    "columnObj": {
+                      "type": "integer",
+                      "primary": false,
+                      "nullable": true,
+                      "name": "rotaId"
+                    }
+                  },
+                  "operation": "=",
+                  "table": "tbl_events"
+                },
+                {
+                  "condition": "OR",
+                  "rules": [
+                    {
+                      "id": "tbl_events.eventName",
+                      "field": "tbl_events.eventName",
+                      "type": "string",
+                      "operator": "contains",
+                      "value": "{{$_GET.filter}}",
+                      "data": {
+                        "table": "tbl_events",
+                        "column": "eventName",
+                        "type": "text",
+                        "columnObj": {
+                          "type": "string",
+                          "maxLength": 255,
+                          "primary": false,
+                          "nullable": true,
+                          "name": "eventName"
+                        }
+                      },
+                      "operation": "LIKE",
+                      "table": "tbl_events"
+                    }
+                  ],
+                  "conditional": null,
+                  "table": "tbl_events",
+                  "id": "tbl_events.undefined"
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "select `tbl_events`.`eventId`, `tbl_events`.`eventName`, `tbl_events`.`eventDate`, `tbl_events`.`modifiedBy`, `tbl_events`.`numvols`, `tbl_events`.`weighting`, `tbl_events`.`tenantId`, sum(`tbl_events`.`rotaId`), `tbl_location`.`location`, `tbl_venue`.`venueDesc`, `tbl_events`.`eventStrtTime`, `tbl_events`.`published` from `tbl_events` inner join `tbl_location` on `tbl_location`.`locationId` = `tbl_events`.`location` inner join `tbl_venue` on `tbl_venue`.`venueId` = `tbl_events`.`venue` where `tbl_events`.`tenantId` = ? and `tbl_events`.`rotaId` = ? and (`tbl_events`.`eventName` like ?) group by `tbl_events`.`eventId`, `tbl_events`.`eventName`, `tbl_events`.`eventDate`, `tbl_events`.`modifiedBy`, `tbl_events`.`numvols`, `tbl_events`.`weighting`, `tbl_events`.`tenantId`, `tbl_location`.`location`, `tbl_venue`.`venueDesc`, `tbl_events`.`eventStrtTime`, `tbl_events`.`published` order by `tbl_events`.`eventDate` ASC",
+            "groupBy": [
+              {
+                "table": "tbl_events",
+                "column": "eventId"
+              },
+              {
+                "table": "tbl_events",
+                "column": "eventName"
+              },
+              {
+                "table": "tbl_events",
+                "column": "eventDate"
+              },
+              {
+                "table": "tbl_events",
+                "column": "modifiedBy"
+              },
+              {
+                "table": "tbl_events",
+                "column": "numvols"
+              },
+              {
+                "table": "tbl_events",
+                "column": "weighting"
+              },
+              {
+                "table": "tbl_events",
+                "column": "tenantId"
+              },
+              {
+                "table": "tbl_location",
+                "column": "location"
+              },
+              {
+                "table": "tbl_venue",
+                "column": "venueDesc"
+              },
+              {
+                "table": "tbl_events",
+                "column": "eventStrtTime"
+              },
+              {
+                "table": "tbl_events",
+                "column": "published"
+              }
+            ],
+            "orders": [
+              {
+                "table": "tbl_events",
+                "column": "eventDate",
+                "direction": "ASC",
+                "recid": 1
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "number",
+            "name": "eventId"
           },
-          "query": "select `tbl_events`.`eventId`, `tbl_events`.`eventName`, `tbl_events`.`eventDate`, `tbl_events`.`modifiedBy`, `tbl_events`.`numvols`, `tbl_events`.`weighting`, `tbl_events`.`tenantId`, sum(`tbl_events`.`rotaId`), `tbl_location`.`location`, `tbl_venue`.`venueDesc`, `tbl_events`.`eventStrtTime`, `tbl_events`.`published` from `tbl_events` inner join `tbl_location` on `tbl_location`.`locationId` = `tbl_events`.`location` inner join `tbl_venue` on `tbl_venue`.`venueId` = `tbl_events`.`venue` where `tbl_events`.`tenantId` = ? and `tbl_events`.`rotaId` = ? and (`tbl_events`.`eventName` like ?) group by `tbl_events`.`eventId`, `tbl_events`.`eventName`, `tbl_events`.`eventDate`, `tbl_events`.`modifiedBy`, `tbl_events`.`numvols`, `tbl_events`.`weighting`, `tbl_events`.`tenantId`, `tbl_location`.`location`, `tbl_venue`.`venueDesc`, `tbl_events`.`eventStrtTime`, `tbl_events`.`published` order by `tbl_events`.`eventDate` ASC",
-          "groupBy": [
-            {
-              "table": "tbl_events",
-              "column": "eventId"
-            },
-            {
-              "table": "tbl_events",
-              "column": "eventName"
-            },
-            {
-              "table": "tbl_events",
-              "column": "eventDate"
-            },
-            {
-              "table": "tbl_events",
-              "column": "modifiedBy"
-            },
-            {
-              "table": "tbl_events",
-              "column": "numvols"
-            },
-            {
-              "table": "tbl_events",
-              "column": "weighting"
-            },
-            {
-              "table": "tbl_events",
-              "column": "tenantId"
-            },
-            {
-              "table": "tbl_location",
-              "column": "location"
-            },
-            {
-              "table": "tbl_venue",
-              "column": "venueDesc"
-            },
-            {
-              "table": "tbl_events",
-              "column": "eventStrtTime"
-            },
-            {
-              "table": "tbl_events",
-              "column": "published"
-            }
-          ],
-          "orders": [
-            {
-              "table": "tbl_events",
-              "column": "eventDate",
-              "direction": "ASC",
-              "recid": 1
-            }
-          ]
-        }
+          {
+            "type": "text",
+            "name": "eventName"
+          },
+          {
+            "type": "date",
+            "name": "eventDate"
+          },
+          {
+            "type": "number",
+            "name": "modifiedBy"
+          },
+          {
+            "type": "number",
+            "name": "numvols"
+          },
+          {
+            "type": "number",
+            "name": "weighting"
+          },
+          {
+            "type": "number",
+            "name": "tenantId"
+          },
+          {
+            "type": "number",
+            "name": "rotaId"
+          },
+          {
+            "type": "text",
+            "name": "location"
+          },
+          {
+            "type": "text",
+            "name": "venueDesc"
+          },
+          {
+            "type": "time",
+            "name": "eventStrtTime"
+          },
+          {
+            "type": "boolean",
+            "name": "published"
+          }
+        ],
+        "outputType": "array",
+        "collapsed": true
       },
-      "output": true,
-      "meta": [
-        {
-          "type": "number",
-          "name": "eventId"
-        },
-        {
-          "type": "text",
-          "name": "eventName"
-        },
-        {
-          "type": "date",
-          "name": "eventDate"
-        },
-        {
-          "type": "number",
-          "name": "modifiedBy"
-        },
-        {
-          "type": "number",
-          "name": "numvols"
-        },
-        {
-          "type": "number",
-          "name": "weighting"
-        },
-        {
-          "type": "number",
-          "name": "tenantId"
-        },
-        {
-          "type": "number",
-          "name": "rotaId"
-        },
-        {
-          "type": "text",
-          "name": "location"
-        },
-        {
-          "type": "text",
-          "name": "venueDesc"
-        },
-        {
-          "type": "time",
-          "name": "eventStrtTime"
-        },
-        {
-          "type": "boolean",
-          "name": "published"
-        }
-      ],
-      "outputType": "array",
-      "collapsed": true
-    }
+      {
+        "name": "wait",
+        "module": "core",
+        "action": "wait",
+        "options": {}
+      }
+    ]
   }
 }
