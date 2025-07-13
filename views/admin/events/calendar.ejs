@@ -1,8 +1,13 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="calendar" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{},dmxFormatter:{}}" -->
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="calendar" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{},dmxFormatter:{},dmxBootstrap5TableGenerator:{}}" -->
+
+<dmx-serverconnect id="scGetVolsEvCal" url="/api/Events/getVolsEventsCal"></dmx-serverconnect>
+<dmx-array id="arrStatus" dmx-on:updated=""></dmx-array>
+<dmx-array id="arrStatus1" dmx-on:updated=""></dmx-array>
+<dmx-array id="arrEvVolId"></dmx-array>
 <dmx-value id="var1"></dmx-value>
-<dmx-serverconnect id="scCalendar" url="/api/Events/calendarEvents"></dmx-serverconnect>
+<dmx-serverconnect id="scGetLocation" url="/api/Events/getLocation"></dmx-serverconnect><dmx-serverconnect id="scCalendar" url="/api/Events/calendarEvents"></dmx-serverconnect>
 <dmx-serverconnect id="scGetSingleCal" url="/api/Events/getSingleCalEv" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scGetLocation" url="/api/Events/getLocation"></dmx-serverconnect>
+
 <dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue"></dmx-serverconnect>
 <div class="modal" id="modEvEdite" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog modal-lg" role="document">
@@ -89,7 +94,7 @@
                                         </select>
                                     </div>
                                     <div class="col">
-                                        <input id="hidPub" name="hidPub" class="form-control" dmx-bind:value="scGetsingleEv.data.query.published">
+                                        <input id="hidPub" name="hidPub" class="form-control" dmx-bind:value="scGetSingleCal.data.query.published">
                                         <div class="form-floating mb-3">
                                             <div class="form-group mb-3">
                                                 <label for="inp_numvols" class="col-form-label-sm">Published</label>
@@ -103,7 +108,7 @@
                                 <div class="row">
                                     <div class="col-3">
                                         <div class="form-floating mb-3">
-                                            <select id="selLocation" class="form-select" name="selLocation" dmx-bind:options="scGetLocations.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetsingleEv.data.query.location" dmx-on:updated="hidLocValue.setValue(value);scGetVenue.load({location: value})" aria-label="Location">
+                                            <select id="selLocation" class="form-select" name="selLocation" dmx-bind:options="scGetLocation.data.query" optiontext="location" optionvalue="locationId" dmx-bind:value="scGetSingleCal.data.query.location" dmx-on:updated="hidLocValue.setValue(value);scGetVenue.load({location: value})" aria-label="Location">
                                             </select>
                                             <label for="selLocation">Location</label>
                                         </div>
@@ -117,17 +122,76 @@
                                         </div>
                                     </div>
                                     <div class="col">
-                                        <input id="hidLocValue" name="hidLocValue" class="form-control" dmx-bind:value="selLocation.value">
+                                        <input id="hidLocValue" name="hidLocValue" class="form-control" dmx-bind:value="selLocation.value" type="hidden">
                                     </div>
                                     <div class="col">
-                                        <input id="hidVenueLoc" name="hidVenueLoc" class="form-control" dmx-bind:value="selVenue.selectedValue">
+                                        <input id="hidVenueLoc" name="hidVenueLoc" class="form-control" dmx-bind:value="selVenue.selectedValue" type="hidden">
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col">
+                        <form id="form1" method="post" is="dmx-serverconnect-form" action="/api/Events/updateEventStatus2" dmx-on:success="run([{repeat:{name:'repeat',output:true,outputType:'array',repeat:`scGetVolsEvCal.data.repeat`,outputFields:[],exec:{steps:{run:{outputType:'text',action:`arr1.add(tableRepeat1[$index].radiogroup.value)`}}}}},{'bootbox.alert':{message:`arr1.items+\'  array\'`}}])">
+                            <div class="row">
+                                <div class="col">
+                                    <p><b>Registered Volunteers</b></p>
+                                </div>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>User</th>
+                                            <th>F name</th>
+                                            <th>L name</th>
+                                            <th>Desc</th>
+                                            <th>Registered date</th>
+                                            <th>Image name</th>
+                                            <th>Ev vol</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="scGetVolsEvCal.data.query" id="tableRepeat2">
+                                        <tr>
+                                            <td>
+                                                <img dmx-bind:src="'\\upload\\images\\profiles\\'+scGetVolsEvCal.data.repeat[$index].varImage+'.jpg'" width="40" height="40">
+                                            </td>
+                                            <td dmx-text="scGetVolsEvCal.data.repeat[$index].decFname"></td>
+                                            <td dmx-text="scGetVolsEvCal.data.repeat[$index].decLname"></td>
+                                            <td dmx-text="desc"></td>
+                                            <td dmx-text="registeredDate"></td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn" dmx-on:click="arrStatus.replaceAt($index, 1)" dmx-bind:class="arrStatus.items[$index] == 1 ? 'btn-orange' : 'btn-outline-orange'" data-bs-toggle="tooltip" title="Pending">
+                                                        <i class="fas fa-question-circle fa-lg"></i>
+
+                                                    </button>
+                                                    <button type="button" class="btn ms-2" dmx-on:click="arrStatus.replaceAt($index, 2)" dmx-bind:class="arrStatus.items[$index] == 2 ? 'btn-green' : 'btn-outline-green'" data-bs-toggle="tooltip" title="Selected">
+                                                        <i class="fas fa-check-circle fa-lg"></i>
+                                                    </button>
+                                                    <button type="button" class="btn ms-2" dmx-on:click="arrStatus.replaceAt($index, 3)" dmx-bind:class="arrStatus.items[$index] == 3 ? 'btn-blue' : 'btn-outline-blue'" tooltip="" title="Waiting List">
+                                                        <i class="fas fa-hourglass-half fa-lg"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-lg ms-1 me-1" dmx-on:click="arrStatus.replaceAt($index, 4)" dmx-bind:class="arrStatus.items[$index] == 4 ? 'btn-red': 'btn-outline-red'" data-bs-toggle="tooltip" title="Cancelled">
+                                                        <i class="fas fa-minus-circle fa-lg"></i>
+                                                    </button>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <input id="arrayEvId" name="arrayEvId" type="hidden" class="form-control" dmx-bind:value="arrEvVolId.items">
+                            <input id="arrayStatus" name="arrayStatus" type="hidden" class="form-control" dmx-bind:value="arrStatus.items">
+                        </form>
+                    </div>
+                </div>
             </div>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
@@ -145,7 +209,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <dmx-calendar id="calendar1" views="dayGridMonth,dayGridWeek" view="dayGridMonth" dmx-on:eventclick="scGetSingleCal.load({evidcal: $event.event.id});modEvEdite.show();var1.setValue($event.event.id+' '+$event.event.title)">
+            <dmx-calendar id="calendar1" views="dayGridMonth,dayGridWeek" view="dayGridMonth" dmx-on:eventclick="scGetSingleCal.load({evidcal: $event.event.id});scGetVolsEvCal.load({eventid: $event.event.id});modEvEdite.show();var1.setValue($event.event.id+' '+$event.event.title)">
                 <dmx-calendar-source id="source1" background-color="#dff4f6" border-color="#5353f6" text-color="#4d82fd" event-id="eventId" event-title="eventName" event-start="eventDate" event-end="eventDate" overlap="true" dmx-bind:events="scCalendar.data.query">
                 </dmx-calendar-source>
             </dmx-calendar>
