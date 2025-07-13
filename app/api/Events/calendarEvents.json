@@ -36,6 +36,10 @@
             {
               "table": "tbl_events",
               "column": "publishDate"
+            },
+            {
+              "table": "tbl_events",
+              "column": "eventId"
             }
           ],
           "params": [
@@ -104,7 +108,7 @@
             "conditional": null,
             "valid": true
           },
-          "query": "select `eventName`, `eventDate`, `eventStrtTime`, `publishDate` from `tbl_events` where `tbl_events`.`tenantId` = ? and `tbl_events`.`rotaId` = ?"
+          "query": "select `eventName`, `eventDate`, `eventStrtTime`, `publishDate`, `eventId` from `tbl_events` where `tbl_events`.`tenantId` = ? and `tbl_events`.`rotaId` = ?"
         }
       },
       "output": true,
@@ -124,9 +128,14 @@
         {
           "type": "date",
           "name": "publishDate"
+        },
+        {
+          "type": "number",
+          "name": "eventId"
         }
       ],
-      "outputType": "array"
+      "outputType": "array",
+      "collapsed": true
     }
   }
 }

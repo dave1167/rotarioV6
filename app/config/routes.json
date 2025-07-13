@@ -120,7 +120,8 @@
     {
       "path": "/admin/events/calendar",
       "page": "admin/events/calendar",
-      "layout": "admin"
+      "layout": "admin",
+      "exec": "/api/Security/secAuthSupAd"
     }
   ]
 }

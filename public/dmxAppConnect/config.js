@@ -985,5 +985,25 @@ dmx.config({
         "type": "number"
       }
     ]
+  },
+  "calendar": {
+    "selected_event": [
+      {
+        "name": "eventId",
+        "type": "text"
+      },
+      {
+        "name": "eventName",
+        "type": "text"
+      },
+      {
+        "name": "eventDate",
+        "type": "text"
+      }
+    ],
+    "selected_event_id": {
+      "meta": null,
+      "outputType": "number"
+    }
   }
 });
