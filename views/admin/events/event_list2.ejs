@@ -1,5 +1,4 @@
-<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxBootstrap5Modal:{},dmxFormatter:{},dmxBootbox5:{},dmxDatePicker:{},dmxValidator:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxStateManagement:{},dmxServerConnect:{},dmxCore:{},dmxScheduler:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
-<dmx-scheduler id="scheduler1" dmx-on:tick="" unit="days"></dmx-scheduler>
+<!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="event_list2" appConnect="local" components="{dmxBootstrap5Modal:{},dmxFormatter:{},dmxBootbox5:{},dmxDatePicker:{},dmxValidator:{},dmxDataTraversal:{},dmxBootstrap5TableGenerator:{},dmxStateManagement:{},dmxServerConnect:{},dmxCore:{}}" jquery_slim_35="cdn" moment_2="cdn" -->
 
 <link rel="stylesheet" href="/assets/css/custom.css">
 
@@ -62,7 +61,7 @@
 <dmx-serverconnect id="scGetActiveUserForVol" url="/api/Users/getActiveUsersForVolunteers"></dmx-serverconnect>
 <dmx-serverconnect id="scUpdateEvent" url="/api/Events/updateEventDetails" noload="true" dmx-param:eventid="modEditIndEvent.accordion1_collapseOne.frmEvDets.inp_EvId.value"></dmx-serverconnect>
 <dmx-serverconnect id="scUpstatus" url="/api/Events/updateEventStatus2" noload="true"></dmx-serverconnect>
-<dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleEvent1" noload="true" dmx-param:eventid="" dmx-on:success="scGetVenue.load({location: scGetsingleEv.data.query.location})"></dmx-serverconnect>
+<dmx-serverconnect id="scGetsingleEv" url="/api/Events/getSingleevent2" noload="true" dmx-param:eventid="" dmx-on:success="scGetVenue.load({location: scGetsingleEv.data.query.location})"></dmx-serverconnect>
 <dmx-serverconnect id="scDummy" url="/api/Events/dummy" noload="true"></dmx-serverconnect>
 
 
@@ -90,7 +89,7 @@
                         <div class="row">
                             <div class="col">
                                 <h5>
-                                    <span class="badge ms-2" dmx-text="volcounts.value.query.where('eventId', eventId).first() ? volcounts.value.query.where('eventId', eventId).first().volCount + ' Volunteerss Registered' : '0 Volunteers Registered'" dmx-class:bg-danger="!volcounts.value.query.where('eventId', eventId).first() || (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.4" dmx-class:bg-warning="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.4 && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.7" dmx-class:bg-success="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.7" id="Ev$index">
+                                    <span class="badge ms-2" dmx-text="volcounts.value.query.where('eventId', eventId).first() ? volcounts.value.query.where('eventId', eventId).first().volCount + ' Volunteers Registered' : '0 Volunteers Registered'" dmx-class:bg-danger="!volcounts.value.query.where('eventId', eventId).first() || (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.4" dmx-class:bg-warning="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.4 && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) < 0.7" dmx-class:bg-success="volcounts.value.query.where('eventId', eventId).first() && (volcounts.value.query.where('eventId', eventId).first().volCount.toNumber() / numvols.toNumber()) >= 0.7" id="Ev$index">
                                     </span>
 
                                 </h5>
