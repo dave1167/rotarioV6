@@ -1,266 +1,40 @@
-#inp_fName {
+/* Existing styles ... */
+
+/* Button group status icon base: unselected gray+faded */
+.btn-group .fa-question-circle,
+.btn-group .fa-check-circle,
+.btn-group .fa-hourglass-half,
+.btn-group .fa-minus-circle {
+  color: #bfc3cc;
+  opacity: 0.45;
+  transition: color 0.18s, opacity 0.18s;
 }
-.modal-header.bg-warning {
-  background-color: var(--bs-warning);
-  color: var(--bs-dark);
+/* Only on selected button: vivid and full opacity */
+.btn-orange .fa-question-circle,
+.btn-green .fa-check-circle,
+.btn-blue .fa-hourglass-half,
+.btn-red .fa-minus-circle {
+  color: initial !important;
+  opacity: 1 !important;
 }
 
-.alert-warning {
-  background-color: var(--bs-warning-light);
-  border-color: var(--bs-warning);
+/* Explicit icon color for selected states (optional for clarity) */
+.btn-orange .fa-question-circle {
+  color: #ff9800 !important;
+}
+.btn-green .fa-check-circle {
+  color: #2eb82e !important;
+}
+.btn-blue .fa-hourglass-half {
+  color: #267fe5 !important;
+}
+.btn-red .fa-minus-circle {
+  color: #ff0000 !important;
 }
 
-.modal .btn-danger {
-  background-color: var(--bs-danger);
-  border-color: var(--bs-danger);
-}
-
-.modal .btn-danger:hover {
-  background-color: var(--bs-danger-dark);
-  border-color: var(--bs-danger-dark);
-}
-/* Enhancing the form-label class for bolder text */
-.form-label {
-  font-weight: 600; /* Adjusted for a heavier font weight */
-}
-/* Enhance col-form-label with custom color and bold text */
-.col-form-label {
-  font-weight: 600; /* Make the label text bold */
-  font-size: 0.8 rem; /* Slightly increase the font size for emphasis */
-  color: #27a2fc; /* Set the label color to a custom blue */
-}
-.card {
-  -webkit-transition:
-    -webkit-transform 0.2s ease-in-out,
-    -webkit-box-shadow 0.2s ease-in-out;
-  transition:
-    -webkit-transform 0.2s ease-in-out,
-    -webkit-box-shadow 0.2s ease-in-out;
-  transition:
-    transform 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
-  transition:
-    transform 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out,
-    -webkit-transform 0.2s ease-in-out,
-    -webkit-box-shadow 0.2s ease-in-out;
-}
-
-.card:hover {
-  -webkit-transform: translateY(-5px);
-  transform: translateY(-5px);
-  -webkit-box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-}
-
-.btn-red {
-  background-color: #ff0000 !important;
-  color: #ffffff !important;
-  font-size: 0.8rem;
-  padding: 0.55rem 0.55rem;
-}
-.btn-blue {
-  background-color: #267fe5 !important;
-  color: #ffffff !important;
-  font-size: 0.8rem;
-  padding: 0.55rem 0.55rem;
-}
-.btn-green {
-  background-color: #9ff49e !important;
-  color: #000000 !important;
-  font-size: 0.8rem;
-  padding: 0.55rem 0.55rem;
-}
-.btn-orange {
-  background-color: #fc940de3 !important;
-  color: #000000 !important;
-  font-size: 0.8rem;
-  padding: 0.55rem 0.55rem;
-}
-.btn-outline-red {
-  background-color: #cfcece !important;
-  color: #b27070 !important;
-  border: 1px solid red !important;
-  opacity: 0.8;
-  font-size: 0.8rem;
-  padding: 0.55rem 0.55rem;
-}
-.btn-outline-blue {
-  background-color: #cfcece !important;
-  color: #c3b9f8 !important;
-  border: 1px solid #4226e5 !important;
-  opacity: 0.9;
-  font-size: 0.8rem;
-  padding: 0.55rem 0.55rem;
-}
-.btn-outline-orange {
-  background-color: #cfcece !important;
-  color: #f1b76be3 !important;
-  border: 1px solid #ff9100e3 !important;
-  opacity: 0.9;
-  font-size: 0.8rem;
-  padding: 0.55rem 0.55rem;
-}
-.btn-outline-green {
-  background-color: #cfcece !important;
-  color: #caf5c9 !important;
-  border: 1px solid #14ed10 !important;
-  opacity: 0.9;
-  font-size: 1rem;
-  padding: 0.55rem 0.55rem;
-}
-
-/* Custom styles for publish switch */
-.form-switch .form-check-input {
-  width: 2.5em !important;
-  height: 1.4em !important;
-  cursor: pointer;
-  border: 2px solid #adb5bd;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.form-switch .form-check-input:checked {
-  background-color: #198754;
-  border-color: #198754;
-}
-
-.form-switch .form-check-input:not(:checked) {
-  background-color: #e9ecef;
-  border-color: #adb5bd;
-}
-
-.form-switch .form-check-label {
-  font-size: 1rem;
-  font-weight: 500;
-  padding-left: 0.5rem;
-  color: #495057;
-}
-.rotate-180 {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
-  -webkit-transition: -webkit-transform 0.3s ease;
-  transition: -webkit-transform 0.3s ease;
-  transition: transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-}
-
-.rotate-0 {
-  -webkit-transform: rotate(0deg);
-  transform: rotate(0deg);
-  -webkit-transition: -webkit-transform 0.3s ease;
-  transition: -webkit-transform 0.3s ease;
-  transition: transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-  transition:
-    transform 0.3s ease,
-    -webkit-transform 0.3s ease;
-}
-.time-picker {
-  position: relative;
-  width: 200px;
-}
-
-.time-picker input {
-  width: 100%;
-  padding: 0.5rem;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.time-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  background: white;
-  z-index: 999;
-  display: none;
-}
-
-.time-dropdown div {
-  padding: 0.5rem;
-  cursor: pointer;
-}
-
-.time-dropdown div:hover {
-  background-color: #eee;
-}
-.badge.bg-warning {
-  background-color: #ffc107 !important; /* Bootstrap 5 yellow */
-  color: #212529 !important;
-}
-.badge.bg-success {
-  background-color: #198754 !important; /* Bootstrap 5 green */
-  color: #fff !important;
-}
-.badge.bg-danger {
-  background-color: #dc3545 !important; /* Bootstrap 5 red */
-  color: #fff !important;
-}
-.card-body.published {
-  background-color: #bde6ca !important; /* very light green */
-}
-
-.card-body.not-published {
-  background-color: #ebdba8 !important; /* very light yellow */
-}
-
-/* Sidebar styles */
-.sidebar {
-  margin-top: 0;
-  padding-top: 0;
-  min-height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  border-right: 1px solid rgba(0, 0, 0, 0.125);
+/* Accordion chevrons only (no transparency) */
+.card-header .fa-chevron-up,
+.card-header .fa-chevron-down {
+  color: #333 !important;
+  opacity: 1 !important;
 }

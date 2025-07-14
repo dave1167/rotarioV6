@@ -1,0 +1,315 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/admin/events/calendar.ejs",
+      "linkedForm": "frmEvDets"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "inp_EvId",
+        "name": "inp_EvId"
+      },
+      {
+        "type": "text",
+        "fieldName": "inp_EvName",
+        "name": "inp_EvName"
+      },
+      {
+        "type": "date",
+        "fieldName": "inpEvDte",
+        "options": {
+          "rules": {
+            "core:date": {}
+          }
+        },
+        "name": "inpEvDte"
+      },
+      {
+        "type": "text",
+        "fieldName": "inpStrtTime",
+        "name": "inpStrtTime"
+      },
+      {
+        "type": "text",
+        "fieldName": "hidStrtTime",
+        "name": "hidStrtTime"
+      },
+      {
+        "type": "date",
+        "fieldName": "inp_publishDate",
+        "options": {
+          "rules": {
+            "core:date": {}
+          }
+        },
+        "name": "inp_publishDate"
+      },
+      {
+        "type": "number",
+        "fieldName": "volArrival",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "volArrival"
+      },
+      {
+        "type": "number",
+        "fieldName": "numvols",
+        "options": {
+          "rules": {
+            "core:number": {}
+          }
+        },
+        "name": "numvols"
+      },
+      {
+        "type": "text",
+        "fieldName": "hidPub",
+        "name": "hidPub"
+      },
+      {
+        "type": "text",
+        "fieldName": "checkPub",
+        "name": "checkPub"
+      },
+      {
+        "type": "text",
+        "fieldName": "hidLocValue",
+        "name": "hidLocValue"
+      },
+      {
+        "type": "text",
+        "fieldName": "hidVenueLoc",
+        "name": "hidVenueLoc"
+      },
+      {
+        "type": "text",
+        "fieldName": "selWeight",
+        "name": "selWeight"
+      },
+      {
+        "type": "text",
+        "fieldName": "selLocation",
+        "name": "selLocation"
+      },
+      {
+        "type": "text",
+        "fieldName": "selVenue",
+        "name": "selVenue"
+      },
+      {
+        "type": "number",
+        "name": "location"
+      },
+      {
+        "type": "number",
+        "name": "eventId"
+      }
+    ],
+    "$_SESSION": [
+      {
+        "type": "number",
+        "name": "Ses_User_Id"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "update",
+      "module": "dbupdater",
+      "action": "update",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "update",
+          "values": [
+            {
+              "table": "tbl_events",
+              "column": "eventName",
+              "type": "text",
+              "value": "{{$_POST.inp_EvName}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "eventDate",
+              "type": "date",
+              "value": "{{$_POST.inpEvDte}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "eventStrtTime",
+              "type": "time",
+              "value": "{{$_POST.hidStrtTime}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "modifiedBy",
+              "type": "number",
+              "value": "{{$_SESSION.Ses_User_Id}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "modifiedDate",
+              "type": "datetime",
+              "value": "{{NOW}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "numvols",
+              "type": "number",
+              "value": "{{$_POST.numvols}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "weighting",
+              "type": "number",
+              "value": "{{$_POST.selWeight}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "location",
+              "type": "number",
+              "value": "{{$_POST.location}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "venue",
+              "type": "number",
+              "value": "{{$_POST.hidVenueLoc}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "published",
+              "type": "boolean",
+              "value": "{{$_POST.hidPub}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "volArrival",
+              "type": "number",
+              "value": "{{$_POST.volArrival}}"
+            },
+            {
+              "table": "tbl_events",
+              "column": "publishDate",
+              "type": "date",
+              "value": "{{$_POST.inp_publishDate}}"
+            }
+          ],
+          "table": "tbl_events",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "eventId",
+                "field": "eventId",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.inp_EvId}}",
+                "data": {
+                  "column": "eventId"
+                },
+                "operation": "="
+              }
+            ],
+            "conditional": null,
+            "valid": true
+          },
+          "returning": "eventId",
+          "query": "update `tbl_events` set `eventName` = ?, `eventDate` = ?, `eventStrtTime` = ?, `modifiedBy` = ?, `modifiedDate` = ?, `numvols` = ?, `weighting` = ?, `location` = ?, `venue` = ?, `published` = ?, `volArrival` = ?, `publishDate` = ? where `eventId` = ?",
+          "params": [
+            {
+              "name": ":P1",
+              "type": "expression",
+              "value": "{{$_POST.inp_EvName}}",
+              "test": ""
+            },
+            {
+              "name": ":P2",
+              "type": "expression",
+              "value": "{{$_POST.inpEvDte}}",
+              "test": ""
+            },
+            {
+              "name": ":P3",
+              "type": "expression",
+              "value": "{{$_POST.hidStrtTime}}",
+              "test": ""
+            },
+            {
+              "name": ":P4",
+              "type": "expression",
+              "value": "{{$_SESSION.Ses_User_Id}}",
+              "test": ""
+            },
+            {
+              "name": ":P5",
+              "type": "expression",
+              "value": "{{NOW}}",
+              "test": ""
+            },
+            {
+              "name": ":P6",
+              "type": "expression",
+              "value": "{{$_POST.numvols}}",
+              "test": ""
+            },
+            {
+              "name": ":P7",
+              "type": "expression",
+              "value": "{{$_POST.selWeight}}",
+              "test": ""
+            },
+            {
+              "name": ":P8",
+              "type": "expression",
+              "value": "{{$_POST.location}}",
+              "test": ""
+            },
+            {
+              "name": ":P9",
+              "type": "expression",
+              "value": "{{$_POST.hidVenueLoc}}",
+              "test": ""
+            },
+            {
+              "name": ":P10",
+              "type": "expression",
+              "value": "{{$_POST.hidPub}}",
+              "test": ""
+            },
+            {
+              "name": ":P11",
+              "type": "expression",
+              "value": "{{$_POST.volArrival}}",
+              "test": ""
+            },
+            {
+              "name": ":P12",
+              "type": "expression",
+              "value": "{{$_POST.inp_publishDate}}",
+              "test": ""
+            },
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P13",
+              "value": "{{$_POST.inp_EvId}}",
+              "test": ""
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ],
+      "collapsed": true
+    }
+  }
+}

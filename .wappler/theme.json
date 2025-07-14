@@ -14,8 +14,11 @@
       "headings-font-family": "Poppins:700",
       "font-family-base": "Poppins:400",
       "font-size-base": "0.85",
-      "enable-shadows": true
+      "enable-shadows": true,
+      "enable-gradients": true
     },
-    "advanced": {}
+    "advanced": {
+      "gray-800": "#d5fbc6"
+    }
   }
 }

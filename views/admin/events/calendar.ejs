@@ -1,5 +1,11 @@
 <!-- Wappler include head-page="layouts/admin" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="calendar" appConnect="local" components="{dmxCalendar:{},dmxBootstrap5Modal:{},dmxFormatter:{},dmxBootstrap5TableGenerator:{}}" -->
 
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+    </div>
+</div>
+</div>
+
 <dmx-serverconnect id="scGetVolsEvCal" url="/api/Events/getVolsEventsCal"></dmx-serverconnect>
 <dmx-array id="arrStatus" dmx-on:updated=""></dmx-array>
 <dmx-array id="arrStatus1" dmx-on:updated=""></dmx-array>
@@ -9,10 +15,61 @@
 <dmx-serverconnect id="scGetSingleCal" url="/api/Events/getSingleCalEv" noload="true"></dmx-serverconnect>
 
 <dmx-serverconnect id="scGetVenue" url="/api/Events/getVenue"></dmx-serverconnect>
+<div class="modal" id="modTimePicker" is="dmx-bs5-modal" tabindex="-1">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-warning text-light-emphasis">
+                <h5 class="modal-title">Select Event Start Time</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="row mb-3">
+                            <label for="modStrtTime" class="form-label">Start Time</label>
+
+                            <div class="col-auto">
+                                <select id="selHour" class="form-select" aria-label="Hour">
+                                    <option value="">HH</option>
+                                    <!-- JS will populate -->
+                                </select>
+                            </div>
+
+                            <div class="col-auto">
+                                <select id="selMinute" class="form-select" aria-label="Minute">
+                                    <option value="">MM</option>
+                                    <!-- JS will populate -->
+                                </select>
+                            </div>
+
+                            <div class="col-auto">
+                                <select id="selPeriod" class="form-select" aria-label="AM/PM">
+                                    <option value="AM">AM</option>
+                                    <option value="PM" selected>PM</option>
+                                </select>
+                            </div>
+
+                            <!-- Hidden input to submit combined time -->
+                            <input class="form-control" id="modStrtTime" name="inpStrtTime">
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <button id="btn4" class="btn btn-secondary" dmx-on:click="modEditIndEvent.show();modEditIndEvent.accordion1_collapseOne.frmEvDets.inpStrtTime.setValue(modStrtTime.value);modTimePicker.hide()">Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal" id="modEvEdite" is="dmx-bs5-modal" tabindex="-1">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header text-success bg-warning">
                 <h5 class="modal-title">{{scGetSingleCal.data.query.eventName}}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -23,13 +80,14 @@
                             <h5 class="mb-0">
                                 <button id="accordion1_collapseOne_Btn" class="btn w-100 btn-warning d-flex justify-content-between align-items-center" type="button" data-bs-toggle="collapse" data-bs-target="#accordion1_collapseOne" aria-expanded="true" aria-controls="collapseOne">
                                     <span>Edit Event Details</span>
-                                    <i class="fas fa-chevron-down" dmx-class:rotate-180="accordion1_collapseOne.class.contains('show')" dmx-class:rotate-0="!accordion1_collapseOne.class.contains('show')"></i>
+                                    <i class="fas fa-chevron-down" dmx-show="!accordion1_collapseOne.collapsed"></i>
+                                    <i class="fas fa-chevron-up" dmx-show="accordion1_collapseOne.collapsed"></i>
                                 </button>
 
                             </h5>
                         </div>
                         <div id="accordion1_collapseOne" class="collapse" is="dmx-bs5-collapse" show="true" aria-labelledby="accordion1_headingOne" data-bs-parent="#accordion1">
-                            <form is="dmx-serverconnect-form" id="frmEvDets" method="post" action="/api/Events/updateEventDetails" dmx-generator="bootstrap5" dmx-form-type="vertical">
+                            <form method="post" dmx-generator="bootstrap5" dmx-form-type="vertical" is="dmx-serverconnect-form" id="frmUpdateEvCal" action="/api/Events/updateEvVolCal">
                                 <div class="form-group mb-3">
                                     <input class="form-control" id="inp_EvId" name="inp_EvId" aria-describedby="inp_inpEvIdEdit_help" placeholder="Enter Inp ev id edit" dmx-bind:value="scGetSingleCal.data.query.eventId" type="hidden">
                                 </div>
@@ -52,7 +110,7 @@
                                             <label for="inpStrtTime" class="form-label">Start Time</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control" id="inpStrtTime" name="inpStrtTime" placeholder="Start Time" dmx-bind:value="scGetSingleCal.data.query.eventStrtTime.formatDate('HH:mm a')">
-                                                <button id="btn3" class="btn btn-light border" type="button" dmx-on:click="modEditIndEvent.hide();modTimePicker.show()">
+                                                <button id="btn3" class="btn btn-light border" type="button" dmx-on:click="modTimePicker.show();modEvEdite.hide()">
                                                     <i class="fas fa-clock"></i>
                                                 </button>
                                                 <input id="hidStrtTime" name="hidStrtTime" type="hidden" class="form-control">
@@ -146,12 +204,11 @@
                                     <thead>
                                         <tr>
                                             <th>User</th>
-                                            <th>F name</th>
-                                            <th>L name</th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
                                             <th>Desc</th>
                                             <th>Registered date</th>
-                                            <th>Image name</th>
-                                            <th>Ev vol</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
                                     <tbody is="dmx-repeat" dmx-generator="bs5table" dmx-bind:repeat="scGetVolsEvCal.data.query" id="tableRepeat2">
@@ -162,11 +219,11 @@
                                             <td dmx-text="scGetVolsEvCal.data.repeat[$index].decFname"></td>
                                             <td dmx-text="scGetVolsEvCal.data.repeat[$index].decLname"></td>
                                             <td dmx-text="desc"></td>
-                                            <td dmx-text="registeredDate"></td>
+                                            <td dmx-text="registeredDate.formatDate('dd-MM-yyyy')"></td>
                                             <td>
                                                 <div class="btn-group" role="group">
                                                     <button type="button" class="btn" dmx-on:click="arrStatus.replaceAt($index, 1)" dmx-bind:class="arrStatus.items[$index] == 1 ? 'btn-orange' : 'btn-outline-orange'" data-bs-toggle="tooltip" title="Pending">
-                                                        <i class="fas fa-question-circle fa-lg"></i>
+                                                        <i class="fas fa-question-circle fa-lg" dmx-style:color="'amber'"></i>
 
                                                     </button>
                                                     <button type="button" class="btn ms-2" dmx-on:click="arrStatus.replaceAt($index, 2)" dmx-bind:class="arrStatus.items[$index] == 2 ? 'btn-green' : 'btn-outline-green'" data-bs-toggle="tooltip" title="Selected">
@@ -194,7 +251,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary" dmx-on:click="frmUpdateEvCal.submit()">Save changes</button>
             </div>
         </div>
     </div>
@@ -216,3 +273,117 @@
         </div>
     </div>
 </div>
+
+<script>
+    const selHour = document.getElementById("selHour");
+  const selMinute = document.getElementById("selMinute");
+  const selPeriod = document.getElementById("selPeriod");
+  const inpStrtTime = document.getElementById("inpStrtTime");
+
+  function updateTimeInput() {
+    const hh = selHour.value;
+    const mm = selMinute.value;
+    const ap = selPeriod.value;
+    if (hh && mm && ap) {
+      inpStrtTime.value = `${hh}:${mm} ${ap}`;
+    } else {
+      inpStrtTime.value = '';
+    }
+  }
+
+  function populateDropdowns() {
+    for (let h = 1; h <= 12; h++) {
+      const val = h.toString().padStart(2, '0');
+      selHour.innerHTML += `<option value="${val}">${val}</option>`;
+    }
+
+    for (let m = 0; m < 60; m += 5) {
+      const val = m.toString().padStart(2, '0');
+      selMinute.innerHTML += `<option value="${val}">${val}</option>`;
+    }
+  }
+
+  function convert24hrTo12hr(timeStr) {
+    // Expects "HH:mm" or "HH:mm:ss"
+    const parts = timeStr.trim().split(':');
+    if (parts.length < 2) return null;
+    let hour = parseInt(parts[0], 10);
+    const minute = parts[1].padStart(2, '0');
+    const period = hour >= 12 ? 'PM' : 'AM';
+    if (hour === 0) hour = 12;
+    else if (hour > 12) hour -= 12;
+    const hourStr = hour.toString().padStart(2, '0');
+    return { hour: hourStr, minute, period };
+  }
+
+  function loadInitialTime() {
+    const rawTime = dmx.parse('scGetsingleEv.data.query.eventStrtTime'); // e.g. "14:30"
+   
+    if (!rawTime) return;
+
+    let h, m, ap;
+    if (rawTime.match(/^\d{1,2}:\d{2} ?(AM|PM)$/i)) {
+      // Already in 12-hour format
+      const [timePart, periodPart] = rawTime.toUpperCase().split(' ');
+      [h, m] = timePart.split(':');
+      ap = periodPart;
+    } else {
+      // Assume 24-hour, convert to 12-hour
+      const result = convert24hrTo12hr(rawTime);
+      if (result) {
+        h = result.hour;
+        m = result.minute;
+        ap = result.period;
+      }
+    }
+
+    if (h && m && ap) {
+      selHour.value = h;
+      selMinute.value = m;
+      selPeriod.value = ap;
+      setTimeout(updateTimeInput, 100);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    populateDropdowns();
+    document.getElementById("scGetsingleEv").addEventListener("dmx:updated", loadInitialTime);
+
+    [selHour, selMinute, selPeriod].forEach(el =>
+      el.addEventListener("change", () => {
+        setTimeout(updateTimeInput, 100);
+      })
+    );
+  });
+  function updateTimeInput() {
+    const hh = selHour.value;
+    const mm = selMinute.value;
+    const ap = selPeriod.value;
+    
+    if (hh && mm && ap) {
+        // Update the visible input with 12-hour format
+        inpStrtTime.value = `${hh}:${mm} ${ap}`;
+        
+        // Convert to 24-hour format for hidden input
+        let hour24 = parseInt(hh, 10);
+        
+        // Adjust hours based on AM/PM
+        if (ap === 'PM' && hour24 !== 12) {
+            hour24 += 12;
+        } else if (ap === 'AM' && hour24 === 12) {
+            hour24 = 0;
+        }
+        
+        // Format as 24-hour time with seconds
+        const time24 = `${hour24.toString().padStart(2, '0')}:${mm}:00`; 
+        const hidStrtTimeEl = document.getElementById('hidStrtTime');
+        if (hidStrtTimeEl) {
+          hidStrtTimeEl.value = time24;
+        }
+    } else {
+        inpStrtTime.value = '';
+        const hidStrtTimeEl = document.getElementById('hidStrtTime');
+        if (hidStrtTimeEl) hidStrtTimeEl.value = '';
+    }
+}
+</script>
